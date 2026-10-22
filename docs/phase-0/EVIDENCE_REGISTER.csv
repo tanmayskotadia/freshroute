@@ -1,0 +1,13 @@
+evidenceId,topic,treatment,status,feature,resourceReference,expectedBehavior,actualResult,evidencePath,verifiedAt,cleanupStatus
+E01,Step Functions and DynamoDB,CORE,PLANNED,Rescue analysis,,Versioned input reaches persisted result,,,,NOT_CREATED
+E02,IAM and application authorization,CORE,PLANNED,Ownership enforcement,,Cross-user read and write denied,,,,NOT_CREATED
+E03,DynamoDB transactions,CORE,PLANNED,Capacity reservation,,Concurrent requests do not overbook,,,,NOT_CREATED
+E04,SQS and fault tolerance,CORE,PLANNED,Background processing,,Poison message reaches DLQ and replay is controlled,,,,NOT_CREATED
+E05,Bedrock reliability,CORE,PLANNED,Grounded copilot,,Failure preserves deterministic analysis,,,,NOT_CREATED
+E06,S3 and KMS,CORE,PLANNED,Authorized reports,,Authorized workflow succeeds and other access denied,,,,NOT_CREATED
+E07,EC2 ALB Auto Scaling,LAB,PLANNED,Compute resilience,,Unhealthy target replaced with observed behavior,,,,NOT_CREATED
+E08,EBS and EFS,LAB,PLANNED,Storage comparison,,Shared fixture visible from both instances,,,,NOT_CREATED
+E09,VPC peering routes security groups,LAB,PLANNED,Network isolation,,Allowed path succeeds and blocked path fails,,,,NOT_CREATED
+E10,WAF and Config,LAB,PLANNED,Security experiment,,Benign test blocked and configuration rechecked,,,,NOT_CREATED
+E11,RDS and DMS,LAB_OR_STUDY,PLANNED,Legacy modernization,,Compatible migration reconciles source and target,,,,NOT_CREATED
+E12,Cost management and cleanup,CORE,PLANNED,Resource lifecycle,,Removed and retained resources verified,,,,NOT_CREATED
