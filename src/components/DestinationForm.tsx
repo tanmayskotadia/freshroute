@@ -8,7 +8,7 @@ export function DestinationForm({
   onCancel,
 }: {
   destination: Destination;
-  onSave: (value: Destination) => void;
+  onSave: (value: Destination) => void | Promise<void>;
   onCancel: () => void;
 }) {
   const [value, setValue] = useState(structuredClone(destination));
@@ -18,10 +18,10 @@ export function DestinationForm({
     <form
       className="shipment-form"
       noValidate
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
         try {
-          onSave({
+          await onSave({
             ...value,
             capacity: capacity.trim() === "" ? NaN : Number(capacity),
           });
@@ -37,9 +37,9 @@ export function DestinationForm({
       }}
     >
       <p className="dialog-intro">
-        Local demo management only. Authentication and administrator enforcement
-        come with the cloud phase. Changing rules does not reserve capacity or
-        recalculate old comparisons.
+        Changing receiving rules does not reserve capacity or recalculate saved
+        comparisons. In cloud mode this action requires the administrators
+        group.
       </p>
       {error && (
         <div className="notice amber" role="alert">

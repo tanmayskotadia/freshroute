@@ -4,7 +4,13 @@ Perishable-shipment rescue and decision support with an AI copilot. Academic Clo
 
 ## Current status
 
-Phases 0-3 are complete: design, responsive frontend, local workflows and a deterministic rescue model. Rescue Lab calculates quality curves, quantity below threshold, feasibility and ranked alternatives for saved shipments. Named analyses freeze inputs, parameters and results; local plans and searchable History survive refreshes. No HTTP backend, AWS deployment, partner booking or live LLM is connected yet.
+Phases 0-4 are complete. The Phase 5 workflows and Phase 6 fulfilment backend are deployed on AWS in Mumbai; final release verification is recorded in `docs/phase-6/`. The app supports Cognito sign-in, owner-scoped DynamoDB persistence, S3 CSV imports through SQS, Step Functions analysis, atomic shared-capacity reservations, dispatch/delivery/cancellation, private PDF/JSON reports and in-app/SNS notifications. Local demo mode remains available. Bedrock/LLM integration is a later phase and is not connected yet.
+
+Live application: https://dr4sw5bpoi.execute-api.ap-south-1.amazonaws.com
+
+CloudFront requires AWS account verification. The approved API Gateway + Lambda HTTPS frontend serves the private web bucket. See [Phase 4 deployment](docs/phase-4/IMPLEMENTATION.md) and [Phase 6 implementation and demonstration](docs/phase-6/IMPLEMENTATION.md).
+
+AWS Core is verified to use deployment account `118462784511`. The final artifact passed all 21 live Phase 6 checks plus all 10 CSV-import checks; all 41 local tests pass. Temporary test users and files were cleaned up. Email subscription confirmation and browser visual verification remain manual checks. See [release status](docs/phase-6/RELEASE_STATUS.md).
 
 ## Run locally (PowerShell)
 
@@ -67,7 +73,7 @@ Tests use Node's native TypeScript stripping and test runner (verified with Node
 - [Expanded phased roadmap and complete syllabus audit](FRESHROUTE_BUILD_BLUEPRINT.md)
 - [Original project roadmap and model explanation](FRESHROUTE_IMPLEMENTATION_ROADMAP.md)
 
-The Phase 0 documents define the design, Phase 1 establishes the visual foundation, and Phase 2 adds real browser-local workflows. No cloud credentials or deployment are needed for the current application. Phase 3 adds the implemented illustrative calculation model and deterministic optimizer.
+The Phase 0 documents define the design, Phase 1 establishes the visual foundation, and Phase 2 adds browser-local workflows. Phase 3 adds the illustrative calculation model. Phases 4-6 connect authenticated cloud storage, background workflows and fulfilment. Local development does not require AWS credentials; cloud mode uses Cognito and the public deployment configuration.
 
 ## Evaluation story
 

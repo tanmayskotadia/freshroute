@@ -1,3 +1,4 @@
+import { useCloud } from "../cloud/CloudRuntime";
 import { useState } from "react";
 import { ArrowRight, FlaskConical, History } from "lucide-react";
 import type { SavedAnalysis } from "../model/engine";
@@ -17,6 +18,7 @@ export function AnalysisHistory({
   onNew: () => void;
   onShipment: (id: string) => void;
 }) {
+  const { cloud } = useCloud();
   const [query, setQuery] = useState("");
   const needle = query.trim().toLowerCase();
   const matches = (value: string) => value.toLowerCase().includes(needle);
@@ -66,8 +68,10 @@ export function AnalysisHistory({
           <div>
             <h2>Saved analyses</h2>
             <p>
-              {analyses.length} local snapshots · stored in this browser, not
-              AWS
+              {analyses.length} snapshots ·{" "}
+              {cloud
+                ? "stored in your AWS workspace"
+                : "stored in this browser"}
             </p>
           </div>
         </div>
@@ -123,7 +127,7 @@ export function AnalysisHistory({
         <section className="panel local-plan-history">
           <div className="panel-title">
             <div>
-              <h2>Local plans and earlier demo decisions</h2>
+              <h2>Saved plans and earlier demo decisions</h2>
               <p>
                 Selections only: no reservation, partner booking or email
                 delivery.

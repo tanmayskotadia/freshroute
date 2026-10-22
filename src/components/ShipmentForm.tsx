@@ -1,3 +1,4 @@
+import { useCloud } from "../cloud/CloudRuntime";
 import { useState } from "react";
 import {
   Check,
@@ -21,14 +22,17 @@ import type {
   ShipmentFields,
   Draft,
 } from "../domain";
-import type { WorkspaceRepository } from "../data/localRepository";
+import type {
+  WorkspaceRepository,
+  ExecuteAction,
+} from "../data/localRepository";
 
 type Props = {
   shipment?: SavedShipment;
   destinations: Destination[];
   draft?: Draft;
   repository: WorkspaceRepository;
-  execute: <T>(operation: () => T) => T;
+  execute: ExecuteAction;
   onSaved: (id: string) => void;
   onNotify: (text: string) => void;
   onCancel: () => void;
@@ -43,6 +47,7 @@ export function ShipmentForm({
   onNotify,
   onCancel,
 }: Props) {
+  const { cloud } = useCloud();
   const [fields, setFields] = useState<ShipmentFields>(() =>
     fieldsFor(shipment),
   );
@@ -71,16 +76,18 @@ export function ShipmentForm({
         ?.focus(),
     );
   }
-  function saveDraft() {
+  async function saveDraft() {
     try {
       const at = new Date().toISOString();
-      execute(() =>
+      await execute(() =>
         repository.saveDraft({ key, fields, baseVersion, savedAt: at }),
       );
       setSavedDraftAt(at);
       setDraftVisible(false);
       onNotify(
-        "Draft saved in this browser. You can close the form and restore it later.",
+        cloud
+          ? "Draft saved to AWS."
+          : "Draft saved in this browser. You can close the form and restore it later.",
       );
     } catch (e) {
       handleError(e);
@@ -123,14 +130,14 @@ export function ShipmentForm({
     <form
       className="shipment-form"
       noValidate
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
         setMessage("");
         setErrors({});
         try {
           const value = toInput(fields);
           validateShipment(value, destinations);
-          const saved = execute(() =>
+          const saved = await execute(() =>
             repository.saveShipment(value, shipment?.id, baseVersion),
           );
           onSaved(saved.id);
@@ -140,8 +147,10 @@ export function ShipmentForm({
       }}
     >
       <p className="dialog-intro">
-        Save fictional operational data to this browser. Starting quality and
-        temperature history are model inputs; no prediction runs in this phase.
+        {cloud
+          ? "Save operational inputs to your AWS workspace."
+          : "Save fictional operational inputs to this browser."}{" "}
+        Starting quality and temperature history are illustrative model inputs.
       </p>
       {draftVisible && draft && (
         <div className="draft-banner">
@@ -171,9 +180,9 @@ export function ShipmentForm({
             type="button"
             className="icon-button"
             aria-label="Discard saved draft"
-            onClick={() => {
+            onClick={async () => {
               try {
-                execute(() => repository.discardDraft(key));
+                await execute(() => repository.discardDraft(key));
                 setDraftVisible(false);
               } catch (e) {
                 handleError(e);

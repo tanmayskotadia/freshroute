@@ -7,7 +7,10 @@
     "dev": "vite --host 127.0.0.1",
     "build": "tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "node --experimental-strip-types --test tests/*.test.mjs"
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "build:api": "node scripts/build-api.mjs",
+    "infra:synth": "cdk synth FreshRouteFoundation FreshRouteApplication --no-lookups --strict --quiet",
+    "typecheck:server": "tsc -p tsconfig.server.json"
   },
   "dependencies": {
     "@fontsource/dm-sans": "^5.3.0",
@@ -17,10 +20,26 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.1155.0",
+    "@aws-sdk/client-dynamodb": "^3.1155.0",
+    "@aws-sdk/client-s3": "^3.1155.0",
+    "@aws-sdk/client-sfn": "^3.1155.0",
+    "@aws-sdk/client-sns": "^3.1155.0",
+    "@aws-sdk/client-sqs": "^3.1155.0",
+    "@aws-sdk/lib-dynamodb": "^3.1155.0",
+    "@aws-sdk/s3-request-presigner": "^3.1155.0",
+    "@types/aws-lambda": "^8.10.164",
+    "@types/node": "^26.6.5",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "aws-cdk": "^2.1146.0",
+    "aws-cdk-lib": "^2.274.0",
+    "constructs": "^10.8.1",
+    "esbuild": "^0.28.2",
+    "pdf-lib": "^1.17.1",
     "prettier": "^3.9.10",
+    "tsx": "^4.23.15",
     "typescript": "~5.7.2",
     "vite": "^6.0.5"
   }

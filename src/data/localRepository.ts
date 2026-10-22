@@ -24,16 +24,22 @@ export interface StoragePort {
   getItem(key: string): string | null;
   setItem(key: string, value: string): void;
 }
+export type ExecuteAction = <T>(operation: () => T | Promise<T>) => Promise<T>;
 export interface WorkspaceRepository {
+  readonly cloud?: boolean;
+  refresh?(): Promise<Workspace>;
   load(): Workspace;
   saveShipment(
     input: ShipmentInput,
     id?: string,
     expectedVersion?: number,
-  ): SavedShipment;
-  saveDestination(input: Destination, expectedVersion: number): void;
-  saveDraft(draft: Draft): void;
-  discardDraft(key: string): void;
+  ): SavedShipment | Promise<SavedShipment>;
+  saveDestination(
+    input: Destination,
+    expectedVersion: number,
+  ): void | Promise<void>;
+  saveDraft(draft: Draft): void | Promise<void>;
+  discardDraft(key: string): void | Promise<void>;
   addDecision(decision: Omit<DemoDecision, "id">): DemoDecision;
   clearDecisions(): void;
   reset(): void;
@@ -43,8 +49,11 @@ export interface WorkspaceRepository {
     options: AnalysisOptions,
     name: string,
     expectedSource: string,
-  ): SavedAnalysis;
-  confirmAnalysis(runId: string, candidateId: string): DemoDecision;
+  ): SavedAnalysis | Promise<SavedAnalysis>;
+  confirmAnalysis(
+    runId: string,
+    candidateId: string,
+  ): DemoDecision | Promise<DemoDecision>;
 }
 function assertWorkspace(value: unknown): asserts value is Workspace {
   const w = value as Workspace;

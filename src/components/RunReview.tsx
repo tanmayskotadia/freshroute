@@ -1,9 +1,13 @@
+import { useCloud } from "../cloud/CloudRuntime";
 import { useState } from "react";
 import { ArrowLeft, Check, ShieldCheck, TriangleAlert } from "lucide-react";
 import type { SavedAnalysis } from "../model/engine";
 import { sourceSignature } from "../model/engine";
 import type { SavedShipment, Destination } from "../domain";
-import type { WorkspaceRepository } from "../data/localRepository";
+import type {
+  WorkspaceRepository,
+  ExecuteAction,
+} from "../data/localRepository";
 import { arrival, hours, number, rupees } from "./RescueWorkspace";
 export function RunReview({
   run,
@@ -20,11 +24,13 @@ export function RunReview({
   currentShipment?: SavedShipment;
   destinations: Destination[];
   repository: WorkspaceRepository;
-  execute: <T>(action: () => T) => T;
+  execute: ExecuteAction;
   onBack: () => void;
   onConfirmed: () => void;
 }) {
+  const { cloud } = useCloud();
   const [error, setError] = useState("");
+  const [saving, setSaving] = useState(false);
   const candidate = run.result.candidates.find((c) => c.id === candidateId);
   const stale =
     !currentShipment ||
@@ -123,10 +129,9 @@ export function RunReview({
             <div className="notice amber">
               <ShieldCheck size={20} />
               <p>
-                Saving a local plan records your selection only. Capacity is not
-                reserved. No partner is contacted, no email is sent, and this is
-                not a food-safety assessment. Cloud transactions and live
-                notifications are later phases.
+                {cloud
+                  ? "Reserving this plan holds shared inbound capacity until delivery or cancellation. A private report and notification are queued. Receiving partners in this academic network are fictional; this is not food-safety certification."
+                  : "Saving a local plan records your selection only. Capacity is not reserved and no notification is sent."}
               </p>
             </div>
           </section>
@@ -153,26 +158,33 @@ export function RunReview({
               <strong>{candidate.rank || "Not ranked"}</strong>
             </div>
             <p className="fine-print">
-              The repository rechecks current source versions before accepting a
-              local plan. Web Storage is not an atomic multi-user reservation
-              system.
+              {cloud
+                ? "The server checks current receiving rules and reserves capacity atomically. A shipment can have one active allocation."
+                : "The local repository checks current source versions. Web Storage is not an atomic multi-user reservation system."}
             </p>
             <button
               className="button"
-              disabled={!candidate.feasible || stale}
-              onClick={() => {
+              disabled={!candidate.feasible || stale || saving}
+              onClick={async () => {
                 try {
-                  execute(() =>
+                  setSaving(true);
+                  await execute(() =>
                     repository.confirmAnalysis(run.id, candidate.id),
                   );
                   onConfirmed();
                 } catch (e) {
                   setError((e as Error).message);
+                } finally {
+                  setSaving(false);
                 }
               }}
             >
               <Check size={16} />
-              Save local plan
+              {saving
+                ? "Saving..."
+                : cloud
+                  ? "Reserve receiving capacity"
+                  : "Save local plan"}
             </button>
           </section>
         </div>

@@ -1,3 +1,8 @@
+import { Workflow } from "lucide-react";
+import { CloudOperations } from "./cloud/CloudOperations";
+import { Fulfilment } from "./cloud/Fulfilment";
+import { CloudData } from "./cloud/CloudData";
+import { useCloud } from "./cloud/CloudRuntime";
 import React, { useEffect, useState } from "react";
 
 import {
@@ -65,6 +70,8 @@ const links: { label: string; path: string; icon: LucideIcon }[] = [
   { label: "Receiving network", path: "/network", icon: MapPin },
   { label: "History", path: "/history", icon: History },
   { label: "Local data", path: "/settings", icon: Database },
+  { label: "Workflow hub", path: "/operations", icon: Workflow },
+  { label: "Fulfilment", path: "/fulfilment", icon: Package },
 ];
 function navigate(path: string) {
   window.history.pushState({}, "", path);
@@ -239,9 +246,11 @@ function RouteMap({ compact = false }: { compact?: boolean }) {
   );
 }
 export default function App() {
+  const runtime = useCloud();
+  const cloud = runtime.cloud;
   const path = usePath();
   const [mobile, setMobile] = useState(false);
-  const { workspace, repository, storageError, execute, refresh } =
+  const { workspace, repository, storageError, execute, refresh, pending } =
     useWorkspace();
   const { shipments, destinations, decisions } = workspace;
   const [editingShipment, setEditingShipment] = useState<
@@ -293,7 +302,7 @@ export default function App() {
   }, [mobile]);
   useEffect(() => {
     setMobile(false);
-    document.title = `${path.startsWith("/rescue") ? "Rescue Lab" : path.startsWith("/shipments/") ? "Shipment workspace" : path.includes("review") ? "Decision review" : path.startsWith("/runs/") ? "Saved analysis" : path === "/history" ? "History" : "Control center"} · FreshRoute`;
+    document.title = `${path.startsWith("/rescue") ? "Rescue Lab" : path.startsWith("/shipments/") ? "Shipment workspace" : path.includes("review") ? "Decision review" : path.startsWith("/runs/") ? "Saved analysis" : path === "/operations" ? "Workflow hub" : path === "/history" ? "History" : "Control center"} · FreshRoute`;
   }, [path]);
   useEffect(() => {
     if (!toast) return;
@@ -323,7 +332,14 @@ export default function App() {
     isReview ||
     isSavedAnalysis ||
     isList ||
-    ["/history", "/network", "/evidence", "/settings"].includes(path);
+    [
+      "/history",
+      "/network",
+      "/evidence",
+      "/settings",
+      "/operations",
+      "/fulfilment",
+    ].includes(path);
   const filtered = shipments
     .filter(
       (s) =>
@@ -358,7 +374,9 @@ export default function App() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "freshroute-local-backup.json";
+    a.download = cloud
+      ? "freshroute-cloud-snapshot.json"
+      : "freshroute-local-backup.json";
     a.click();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
@@ -601,8 +619,10 @@ export default function App() {
           <div className="user">
             <span className="avatar">DK</span>
             <div>
-              <strong>Demo operator</strong>
-              <small>Local prototype</small>
+              <strong>{cloud ? "Cloud operator" : "Demo operator"}</strong>
+              <small>
+                {cloud ? runtime.config?.region : "Local prototype"}
+              </small>
             </div>
             <span className="online-dot" />
             <button
@@ -647,15 +667,21 @@ export default function App() {
                             ? "Receiving network"
                             : path === "/evidence"
                               ? "Project evidence"
-                              : path === "/settings"
-                                ? "Local data"
-                                : "Overview"}
+                              : path === "/operations"
+                                ? "Workflow hub"
+                                : path === "/fulfilment"
+                                  ? "Fulfilment"
+                                  : path === "/settings"
+                                    ? cloud
+                                      ? "Cloud data"
+                                      : "Local data"
+                                    : "Overview"}
             </strong>
           </div>
           <div className="topbar-actions">
             <span className="demo-chip">
               <span />
-              Demo workspace
+              {cloud ? "AWS workspace" : "Demo workspace"}
             </span>
             <span className="topbar-divider" />
             <button
@@ -667,8 +693,12 @@ export default function App() {
             </button>
             <button
               className="icon-button notification-button"
-              aria-label="View demo notifications"
-              onClick={() => setModal("notifications")}
+              aria-label={
+                cloud ? "View rescue notifications" : "View demo notifications"
+              }
+              onClick={() =>
+                cloud ? navigate("/fulfilment") : setModal("notifications")
+              }
             >
               <Bell size={19} />
               <i />
@@ -680,9 +710,11 @@ export default function App() {
           <div className="prototype-strip">
             <FlaskConical size={14} />
             <span>
-              Phase 3 local workspace · Calculations, saved analyses and plans
-              stay in this browser. Model parameters are illustrative; no AWS or
-              live AI connected.
+              {pending
+                ? "Saving changes... wait for confirmation."
+                : cloud
+                  ? "AWS workspace: Cognito sign-in, protected API and DynamoDB persistence. Model parameters are illustrative; no live AI connected."
+                  : "Local demo: calculations and saved work stay in this browser. Use AWS sign-in to open the cloud workspace."}
             </span>
             <span className="prototype-version">DESIGN PREVIEW</span>
           </div>
@@ -1040,9 +1072,11 @@ export default function App() {
               execute={execute}
               onBack={() => navigate(`/runs/${currentRun.id}`)}
               onConfirmed={() => {
-                navigate("/history");
+                navigate(cloud ? "/fulfilment" : "/history");
                 notify(
-                  "Calculated local plan saved. No capacity was reserved and no notification was sent.",
+                  cloud
+                    ? "Receiving capacity reserved. Report and notification queued."
+                    : "Calculated local plan saved. No capacity was reserved and no notification was sent.",
                 );
               }}
             />
@@ -1143,6 +1177,12 @@ export default function App() {
                         setEditingDestination(d);
                         setModal("destination");
                       }}
+                      disabled={cloud && !runtime.session?.administrator}
+                      title={
+                        cloud && !runtime.session?.administrator
+                          ? "Administrator access required"
+                          : undefined
+                      }
                     >
                       <Pencil size={14} />
                       Edit receiving rules
@@ -1160,18 +1200,33 @@ export default function App() {
               </div>
             </>
           )}
-          {path === "/settings" && (
-            <LocalData
-              workspace={workspace}
-              error={storageError}
-              onExport={exportLocal}
-              onReset={() => {
-                execute(() => repository.reset());
-                notify("Local workspace reset to the original fictional demo.");
-              }}
-              onRetry={refresh}
-            />
+          {path === "/operations" && (
+            <CloudOperations onNavigate={navigate} onSync={refresh} />
           )}
+          {path === "/fulfilment" && (
+            <Fulfilment onNavigate={navigate} onSync={refresh} />
+          )}
+          {path === "/settings" &&
+            (cloud ? (
+              <CloudData
+                workspace={workspace}
+                onExport={exportLocal}
+                onReload={refresh}
+              />
+            ) : (
+              <LocalData
+                workspace={workspace}
+                error={storageError}
+                onExport={exportLocal}
+                onReset={async () => {
+                  await execute(() => repository.reset());
+                  notify(
+                    "Local workspace reset to the original fictional demo.",
+                  );
+                }}
+                onRetry={refresh}
+              />
+            ))}
           {path === "/evidence" && (
             <>
               <Heading
@@ -1182,9 +1237,9 @@ export default function App() {
               <div className="notice blue">
                 <Network size={20} />
                 <p>
-                  Phase 3 adds deterministic analysis, constraint checks and
-                  versioned snapshots. All cloud services below are planned and
-                  have no deployment evidence yet.
+                  {runtime.config
+                    ? `Deployment stage ${runtime.config.phase || 4}: authenticated cloud workflows are configured from verified AWS stack outputs. CloudFront remains blocked by account verification; HTTPS uses API Gateway and Lambda.`
+                    : "Local calculations are available. Deployment details appear when a verified cloud configuration is present."}
                 </p>
               </div>
               <div className="evidence-flow">
@@ -1220,42 +1275,72 @@ export default function App() {
               <section className="panel">
                 <PanelTitle
                   title="From interface to cloud"
-                  subtitle="Planned service responsibilities, not connected integrations."
+                  subtitle="Deployment status from the verified configuration; later services remain explicitly planned."
                 />
                 <div className="service-list">
                   {[
                     [
-                      "S3 + CloudFront",
-                      "Private static assets and HTTPS delivery",
+                      "S3 + KMS",
+                      "Four private versioned buckets; reports and audit encryption",
+                      (runtime.config?.phase || 0) >= 4
+                        ? "Deployed"
+                        : "Planned",
                     ],
                     [
-                      "Cognito + API Gateway",
-                      "Identity and authenticated API access",
+                      "CloudFront + OAC",
+                      "CDN architecture is ready; AWS account verification is required",
+                      runtime.config?.hosting === "api-gateway-fallback"
+                        ? "Blocked by AWS"
+                        : "Planned",
                     ],
                     [
-                      "Lambda + Step Functions",
-                      "Deterministic analysis and workflow visibility",
+                      "Cognito + API Gateway + Lambda",
+                      "Signed-in API access, owner-scoped records and HTTPS frontend",
+                      runtime.config ? "Deployed" : "Planned",
                     ],
                     [
-                      "DynamoDB + Streams",
-                      "Versioned runs, decisions and downstream events",
+                      "DynamoDB",
+                      "Conditional versions, transactions and saved analysis records",
+                      runtime.config ? "Deployed" : "Planned",
                     ],
-                    ["SQS + SNS", "Background work, retries and notifications"],
+                    [
+                      "SQS + Step Functions",
+                      "Queued CSV validation and observable calculation jobs",
+                      (runtime.config?.phase || 0) >= 5
+                        ? "Deployed"
+                        : "Planned",
+                    ],
+                    [
+                      "DynamoDB Streams + SNS + reports",
+                      "Post-reservation reports and notifications",
+                      (runtime.config?.phase || 0) >= 6
+                        ? "Deployed"
+                        : "Planned",
+                    ],
                     [
                       "Amazon Bedrock",
                       "Grounded explanations and scenario drafts",
+                      "Planned",
                     ],
                     [
-                      "CloudWatch + CloudTrail + IAM",
-                      "Monitoring, audit evidence and access boundaries",
+                      "CloudWatch logs + IAM",
+                      "Request traces, short retention and scoped execution roles",
+                      runtime.config ? "Deployed" : "Planned",
                     ],
-                  ].map(([name, desc]) => (
+                    [
+                      "CloudTrail",
+                      "Audit trail delivery to the private audit bucket",
+                      "Planned",
+                    ],
+                  ].map(([name, desc, status]) => (
                     <div className="service-row" key={name}>
                       <div>
                         <strong>{name}</strong>
                         <p>{desc}</p>
                       </div>
-                      <Badge tone="gray">Planned</Badge>
+                      <Badge tone={status === "Deployed" ? "green" : "gray"}>
+                        {status}
+                      </Badge>
                     </div>
                   ))}
                 </div>
@@ -1267,7 +1352,7 @@ export default function App() {
               <Leaf size={13} />
               FreshRoute · Thoughtful decisions, fresher possibilities.
             </span>
-            <span>Academic prototype · Phase 3</span>
+            <span>Academic prototype · Phase 4</span>
           </footer>
         </main>
       </div>
@@ -1305,20 +1390,26 @@ export default function App() {
               onSaved={(id) => {
                 setModal(null);
                 navigate(`/shipments/${id}`);
-                notify("Shipment saved locally. It will remain after refresh.");
+                notify(
+                  cloud
+                    ? "Shipment saved to AWS."
+                    : "Shipment saved locally. It will remain after refresh.",
+                );
               }}
             />
           ) : modal === "destination" && editingDestination ? (
             <DestinationForm
               destination={editingDestination}
               onCancel={() => setModal(null)}
-              onSave={(value) => {
-                execute(() =>
+              onSave={async (value) => {
+                await execute(() =>
                   repository.saveDestination(value, editingDestination.version),
                 );
                 setModal(null);
                 notify(
-                  "Receiving rules saved locally. No reservations or comparisons were changed.",
+                  cloud
+                    ? "Receiving rules saved to your AWS workspace."
+                    : "Receiving rules saved locally. No reservations or comparisons were changed.",
                 );
               }}
             />

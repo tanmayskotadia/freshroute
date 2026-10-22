@@ -1,0 +1,42 @@
+{
+  "verification": {
+    "health": {
+      "httpsFrontend": true,
+      "securityHeaders": true,
+      "configMatchesApi": true,
+      "anonymousS3Denied": true
+    },
+    "accessAndPersistence": {
+      "checks": {
+        "unauthenticatedDenied": true,
+        "forgedTokenDenied": true,
+        "validTokensAccepted": true,
+        "shipmentSaved": true,
+        "shipmentPersisted": true,
+        "ownerCannotReadOtherShipment": true,
+        "ownerCannotEditOtherShipment": true,
+        "serverCalculatedAnalysisSaved": true,
+        "ownerCannotConfirmOtherRun": true,
+        "operatorCannotEditReceivingRules": true,
+        "planPersisted": true,
+        "staleRevisionDenied": true,
+        "analysisAndHistoryPersisted": true,
+        "noCapacityReserved": true
+      },
+      "pass": true,
+      "summary": {
+        "shipmentId": "FR-105",
+        "modelVersion": "illustrative-q10-1.0.0",
+        "winnerId": "reroute:eastside",
+        "revision": 3
+      }
+    }
+  },
+  "temporaryUserCleanup": [
+    "deleted",
+    "deleted"
+  ],
+  "testDataCleanup": {
+    "UnprocessedItems": {}
+  }
+}

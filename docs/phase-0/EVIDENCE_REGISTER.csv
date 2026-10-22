@@ -1,10 +1,10 @@
 evidenceId,topic,treatment,status,feature,resourceReference,expectedBehavior,actualResult,evidencePath,verifiedAt,cleanupStatus
-E01,Step Functions and DynamoDB,CORE,PLANNED,Rescue analysis,,Versioned input reaches persisted result,,,,NOT_CREATED
-E02,IAM and application authorization,CORE,PLANNED,Ownership enforcement,,Cross-user read and write denied,,,,NOT_CREATED
-E03,DynamoDB transactions,CORE,PLANNED,Capacity reservation,,Concurrent requests do not overbook,,,,NOT_CREATED
-E04,SQS and fault tolerance,CORE,PLANNED,Background processing,,Poison message reaches DLQ and replay is controlled,,,,NOT_CREATED
+E01,Step Functions and DynamoDB,CORE,VERIFIED,Rescue analysis,FreshRouteAnalysis,Versioned input reaches persisted result,Actual executions SUCCEEDED and saved runs used in reservations,docs/phase-6/verification.json,2026-10-22,QA_CLEANED
+E02,IAM and application authorization,CORE,VERIFIED,Ownership enforcement,FreshRouteWorkspaceApi,Cross-user read and write denied,Foreign run/report/status access denied,docs/phase-6/verification.json,2026-10-22,QA_CLEANED
+E03,DynamoDB transactions,CORE,VERIFIED,Capacity reservation,FreshRouteDestinations NETWORK,Concurrent requests do not overbook,Two 500 kg requests competed for 600 kg and exactly one succeeded,docs/phase-6/verification.json,2026-10-22,QA_CLEANED
+E04,SQS and fault tolerance,CORE,PARTIAL,Background processing,FreshRoutePostDecision,Poison message reaches DLQ and replay is controlled,Five outbox events processed; DLQs configured; poison and redrive test pending,docs/phase-6/RELEASE_STATUS.md,2026-10-22,RETAINED
 E05,Bedrock reliability,CORE,PLANNED,Grounded copilot,,Failure preserves deterministic analysis,,,,NOT_CREATED
-E06,S3 and KMS,CORE,PLANNED,Authorized reports,,Authorized workflow succeeds and other access denied,,,,NOT_CREATED
+E06,S3 and KMS,CORE,VERIFIED,Authorized reports,FreshRoute reports bucket,Authorized workflow succeeds and other access denied,Signed PDF downloaded; unsigned object and foreign report requests denied,docs/phase-6/verification.json,2026-10-22,QA_CLEANED
 E07,EC2 ALB Auto Scaling,LAB,PLANNED,Compute resilience,,Unhealthy target replaced with observed behavior,,,,NOT_CREATED
 E08,EBS and EFS,LAB,PLANNED,Storage comparison,,Shared fixture visible from both instances,,,,NOT_CREATED
 E09,VPC peering routes security groups,LAB,PLANNED,Network isolation,,Allowed path succeeds and blocked path fails,,,,NOT_CREATED

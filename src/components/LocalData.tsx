@@ -17,7 +17,7 @@ export function LocalData({
   workspace: Workspace;
   error: string;
   onExport: () => void;
-  onReset: () => void;
+  onReset: () => void | Promise<void>;
   onRetry: () => void;
 }) {
   const [confirmation, setConfirmation] = useState("");
@@ -110,9 +110,9 @@ export function LocalData({
           <button
             className="button reset-danger"
             disabled={confirmation !== "RESET"}
-            onClick={() => {
+            onClick={async () => {
               try {
-                onReset();
+                await onReset();
                 setConfirmation("");
                 setMessage("Original demo restored.");
               } catch (e) {

@@ -1,0 +1,81 @@
+{
+  "verification": {
+    "checks": {
+      "asyncAnalysis1": true,
+      "asyncAnalysis2": true,
+      "foreignRunDenied": true,
+      "concurrentReservationOneWinner": true,
+      "retryDoesNotReserveAgain": true,
+      "foreignReportDenied": true,
+      "foreignStatusDenied": true,
+      "cannotSkipDispatch": true,
+      "legacyConfirmationBlocked": true,
+      "privateReportReady": true,
+      "signedPdfDownloads": true,
+      "unsignedReportDenied": true,
+      "shortLivedDownload": true,
+      "inAppNotificationCreated": true,
+      "markReadPersists": true,
+      "dispatchPreservesCapacity": true,
+      "cannotCancelDispatched": true,
+      "deliveryReleasesOnce": true,
+      "timelinePreserved": true,
+      "cancellationReleasesOnce": true,
+      "cannotReactivateCancelled": true
+    },
+    "detail": {
+      "analysisJobIds": [
+        "JOB-497ad7a2-ce2e-4033-b781-69ed96d1377a",
+        "JOB-ea9889ea-4558-4944-af34-4eb5bd229bfb"
+      ],
+      "reservationIds": [
+        "RES-RUN-ea9889ea-4558-4944-af34-4eb5bd229bfb",
+        "RES-RUN-86cae292-468d-41a4-9cf1-dad91d642887"
+      ],
+      "activeCleanupSuccessful": true
+    },
+    "pass": true,
+    "backgroundEvents": {
+      "pending": 0,
+      "processed": [
+        {
+          "eventId": "RES-RUN-86cae292-468d-41a4-9cf1-dad91d642887#1",
+          "snsMessageId": "acb4e8b8-a387-59f2-a62d-8bec82f02f51"
+        },
+        {
+          "eventId": "RES-RUN-86cae292-468d-41a4-9cf1-dad91d642887#2",
+          "snsMessageId": "b2a65001-57f4-5546-9882-33557683ad20"
+        },
+        {
+          "eventId": "RES-RUN-ea9889ea-4558-4944-af34-4eb5bd229bfb#1",
+          "snsMessageId": "ea3176bf-9de3-57c7-9bbd-15ebbc901fa1"
+        },
+        {
+          "eventId": "RES-RUN-ea9889ea-4558-4944-af34-4eb5bd229bfb#2",
+          "snsMessageId": "1d35562d-7258-5d2b-8525-3579532ce54d"
+        },
+        {
+          "eventId": "RES-RUN-ea9889ea-4558-4944-af34-4eb5bd229bfb#3",
+          "snsMessageId": "6cd2a086-be92-5c51-b4d0-c3d29fe4aaf2"
+        }
+      ]
+    },
+    "actualStepFunctionsExecutions": [
+      {
+        "jobId": "JOB-497ad7a2-ce2e-4033-b781-69ed96d1377a",
+        "status": "SUCCEEDED"
+      },
+      {
+        "jobId": "JOB-ea9889ea-4558-4944-af34-4eb5bd229bfb",
+        "status": "SUCCEEDED"
+      }
+    ]
+  },
+  "cleanup": [
+    {
+      "temporaryUsersDeleted": 2,
+      "ownerPartitionsDeleted": 2,
+      "privateTestFilesDeleted": true
+    }
+  ]
+}

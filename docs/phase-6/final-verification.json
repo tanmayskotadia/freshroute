@@ -1,0 +1,96 @@
+{
+  "verification": {
+    "checks": {
+      "asyncAnalysis1": true,
+      "asyncAnalysis2": true,
+      "foreignRunDenied": true,
+      "concurrentReservationOneWinner": true,
+      "retryDoesNotReserveAgain": true,
+      "foreignReportDenied": true,
+      "foreignStatusDenied": true,
+      "cannotSkipDispatch": true,
+      "legacyConfirmationBlocked": true,
+      "privateReportReady": true,
+      "signedPdfDownloads": true,
+      "unsignedReportDenied": true,
+      "shortLivedDownload": true,
+      "inAppNotificationCreated": true,
+      "markReadPersists": true,
+      "dispatchPreservesCapacity": true,
+      "cannotCancelDispatched": true,
+      "deliveryReleasesOnce": true,
+      "timelinePreserved": true,
+      "cancellationReleasesOnce": true,
+      "cannotReactivateCancelled": true
+    },
+    "detail": {
+      "analysisJobIds": [
+        "JOB-fc4fc9d1-9fbb-4379-8bf0-5b7f2665d7b1",
+        "JOB-3f35ee47-6f83-499f-9438-89cf9e8d194b"
+      ],
+      "reservationIds": [
+        "RES-RUN-3f35ee47-6f83-499f-9438-89cf9e8d194b",
+        "RES-RUN-d7cd38f2-c123-45f6-925e-fbce9e5f0f3b"
+      ],
+      "activeCleanupSuccessful": true
+    },
+    "pass": true,
+    "phase5Imports": {
+      "checks": {
+        "presignedCsvUpload": true,
+        "foreignJobDenied": true,
+        "foreignCompletionDenied": true,
+        "queuedCsvImported": true,
+        "duplicateCompletionNoExtraRows": true,
+        "frozenS3Version": true,
+        "invalidCsvUpload": true,
+        "invalidCsvFailsAtomically": true,
+        "rowErrorVisible": true,
+        "jobsListAvailable": true
+      },
+      "pass": true
+    },
+    "backgroundEvents": {
+      "pending": 0,
+      "processed": [
+        {
+          "eventId": "RES-RUN-d7cd38f2-c123-45f6-925e-fbce9e5f0f3b#1",
+          "snsMessageId": "129f66b6-a577-57bd-933e-05e29d1da89c"
+        },
+        {
+          "eventId": "RES-RUN-d7cd38f2-c123-45f6-925e-fbce9e5f0f3b#2",
+          "snsMessageId": "e5efb510-10bc-5398-bce5-d64428d6acb9"
+        },
+        {
+          "eventId": "RES-RUN-3f35ee47-6f83-499f-9438-89cf9e8d194b#1",
+          "snsMessageId": "b3973ac5-e41f-5164-96c5-5991dc7aa083"
+        },
+        {
+          "eventId": "RES-RUN-3f35ee47-6f83-499f-9438-89cf9e8d194b#2",
+          "snsMessageId": "7d933c8d-8c79-5401-80ef-5fd9b41e55e6"
+        },
+        {
+          "eventId": "RES-RUN-3f35ee47-6f83-499f-9438-89cf9e8d194b#3",
+          "snsMessageId": "6d036157-3454-5a50-a96f-02030c3db571"
+        }
+      ]
+    },
+    "actualStepFunctionsExecutions": [
+      {
+        "jobId": "JOB-fc4fc9d1-9fbb-4379-8bf0-5b7f2665d7b1",
+        "status": "SUCCEEDED"
+      },
+      {
+        "jobId": "JOB-3f35ee47-6f83-499f-9438-89cf9e8d194b",
+        "status": "SUCCEEDED"
+      }
+    ]
+  },
+  "cleanup": [
+    {
+      "temporaryUsersDeleted": 2,
+      "ownerPartitionsDeleted": 2,
+      "privateTestFilesDeleted": true
+    }
+  ]
+}

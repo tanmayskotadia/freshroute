@@ -1,0 +1,631 @@
+{
+  "account": "118462784511",
+  "stacks": [
+    {
+      "name": "FreshRouteFoundation",
+      "resources": [
+        {
+          "logicalId": "Activity04690B0A",
+          "physicalId": "FreshRouteActivity",
+          "type": "AWS::DynamoDB::Table",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "DataKey17AFBB84",
+          "physicalId": "b8a54dcf-2595-40ba-b531-cbdacd6838f0",
+          "type": "AWS::KMS::Key",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "Destinations598AD698",
+          "physicalId": "FreshRouteDestinations",
+          "type": "AWS::DynamoDB::Table",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "FallbackWebApi9AEFC6AE",
+          "physicalId": "dr4sw5bpoi",
+          "type": "AWS::ApiGatewayV2::Api",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "FallbackWebApiDefaultRoute2566A473",
+          "physicalId": "xax5q69",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "FallbackWebApiDefaultRouteStaticWebFDFA65F8",
+          "physicalId": "43vpiqq",
+          "type": "AWS::ApiGatewayV2::Integration",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "FallbackWebApiDefaultRouteStaticWebPermission8F4CAFA8",
+          "physicalId": "FreshRouteFoundation-FallbackWebApiDefaultRouteStaticWebPermission8F4CAFA8-zz2n1hVog3DZ",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "FallbackWebApiDefaultStageD2543623",
+          "physicalId": "$default",
+          "type": "AWS::ApiGatewayV2::Stage",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "FallbackWebFunction810B1FF7",
+          "physicalId": "FreshRouteWeb",
+          "type": "AWS::Lambda::Function",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "FallbackWebLogsB18FDBB2",
+          "physicalId": "/freshroute/web",
+          "type": "AWS::Logs::LogGroup",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "FallbackWebRole31F30DDA",
+          "physicalId": "FreshRouteFoundation-FallbackWebRole31F30DDA-mMEAQThqhm0R",
+          "type": "AWS::IAM::Role",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "FallbackWebRoleDefaultPolicyDEC0DF8F",
+          "physicalId": "Fresh-Fallb-7FMEdA8CUgAg",
+          "type": "AWS::IAM::Policy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "RunsE45A2291",
+          "physicalId": "FreshRouteRuns",
+          "type": "AWS::DynamoDB::Table",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "Shipments6E8A22F1",
+          "physicalId": "FreshRouteShipments",
+          "type": "AWS::DynamoDB::Table",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "auditA48D740E",
+          "physicalId": "freshroute-118462784511-ap-south-1-audit",
+          "type": "AWS::S3::Bucket",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "auditPolicy6F8D5E26",
+          "physicalId": "freshroute-118462784511-ap-south-1-audit",
+          "type": "AWS::S3::BucketPolicy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "data7E2128CA",
+          "physicalId": "freshroute-118462784511-ap-south-1-data",
+          "type": "AWS::S3::Bucket",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "dataPolicy20748893",
+          "physicalId": "freshroute-118462784511-ap-south-1-data",
+          "type": "AWS::S3::BucketPolicy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "reports7921670E",
+          "physicalId": "freshroute-118462784511-ap-south-1-reports",
+          "type": "AWS::S3::Bucket",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "reportsPolicy94411171",
+          "physicalId": "freshroute-118462784511-ap-south-1-reports",
+          "type": "AWS::S3::BucketPolicy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "web08B6E5F3",
+          "physicalId": "freshroute-118462784511-ap-south-1-web",
+          "type": "AWS::S3::Bucket",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "webPolicy193A5857",
+          "physicalId": "freshroute-118462784511-ap-south-1-web",
+          "type": "AWS::S3::BucketPolicy",
+          "status": "CREATE_COMPLETE"
+        }
+      ]
+    },
+    {
+      "name": "FreshRouteApplication",
+      "resources": [
+        {
+          "logicalId": "Administrators",
+          "physicalId": "administrators",
+          "type": "AWS::Cognito::UserPoolGroup",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "AnalysisWorker2BDA6494",
+          "physicalId": "FreshRouteAnalysisWorker",
+          "type": "AWS::Lambda::Function",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "AnalysisWorkerLogs9B01D5B1",
+          "physicalId": "/freshroute/analysisworker",
+          "type": "AWS::Logs::LogGroup",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "AnalysisWorkerRole87805F2E",
+          "physicalId": "FreshRouteApplication-AnalysisWorkerRole87805F2E-mVlOl8rSbfRp",
+          "type": "AWS::IAM::Role",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "AnalysisWorkerRoleDefaultPolicy3B7B9088",
+          "physicalId": "Fresh-Analy-Yih1FPY53rAf",
+          "type": "AWS::IAM::Policy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "AnalysisWorkflowE5F4AD4B",
+          "physicalId": "arn:aws:states:ap-south-1:118462784511:stateMachine:FreshRouteAnalysis",
+          "type": "AWS::StepFunctions::StateMachine",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "AnalysisWorkflowLogs54F55666",
+          "physicalId": "/freshroute/analysis-workflow",
+          "type": "AWS::Logs::LogGroup",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "AnalysisWorkflowRole9FED2BE6",
+          "physicalId": "FreshRouteApplication-AnalysisWorkflowRole9FED2BE6-nxjlYKk0X2d7",
+          "type": "AWS::IAM::Role",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "AnalysisWorkflowRoleDefaultPolicy314A4391",
+          "physicalId": "Fresh-Analy-w1TVggWl3Ix9",
+          "type": "AWS::IAM::Policy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiCognito2A5FE4F0",
+          "physicalId": "bticm1",
+          "type": "AWS::ApiGatewayV2::Authorizer",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiDefaultStage189A7074",
+          "physicalId": "$default",
+          "type": "AWS::ApiGatewayV2::Stage",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiF70053CD",
+          "physicalId": "r2rxt5q5kk",
+          "type": "AWS::ApiGatewayV2::Api",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiGETv1fulfilment27946311",
+          "physicalId": "kzx3zu6",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiGETv1fulfilmentWorkspacePermission4A808A00",
+          "physicalId": "FreshRouteApplication-ApiGETv1fulfilmentWorkspacePermission4A808A00-phVvhmuCla7O",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiGETv1jobs5F1EFF0B",
+          "physicalId": "e9w953p",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiGETv1jobsWorkspacePermission50DBF7F8",
+          "physicalId": "FreshRouteApplication-ApiGETv1jobsWorkspacePermission50DBF7F8-74WwpLCJsHh0",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiGETv1jobsjobId4338D025",
+          "physicalId": "pseq74h",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiGETv1jobsjobIdWorkspacePermission4324E17C",
+          "physicalId": "FreshRouteApplication-ApiGETv1jobsjobIdWorkspacePermission4324E17C-hydaJsuv4N1X",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiGETv1reservationsreservationIdreport5973853D",
+          "physicalId": "pp5jvi5",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiGETv1reservationsreservationIdreportWorkspacePermissionC6FAD469",
+          "physicalId": "FreshRouteApplication-ApiGETv1reservationsreservationIdreportWorkspacePermissionC6FAD46-7TTpUOwSTYvP",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiGETv1workspaceC032C66F",
+          "physicalId": "h1mbzv6",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiGETv1workspaceWorkspaceE921A3AA",
+          "physicalId": "9jaz9t4",
+          "type": "AWS::ApiGatewayV2::Integration",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiGETv1workspaceWorkspacePermissionA6093163",
+          "physicalId": "FreshRouteApplication-ApiGETv1workspaceWorkspacePermissionA6093163-GGj89yHAVdLI",
+          "type": "AWS::Lambda::Permission",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiLogs3D05D88B",
+          "physicalId": "/freshroute/api",
+          "type": "AWS::Logs::LogGroup",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1analysisjobs1DE336A5",
+          "physicalId": "08gqztq",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1analysisjobsWorkspacePermission4966B732",
+          "physicalId": "FreshRouteApplication-ApiPOSTv1analysisjobsWorkspacePermission4966B732-so2KydHPvjCt",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1commandsC254820F",
+          "physicalId": "iv7lbx6",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1commandsWorkspacePermission336E3548",
+          "physicalId": "FreshRouteApplication-ApiPOSTv1commandsWorkspacePermission336E3548-yc89rv5s8ezS",
+          "type": "AWS::Lambda::Permission",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1imports54D740BE",
+          "physicalId": "th9bmt4",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1importsWorkspacePermissionD93C64A4",
+          "physicalId": "FreshRouteApplication-ApiPOSTv1importsWorkspacePermissionD93C64A4-zE81m0A7SI1W",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1importsjobIdcompleteB38C6371",
+          "physicalId": "gbp33j3",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1importsjobIdcompleteWorkspacePermissionD8DCB595",
+          "physicalId": "FreshRouteApplication-ApiPOSTv1importsjobIdcompleteWorkspacePermissionD8DCB595-iG55d4gTGXI6",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1inboxmessageIdread57BF7211",
+          "physicalId": "evx47wr",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1inboxmessageIdreadWorkspacePermissionC0F2B73F",
+          "physicalId": "FreshRouteApplication-ApiPOSTv1inboxmessageIdreadWorkspacePermissionC0F2B73F-gf5Bdli1xle0",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1networkdestinationId06CA5C2F",
+          "physicalId": "7ggi49e",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1networkdestinationIdWorkspacePermissionCF2842C1",
+          "physicalId": "FreshRouteApplication-ApiPOSTv1networkdestinationIdWorkspacePermissionCF2842C1-L9nCrGxpt1GO",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1reservations6FB34265",
+          "physicalId": "fytcnjh",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1reservationsWorkspacePermission7D38739E",
+          "physicalId": "FreshRouteApplication-ApiPOSTv1reservationsWorkspacePermission7D38739E-obVI8XVQyjC5",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1reservationsreservationIdstatus2FE9F469",
+          "physicalId": "eqp3zlu",
+          "type": "AWS::ApiGatewayV2::Route",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiPOSTv1reservationsreservationIdstatusWorkspacePermission7D90AD62",
+          "physicalId": "FreshRouteApplication-ApiPOSTv1reservationsreservationIdstatusWorkspacePermission7D90AD-7VJTeMEnbdkS",
+          "type": "AWS::Lambda::Permission",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiRole1873F438",
+          "physicalId": "FreshRouteApplication-ApiRole1873F438-soEdTCjeTq3F",
+          "type": "AWS::IAM::Role",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "ApiRoleDefaultPolicyCFEBAD31",
+          "physicalId": "Fresh-ApiRo-JGlL0jo5ITQw",
+          "type": "AWS::IAM::Policy",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "GatewayLogs64F6314F",
+          "physicalId": "/freshroute/gateway",
+          "type": "AWS::Logs::LogGroup",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "ImportDeadLetterBC691FC2",
+          "physicalId": "https://sqs.ap-south-1.amazonaws.com/118462784511/FreshRouteImportDLQ",
+          "type": "AWS::SQS::Queue",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ImportDeadLetterPolicy648D4B03",
+          "physicalId": "FreshRouteApplication-ImportDeadLetterPolicy648D4B03-LPq8YwIl6hqa",
+          "type": "AWS::SQS::QueuePolicy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ImportQueueB0839EEE",
+          "physicalId": "https://sqs.ap-south-1.amazonaws.com/118462784511/FreshRouteImports",
+          "type": "AWS::SQS::Queue",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ImportQueuePolicy98DA948C",
+          "physicalId": "FreshRouteApplication-ImportQueuePolicy98DA948C-CO2zBZYJo5YT",
+          "type": "AWS::SQS::QueuePolicy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ImportWorkerE00E28CC",
+          "physicalId": "FreshRouteImportWorker",
+          "type": "AWS::Lambda::Function",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "ImportWorkerLogs2AE0A4D0",
+          "physicalId": "/freshroute/importworker",
+          "type": "AWS::Logs::LogGroup",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ImportWorkerRoleDefaultPolicy7F7F3BDB",
+          "physicalId": "Fresh-Impor-OJdrV9Igfzu8",
+          "type": "AWS::IAM::Policy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ImportWorkerRoleF7B5CF2A",
+          "physicalId": "FreshRouteApplication-ImportWorkerRoleF7B5CF2A-DL7omm5VCgCG",
+          "type": "AWS::IAM::Role",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "ImportWorkerSqsEventSourceFreshRouteApplicationImportQueue460C4191703C06C5",
+          "physicalId": "c47f3646-3be2-4349-8e17-07310ddbfabd",
+          "type": "AWS::Lambda::EventSourceMapping",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "OutboxBridge27980F9C",
+          "physicalId": "FreshRouteOutboxBridge",
+          "type": "AWS::Lambda::Function",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "OutboxBridgeDynamoDBEventSourceFreshRouteFoundationActivity19B134F1C096A078",
+          "physicalId": "39aa7333-8743-4901-a2fa-2f237708bec7",
+          "type": "AWS::Lambda::EventSourceMapping",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "OutboxBridgeLogs316C6114",
+          "physicalId": "/freshroute/outboxbridge",
+          "type": "AWS::Logs::LogGroup",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "OutboxBridgeRoleB8C76951",
+          "physicalId": "FreshRouteApplication-OutboxBridgeRoleB8C76951-mY29vWfjlgcz",
+          "type": "AWS::IAM::Role",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "OutboxBridgeRoleDefaultPolicy2A92CA85",
+          "physicalId": "Fresh-Outbo-ZaPy8vDvRjdu",
+          "type": "AWS::IAM::Policy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "OutboxStreamFailuresAE38B450",
+          "physicalId": "https://sqs.ap-south-1.amazonaws.com/118462784511/FreshRouteOutboxStreamFailures",
+          "type": "AWS::SQS::Queue",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "OutboxStreamFailuresPolicy95DB8B8B",
+          "physicalId": "FreshRouteApplication-OutboxStreamFailuresPolicy95DB8B8B-Fw6gVxuEN5R5",
+          "type": "AWS::SQS::QueuePolicy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "PostDecisionDeadLetterA171B32B",
+          "physicalId": "https://sqs.ap-south-1.amazonaws.com/118462784511/FreshRoutePostDecisionDLQ",
+          "type": "AWS::SQS::Queue",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "PostDecisionDeadLetterPolicyF10E3859",
+          "physicalId": "FreshRouteApplication-PostDecisionDeadLetterPolicyF10E3859-wvNyNS8XwVsN",
+          "type": "AWS::SQS::QueuePolicy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "PostDecisionQueueE23D7DBF",
+          "physicalId": "https://sqs.ap-south-1.amazonaws.com/118462784511/FreshRoutePostDecision",
+          "type": "AWS::SQS::Queue",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "PostDecisionQueuePolicy134A3FA4",
+          "physicalId": "FreshRouteApplication-PostDecisionQueuePolicy134A3FA4-oZyZN5xw9K9d",
+          "type": "AWS::SQS::QueuePolicy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "PostDecisionWorkerD0E56045",
+          "physicalId": "FreshRoutePostDecisionWorker",
+          "type": "AWS::Lambda::Function",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "PostDecisionWorkerLogs33E44015",
+          "physicalId": "/freshroute/postdecisionworker",
+          "type": "AWS::Logs::LogGroup",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "PostDecisionWorkerRoleDefaultPolicyD2892B62",
+          "physicalId": "Fresh-PostD-AcEXB7Vs3LwO",
+          "type": "AWS::IAM::Policy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "PostDecisionWorkerRoleEB70CF19",
+          "physicalId": "FreshRouteApplication-PostDecisionWorkerRoleEB70CF1-CF9Rs4OvkIzd",
+          "type": "AWS::IAM::Role",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "PostDecisionWorkerSqsEventSourceFreshRouteApplicationPostDecisionQueue9D9FD2A275B18B0D",
+          "physicalId": "e2191b4b-934b-499c-83d2-d20fb2153ccf",
+          "type": "AWS::Lambda::EventSourceMapping",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "RescueEmail",
+          "physicalId": "arn:aws:sns:ap-south-1:118462784511:FreshRouteRescueUpdates:ef50077d-6018-4140-bd27-63af5da6a752",
+          "type": "AWS::SNS::Subscription",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "RescueUpdatesE9D0E149",
+          "physicalId": "arn:aws:sns:ap-south-1:118462784511:FreshRouteRescueUpdates",
+          "type": "AWS::SNS::Topic",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "RescueUpdatesPolicy6B6DF916",
+          "physicalId": "arn:aws:sns:ap-south-1:118462784511:FreshRouteRescueUpdates",
+          "type": "AWS::SNS::TopicPolicy",
+          "status": "CREATE_COMPLETE"
+        },
+        {
+          "logicalId": "Users0A0EEA89",
+          "physicalId": "ap-south-1_ZthjxKsDn",
+          "type": "AWS::Cognito::UserPool",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "UsersBrowser427D6876",
+          "physicalId": "26hojm7v7gigj0gqjp9jo92qmo",
+          "type": "AWS::Cognito::UserPoolClient",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "UsersLogin5F5F2B8C",
+          "physicalId": "freshroute-118462784511",
+          "type": "AWS::Cognito::UserPoolDomain",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "VerificationBFE7ED42",
+          "physicalId": "FreshRouteVerification",
+          "type": "AWS::Lambda::Function",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "VerificationLogs9820EC0A",
+          "physicalId": "/freshroute/verification",
+          "type": "AWS::Logs::LogGroup",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "VerificationRoleDefaultPolicy8D12DBAA",
+          "physicalId": "Fresh-Verif-Z2nENMIjcjO6",
+          "type": "AWS::IAM::Policy",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "VerificationRoleF49A562A",
+          "physicalId": "FreshRouteApplication-VerificationRoleF49A562A-2cYF1eSw14oG",
+          "type": "AWS::IAM::Role",
+          "status": "UPDATE_COMPLETE"
+        },
+        {
+          "logicalId": "WorkspaceApi03FA1E64",
+          "physicalId": "FreshRouteWorkspaceApi",
+          "type": "AWS::Lambda::Function",
+          "status": "UPDATE_COMPLETE"
+        }
+      ]
+    }
+  ],
+  "emailSubscriptions": [
+    {
+      "protocol": "email",
+      "status": "PENDING"
+    }
+  ],
+  "temporaryTestUserCount": 0,
+  "eastsideReservedKg": {
+    "N": "0"
+  }
+}

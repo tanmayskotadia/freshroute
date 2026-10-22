@@ -1,3 +1,4 @@
+import { useCloud } from "../cloud/CloudRuntime";
 import { useMemo, useState } from "react";
 import {
   ArrowLeft,
@@ -26,7 +27,10 @@ import type {
   SavedAnalysis,
 } from "../model/engine";
 import { PROFILES } from "../model/parameters";
-import type { WorkspaceRepository } from "../data/localRepository";
+import type {
+  WorkspaceRepository,
+  ExecuteAction,
+} from "../data/localRepository";
 import { Dialog } from "./Dialog";
 export const rupees = (paise: number) =>
   new Intl.NumberFormat("en-IN", {
@@ -127,7 +131,7 @@ type Props = {
   shipments: SavedShipment[];
   saved?: SavedAnalysis;
   repository: WorkspaceRepository;
-  execute: <T>(action: () => T) => T;
+  execute: ExecuteAction;
   onBack: () => void;
   onShipment: (id: string) => void;
   onOpen: (id: string, candidate?: string) => void;
@@ -145,6 +149,7 @@ export function RescueWorkspace({
   onOpen,
   onReview,
 }: Props) {
+  const { cloud } = useCloud();
   const [options, setOptions] = useState<AnalysisOptions>(() =>
     saved ? structuredClone(saved.input.options) : defaultOptions(shipment),
   );
@@ -153,6 +158,7 @@ export function RescueWorkspace({
   );
   const [name, setName] = useState(`${shipment.id} rescue comparison`);
   const [message, setMessage] = useState("");
+  const [saving, setSaving] = useState(false);
   const [explain, setExplain] = useState(false);
   const profile =
     saved?.input.parameters || PROFILES[shipment.produce as Produce];
@@ -192,9 +198,10 @@ export function RescueWorkspace({
             ? Math.round(Number(value) * 100)
             : Number(value) * scale,
     }));
-  const save = () => {
+  const save = async () => {
+    setSaving(true);
     try {
-      const run = execute(() =>
+      const run = await execute(() =>
         repository.saveAnalysis(
           shipment.id,
           options,
@@ -205,6 +212,8 @@ export function RescueWorkspace({
       onOpen(run.id, chosen?.id);
     } catch (e) {
       setMessage((e as Error).message);
+    } finally {
+      setSaving(false);
     }
   };
   const shown = (value: number) => (Number.isFinite(value) ? value : "");
@@ -683,7 +692,8 @@ export function RescueWorkspace({
                     disabled={!chosen?.feasible || stale}
                     onClick={() => chosen && onReview(saved.id, chosen.id)}
                   >
-                    Review local plan <ArrowRight size={16} />
+                    Review {cloud ? "cloud" : "local"} plan{" "}
+                    <ArrowRight size={16} />
                   </button>
                 </div>
               ) : (
@@ -702,9 +712,13 @@ export function RescueWorkspace({
                       Save inputs, parameter version and results together before
                       reviewing a local plan.
                     </p>
-                    <button className="button" onClick={save}>
+                    <button className="button" onClick={save} disabled={saving}>
                       <Save size={16} />
-                      Save analysis
+                      {saving
+                        ? "Running cloud workflow..."
+                        : cloud
+                          ? "Run cloud analysis"
+                          : "Save analysis"}
                     </button>
                   </div>
                 </div>
