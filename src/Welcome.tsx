@@ -63,7 +63,7 @@ export function Welcome({ onEnter }: { onEnter: () => void }) {
         <div className="welcome-entry-inner">
           <span className="badge blue">
             <span className="dot" />
-            Phase 1 · interactive prototype
+            Phase 2 · local workspace
           </span>
           <h2>See the possibilities.</h2>
           <p>
@@ -88,7 +88,7 @@ export function Welcome({ onEnter }: { onEnter: () => void }) {
             </li>
             <li>
               <Check size={17} />
-              Review and confirm a temporary decision
+              Review and save a local sample decision
             </li>
           </ul>
           <button className="button" onClick={onEnter}>
@@ -98,7 +98,7 @@ export function Welcome({ onEnter }: { onEnter: () => void }) {
             <ShieldCheck size={18} />
             <p>
               No account or password needed. This local preview uses fictional
-              data and temporary session state. Live authentication and AWS
+              data saved in this browser. Live authentication and AWS
               integrations arrive in later phases.
             </p>
           </div>

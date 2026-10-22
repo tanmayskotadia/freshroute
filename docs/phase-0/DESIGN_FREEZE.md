@@ -1,6 +1,6 @@
 # FreshRoute - Phase 0 design freeze
 
-Status: Phase 0 design frozen. Version 1.0, 22 October 2026. Current implementation progress is tracked in README.md and docs/phase-1/IMPLEMENTATION.md; Phase 1 is now complete.
+Status: Phase 0 design frozen. Version 1.0, 22 October 2026. Current implementation progress is tracked in README.md and docs/phase-2/IMPLEMENTATION.md; Phases 1–2 are now complete.
 
 This specification turns the two project roadmaps into implementation decisions. It supersedes them where details conflict. No account access, prices, model access, deployment or experiments have been verified in this phase. The US$200 total ceiling is a planning constraint, not an entitlement to free AWS usage.
 

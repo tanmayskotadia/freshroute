@@ -1,6 +1,6 @@
 # FreshRoute: phase-by-phase build blueprint
 
-Revised 22 October 2026. This is the implementation blueprint. Current progress: Phase 0 design and the Phase 1 local frontend prototype are complete; see docs/phase-1/IMPLEMENTATION.md for verification. Backend, real calculations and cloud resources have not been built. Read with FRESHROUTE_IMPLEMENTATION_ROADMAP.md; this blueprint supersedes its original schedule and extends its architecture and feature scope.
+Revised 22 October 2026. This is the implementation blueprint. Current progress: Phases 0–2 are complete: design, frontend and local shipment/receiving workflows; see docs/phase-2/IMPLEMENTATION.md for current verification. A browser-local repository is implemented; the HTTP backend, real rescue calculations and cloud resources are not. Read with FRESHROUTE_IMPLEMENTATION_ROADMAP.md; this blueprint supersedes its original schedule and extends its architecture and feature scope.
 
 ## 1. Final direction
 

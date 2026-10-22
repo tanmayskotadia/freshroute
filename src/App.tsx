@@ -32,14 +32,20 @@ import {
   Network,
   FileText,
   CheckCircle2,
+  Database,
+  Pencil,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import {
-  candidates,
-  destinations,
-  shipments as initialShipments,
-} from "./fixtures";
-import type { DemoDecision, Shipment } from "./fixtures";
+import { candidates } from "./fixtures";
+import type { Shipment } from "./fixtures";
+import type { SavedShipment, Destination } from "./domain";
+import { formatIST } from "./domain";
+import { useWorkspace } from "./data/useWorkspace";
+import { ShipmentForm } from "./components/ShipmentForm";
+import { DestinationForm } from "./components/DestinationForm";
+import { ShipmentHistory } from "./components/ShipmentHistory";
+import { ShipmentRoute } from "./components/ShipmentRoute";
+import { LocalData } from "./components/LocalData";
 
 import { Welcome } from "./Welcome";
 
@@ -55,6 +61,7 @@ const links: { label: string; path: string; icon: LucideIcon }[] = [
   { label: "Rescue Lab", path: "/rescue/FR-101", icon: FlaskConical },
   { label: "Receiving network", path: "/network", icon: MapPin },
   { label: "History", path: "/history", icon: History },
+  { label: "Local data", path: "/settings", icon: Database },
 ];
 function navigate(path: string) {
   window.history.pushState({}, "", path);
@@ -337,7 +344,9 @@ function Dialog({
   title,
   children,
   onClose,
+  wide = false,
 }: {
+  wide?: boolean;
   title: string;
   children: React.ReactNode;
   onClose: () => void;
@@ -387,7 +396,7 @@ function Dialog({
       }}
     >
       <div
-        className="dialog"
+        className={`dialog ${wide ? "wide-dialog" : ""}`}
         role="dialog"
         aria-modal="true"
         aria-label={title}
@@ -412,26 +421,32 @@ function Dialog({
 export default function App() {
   const path = usePath();
   const [mobile, setMobile] = useState(false);
-  const [shipments, setShipments] = useState(initialShipments);
+  const { workspace, repository, storageError, execute, refresh } =
+    useWorkspace();
+  const { shipments, destinations, decisions } = workspace;
+  const [editingShipment, setEditingShipment] = useState<
+    SavedShipment | undefined
+  >();
+  const [editingDestination, setEditingDestination] = useState<
+    Destination | undefined
+  >();
+  const [networkQuery, setNetworkQuery] = useState("");
+  const [networkProduce, setNetworkProduce] = useState("All produce");
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("All statuses");
   const [produce, setProduce] = useState("All produce");
   const [sort, setSort] = useState("priority");
   const [copilot, setCopilot] = useState(false);
-  const [modal, setModal] = useState<"new" | "notifications" | "guide" | null>(
-    null,
-  );
+  const [modal, setModal] = useState<
+    "new" | "edit" | "destination" | "notifications" | "guide" | null
+  >(null);
   const [selected, setSelected] = useState("reroute");
   const [budget, setBudget] = useState(800);
   const [delay, setDelay] = useState(3);
   const [temperature, setTemperature] = useState(18);
   const [fixtureLoaded, setFixtureLoaded] = useState(false);
-  const [decisions, setDecisions] = useState<DemoDecision[]>([]);
   const [toast, setToast] = useState("");
   const [historyQuery, setHistoryQuery] = useState("");
-  const [formError, setFormError] = useState("");
-  const [name, setName] = useState("Tomatoes");
-  const [quantity, setQuantity] = useState("500");
   useEffect(() => {
     if (!mobile) return;
     const previous = document.activeElement as HTMLElement;
@@ -490,7 +505,7 @@ export default function App() {
     isDetail ||
     isReview ||
     isList ||
-    ["/history", "/network", "/evidence"].includes(path);
+    ["/history", "/network", "/evidence", "/settings"].includes(path);
   const filtered = shipments
     .filter(
       (s) =>
@@ -509,6 +524,33 @@ export default function App() {
             ["Needs attention", "Monitor", "On track"].indexOf(b.status),
     );
   const notify = (text: string) => setToast(text);
+  const networkMatches = destinations.filter(
+    (d) =>
+      (d.name + " " + d.type)
+        .toLowerCase()
+        .includes(networkQuery.toLowerCase()) &&
+      (networkProduce === "All produce" ||
+        d.acceptedProduce.includes(
+          networkProduce as "Tomatoes" | "Bananas" | "Leafy greens",
+        )),
+  );
+  const safely = (operation: () => void) => {
+    try {
+      operation();
+    } catch (error) {
+      notify((error as Error).message);
+    }
+  };
+  const exportLocal = () => {
+    const raw = repository.exportRaw();
+    const blob = new Blob([raw], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "freshroute-local-backup.json";
+    a.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
   const changeFixture = () => setFixtureLoaded(false);
   const reset = () => {
     setDelay(3);
@@ -521,7 +563,8 @@ export default function App() {
     delay === 3 &&
     temperature === 18 &&
     shipment.id === "FR-101" &&
-    shipment.quantity === 500;
+    shipment.quantity === 500 &&
+    shipment.version === 1;
   const table = (
     <>
       <div className="filters">
@@ -805,7 +848,9 @@ export default function App() {
                           ? "Receiving network"
                           : path === "/evidence"
                             ? "Project evidence"
-                            : "Overview"}
+                            : path === "/settings"
+                              ? "Local data"
+                              : "Overview"}
             </strong>
           </div>
           <div className="topbar-actions">
@@ -836,11 +881,26 @@ export default function App() {
           <div className="prototype-strip">
             <FlaskConical size={14} />
             <span>
-              Phase 1 prototype · Fictional data, sample comparisons and
-              temporary session actions. No AWS or live AI connected.
+              Phase 2 local workspace · Shipments, drafts and rules save in this
+              browser. Rescue comparisons remain fixtures; no AWS or live AI
+              connected.
             </span>
             <span className="prototype-version">DESIGN PREVIEW</span>
           </div>
+          {storageError && (
+            <div className="notice amber" role="alert">
+              <TriangleAlert size={18} />
+              <div>
+                <p>{storageError}</p>
+                <button
+                  className="text-button"
+                  onClick={() => navigate("/settings")}
+                >
+                  Open local data and recovery <ArrowRight size={14} />
+                </button>
+              </div>
+            </div>
+          )}
           {!known && (
             <div className="empty-state">
               <h1>This page isn’t available</h1>
@@ -856,7 +916,12 @@ export default function App() {
                 title="Good things shouldn’t go to waste."
                 description="A clearer view of your shipments. A better next move."
                 action={
-                  <Button onClick={() => setModal("new")}>
+                  <Button
+                    onClick={() => {
+                      setEditingShipment(undefined);
+                      setModal("new");
+                    }}
+                  >
                     <Plus size={17} />
                     New shipment
                   </Button>
@@ -946,7 +1011,7 @@ export default function App() {
                   {
                     label: "Demo decisions",
                     value: String(decisions.length).padStart(2, "0"),
-                    sub: "Temporary · resets on reload",
+                    sub: "Sample decisions · saved locally",
                     icon: CheckCheck,
                     tone: "green",
                   },
@@ -1053,7 +1118,12 @@ export default function App() {
                 title="Every delivery, in view."
                 description="Find a shipment, inspect its conditions and explore what comes next."
                 action={
-                  <Button onClick={() => setModal("new")}>
+                  <Button
+                    onClick={() => {
+                      setEditingShipment(undefined);
+                      setModal("new");
+                    }}
+                  >
                     <Plus size={17} />
                     New shipment
                   </Button>
@@ -1062,7 +1132,7 @@ export default function App() {
               <section className="panel">
                 <PanelTitle
                   title="All shipments"
-                  subtitle={`${shipments.length} fictional shipments · current session`}
+                  subtitle={`${shipments.length} fictional shipments · saved locally after changes`}
                 />
                 {table}
               </section>
@@ -1082,14 +1152,26 @@ export default function App() {
                 title={`${shipment.produce}, with possibilities.`}
                 description={`${shipment.quantity} kg · ${shipment.origin} → ${shipment.destination}`}
                 action={
-                  <Button
-                    onClick={() => {
-                      reset();
-                      navigate(`/rescue/${shipment.id}`);
-                    }}
-                  >
-                    Open Rescue Lab <FlaskConical size={17} />
-                  </Button>
+                  <div className="heading-actions">
+                    <Button
+                      secondary
+                      onClick={() => {
+                        setEditingShipment(shipment);
+                        setModal("edit");
+                      }}
+                    >
+                      <Pencil size={15} />
+                      Edit shipment
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        reset();
+                        navigate(`/rescue/${shipment.id}`);
+                      }}
+                    >
+                      Open Rescue Lab <FlaskConical size={17} />
+                    </Button>
+                  </div>
                 }
               />
               <div className="detail-summary">
@@ -1101,112 +1183,23 @@ export default function App() {
                 </span>
                 <div>
                   <strong>{shipment.id}</strong>
-                  <p>Illustrative shipment · Ahmedabad network</p>
+                  <p>Local demo shipment · operator-managed</p>
                 </div>
                 <Status status={shipment.status} />
                 <span className="last-updated">
-                  Fixture snapshot · 22 Oct 2026, 13:00 IST
+                  Version {shipment.version} · updated{" "}
+                  {formatIST(shipment.updatedAt)} IST
                 </span>
               </div>
               <div className="detail-grid">
-                <section className="panel">
-                  <PanelTitle
-                    title="The journey so far"
-                    subtitle="A route schematic, not live GPS or road navigation."
-                  />
-                  <RouteMap />
-                </section>
-                <section className="panel conditions">
-                  <PanelTitle title="Current conditions" />
-                  {[
-                    {
-                      icon: Thermometer,
-                      label: "Temperature",
-                      value: `${shipment.temperature}°C`,
-                    },
-                    {
-                      icon: Clock3,
-                      label: "Additional delay",
-                      value: `${shipment.delay} hours`,
-                    },
-                    {
-                      icon: Package,
-                      label: "Shipment quantity",
-                      value: `${shipment.quantity} kg`,
-                    },
-                    {
-                      icon: MapPin,
-                      label: "Planned arrival",
-                      value: `${shipment.eta} IST`,
-                    },
-                  ].map(({ icon: Icon, label, value }) => (
-                    <div className="condition" key={label}>
-                      <span>
-                        <Icon size={18} />
-                        {label}
-                      </span>
-                      <strong>{value}</strong>
-                    </div>
-                  ))}
-                  <div className="notice amber">
-                    <TriangleAlert size={17} />
-                    <p>
-                      {shipment.delay
-                        ? "Delay and temperature assumptions need review. Compare alternatives before deciding."
-                        : "This fixture is on track. Continuing may be the most sensible choice."}
-                    </p>
-                  </div>
-                </section>
+                <ShipmentRoute
+                  shipment={shipment}
+                  destination={destinations.find(
+                    (d) => d.id === shipment.destinationId,
+                  )}
+                />
               </div>
-              <div className="lower-grid">
-                <section className="panel">
-                  <PanelTitle
-                    title="Temperature history"
-                    subtitle="Illustrative segments · displayed history is a static visual fixture."
-                  />
-                  <QualityChart temperature />
-                </section>
-                <section className="panel">
-                  <PanelTitle title="Shipment timeline" />
-                  {[
-                    {
-                      time: "08:00",
-                      title: "Shipment created",
-                      note: `${shipment.quantity} kg loaded at origin.`,
-                    },
-                    {
-                      time: "10:30",
-                      title: "Transit checkpoint",
-                      note: "Fixture checkpoint recorded.",
-                    },
-                    {
-                      time: "12:00",
-                      title: shipment.delay ? "Delay reported" : "On schedule",
-                      note: shipment.delay
-                        ? `${shipment.delay} additional hours entered in sample data.`
-                        : "No additional delay in this sample.",
-                    },
-                    {
-                      time: "13:00",
-                      title: "Ready for review",
-                      note: "Open the Rescue Lab to compare sample actions.",
-                    },
-                  ].map((e, i) => (
-                    <div className="timeline-item" key={e.time}>
-                      <div
-                        className={
-                          i === 2 ? "timeline-dot amber" : "timeline-dot"
-                        }
-                      />
-                      <small>{e.time} IST</small>
-                      <div>
-                        <strong>{e.title}</strong>
-                        <p>{e.note}</p>
-                      </div>
-                    </div>
-                  ))}
-                </section>
-              </div>
+              <ShipmentHistory shipment={shipment} />
             </>
           )}
           {isLab && (
@@ -1499,9 +1492,9 @@ export default function App() {
                   <div className="notice amber">
                     <ShieldCheck size={20} />
                     <p>
-                      Prototype only. Confirmation creates a temporary session
-                      entry. It does not reserve capacity, send email, run a
-                      model or create an AWS record.
+                      Local sample only. Confirmation saves a demo decision in
+                      this browser. It does not reserve capacity, send email,
+                      run a model or create an AWS record.
                     </p>
                   </div>
                 </section>
@@ -1542,21 +1535,23 @@ export default function App() {
                       candidate.cost > budget
                     }
                     onClick={() => {
-                      const decision: DemoDecision = {
-                        id: `DEMO-${String(decisions.length + 1).padStart(3, "0")}`,
-                        shipmentId: shipment.id,
-                        candidateId: candidate.id,
-                        candidateName: candidate.name,
-                        quantity: shipment.quantity,
-                        destination: candidate.destination,
-                        createdAt: new Date().toISOString(),
-                      };
-                      setDecisions((prev) => [decision, ...prev]);
-                      setFixtureLoaded(false);
-                      navigate("/history");
-                      notify(
-                        `${decision.id} added to this session. No real reservation or notification was made.`,
-                      );
+                      safely(() => {
+                        const decision = execute(() =>
+                          repository.addDecision({
+                            shipmentId: shipment.id,
+                            candidateId: candidate.id,
+                            candidateName: candidate.name,
+                            quantity: shipment.quantity,
+                            destination: candidate.destination,
+                            createdAt: new Date().toISOString(),
+                          }),
+                        );
+                        setFixtureLoaded(false);
+                        navigate("/history");
+                        notify(
+                          `${decision.id} saved locally. No reservation or notification was made.`,
+                        );
+                      });
                     }}
                   >
                     <Check size={16} />
@@ -1577,26 +1572,20 @@ export default function App() {
               <Heading
                 eyebrow="YOUR DECISION TRAIL"
                 title="Good decisions leave a clear trail."
-                description="Revisit temporary demo decisions and the assumptions behind them."
+                description="Revisit locally saved demo decisions and their sample assumptions."
                 action={
                   decisions.length > 0 ? (
-                    <Button
-                      secondary
-                      onClick={() => {
-                        setDecisions([]);
-                        notify("Temporary decision history cleared.");
-                      }}
-                    >
+                    <Button secondary onClick={() => navigate("/settings")}>
                       <RotateCcw size={16} />
-                      Clear demo history
+                      Manage local data
                     </Button>
                   ) : undefined
                 }
               />
               <section className="panel">
                 <PanelTitle
-                  title="Session history"
-                  subtitle="These entries reset on refresh. Persistence starts in Phase 2."
+                  title="Local sample history"
+                  subtitle="Saved on this browser and origin. These are sample decisions, not real bookings."
                 />
                 <div className="filters">
                   <div className="search-field">
@@ -1669,7 +1658,7 @@ export default function App() {
                               IST · static fixture v0.1
                             </small>
                           </div>
-                          <Badge tone="blue">Session only</Badge>
+                          <Badge tone="blue">Saved locally</Badge>
                           <button
                             className="icon-button"
                             aria-label={`Open shipment for ${d.id}`}
@@ -1696,12 +1685,53 @@ export default function App() {
               <section className="panel network-map">
                 <PanelTitle
                   title="Ahmedabad receiving network"
-                  subtitle="Seeded locations and travel assumptions. No live map or partner bookings."
+                  subtitle="Original seeded schematic; edits below change receiving rules, not this illustration. No live tracking."
                 />
                 <RouteMap />
               </section>
+              <div className="network-toolbar">
+                <div className="search-field">
+                  <Search size={16} />
+                  <input
+                    aria-label="Search receiving network"
+                    placeholder="Search destination or partner type…"
+                    value={networkQuery}
+                    onChange={(e) => setNetworkQuery(e.target.value)}
+                  />
+                </div>
+                <select
+                  aria-label="Filter receiving network by produce"
+                  value={networkProduce}
+                  onChange={(e) => setNetworkProduce(e.target.value)}
+                >
+                  <option>All produce</option>
+                  <option>Tomatoes</option>
+                  <option>Bananas</option>
+                  <option>Leafy greens</option>
+                </select>
+              </div>
+              <div className="network-result-count">
+                {networkMatches.length} receiving destinations match your
+                filters.
+              </div>
               <div className="network-cards">
-                {destinations.map((d) => (
+                {networkMatches.length === 0 && (
+                  <div className="empty-state network-empty">
+                    <MapPin size={26} />
+                    <h2>No matching destinations</h2>
+                    <p>Try a different destination or produce filter.</p>
+                    <button
+                      className="button secondary"
+                      onClick={() => {
+                        setNetworkQuery("");
+                        setNetworkProduce("All produce");
+                      }}
+                    >
+                      Clear network filters
+                    </button>
+                  </div>
+                )}
+                {networkMatches.map((d) => (
                   <section className="panel destination-card" key={d.name}>
                     <span className="destination-icon">
                       <MapPin size={22} />
@@ -1710,14 +1740,32 @@ export default function App() {
                     <h2>{d.name}</h2>
                     <p>{d.type}</p>
                     <div className="summary-line">
-                      <span>Sample available capacity</span>
-                      <strong>{d.capacity} kg</strong>
+                      <span>Available / total capacity</span>
+                      <strong>
+                        {d.capacity - d.reservedKg} / {d.capacity} kg
+                      </strong>
                     </div>
                     <div className="summary-line">
                       <span>Receiving hours (IST)</span>
-                      <strong>{d.hours}</strong>
+                      <strong>
+                        {d.opensAt}–{d.closesAt}
+                      </strong>
                     </div>
-                    <p className="fine-print">Accepts: {d.produce}</p>
+                    <p className="fine-print">
+                      Accepts: {d.acceptedProduce.join(", ")}
+                      <br />
+                      {d.reservedKg} kg reserved · rule version {d.version}
+                    </p>
+                    <button
+                      className="button secondary"
+                      onClick={() => {
+                        setEditingDestination(d);
+                        setModal("destination");
+                      }}
+                    >
+                      <Pencil size={14} />
+                      Edit receiving rules
+                    </button>
                     <button
                       className="text-button"
                       onClick={() => {
@@ -1732,6 +1780,19 @@ export default function App() {
               </div>
             </>
           )}
+          {path === "/settings" && (
+            <LocalData
+              workspace={workspace}
+              error={storageError}
+              onExport={exportLocal}
+              onReset={() => {
+                execute(() => repository.reset());
+                setFixtureLoaded(false);
+                notify("Local workspace reset to the original fictional demo.");
+              }}
+              onRetry={refresh}
+            />
+          )}
           {path === "/evidence" && (
             <>
               <Heading
@@ -1742,8 +1803,9 @@ export default function App() {
               <div className="notice blue">
                 <Network size={20} />
                 <p>
-                  Phase 1 is a local frontend prototype. All cloud services
-                  below are planned and have no deployment evidence yet.
+                  Phase 2 provides local persistence and operational workflows.
+                  All cloud services below are planned and have no deployment
+                  evidence yet.
                 </p>
               </div>
               <div className="evidence-flow">
@@ -1761,7 +1823,7 @@ export default function App() {
                   {
                     icon: CheckCheck,
                     title: "Decide",
-                    text: "Review and confirm a temporary action.",
+                    text: "Review and save a local sample action.",
                   },
                   {
                     icon: FileText,
@@ -1826,7 +1888,7 @@ export default function App() {
               <Leaf size={13} />
               FreshRoute · Thoughtful decisions, fresher possibilities.
             </span>
-            <span>Academic prototype · Phase 1</span>
+            <span>Academic prototype · Phase 2</span>
           </footer>
         </main>
       </div>
@@ -1890,90 +1952,56 @@ export default function App() {
       )}
       {modal && (
         <Dialog
+          wide={modal === "new" || modal === "edit" || modal === "destination"}
           title={
             modal === "new"
-              ? "Create a sample shipment"
-              : modal === "notifications"
-                ? "Workspace notifications"
-                : "Your FreshRoute walkthrough"
+              ? "Create shipment"
+              : modal === "edit"
+                ? `Edit ${editingShipment?.id || "shipment"}`
+                : modal === "destination"
+                  ? "Edit receiving rules"
+                  : modal === "notifications"
+                    ? "Workspace notifications"
+                    : "Your FreshRoute walkthrough"
           }
           onClose={() => {
             setModal(null);
-            setFormError("");
           }}
         >
-          {modal === "new" ? (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const kg = Number(quantity);
-                if (!Number.isFinite(kg) || kg < 1 || kg > 10000) {
-                  setFormError("Enter a quantity between 1 and 10,000 kg.");
-                  document.getElementById("new-quantity")?.focus();
-                  return;
-                }
-                const first = initialShipments.find((s) => s.produce === name)!;
-                const next = {
-                  ...first,
-                  id: `FR-${105 + shipments.length - initialShipments.length}`,
-                  quantity: kg,
-                  status: "On track" as const,
-                  delay: 0,
-                };
-                setShipments((prev) => [...prev, next]);
+          {modal === "new" || modal === "edit" ? (
+            <ShipmentForm
+              shipment={modal === "edit" ? editingShipment : undefined}
+              destinations={destinations}
+              draft={workspace.drafts.find(
+                (d) =>
+                  d.key ===
+                  (modal === "edit" ? `edit:${editingShipment?.id}` : "new"),
+              )}
+              repository={repository}
+              execute={execute}
+              onNotify={notify}
+              onCancel={() => setModal(null)}
+              onSaved={(id) => {
                 setModal(null);
-                setFormError("");
-                navigate(`/shipments/${next.id}`);
+                setFixtureLoaded(false);
+                navigate(`/shipments/${id}`);
+                notify("Shipment saved locally. It will remain after refresh.");
+              }}
+            />
+          ) : modal === "destination" && editingDestination ? (
+            <DestinationForm
+              destination={editingDestination}
+              onCancel={() => setModal(null)}
+              onSave={(value) => {
+                execute(() =>
+                  repository.saveDestination(value, editingDestination.version),
+                );
+                setModal(null);
                 notify(
-                  "Sample shipment added for this session. It will reset on refresh.",
+                  "Receiving rules saved locally. No reservations or comparisons were changed.",
                 );
               }}
-              noValidate
-            >
-              <p className="dialog-intro">
-                Try the form and navigation. This creates fictional session data
-                only; persistence arrives in Phase 2.
-              </p>
-              <label className="field-label" htmlFor="new-produce">
-                Produce
-              </label>
-              <select
-                id="new-produce"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              >
-                <option>Tomatoes</option>
-                <option>Bananas</option>
-                <option>Leafy greens</option>
-              </select>
-              <label className="field-label" htmlFor="new-quantity">
-                Quantity (kg)
-              </label>
-              <input
-                id="new-quantity"
-                type="number"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                aria-invalid={!!formError}
-                aria-describedby={formError ? "quantity-error" : undefined}
-              />
-              {formError && (
-                <p className="field-error" id="quantity-error" role="alert">
-                  {formError}
-                </p>
-              )}
-              <div className="notice blue">
-                <MapPin size={18} />
-                <p>
-                  A fictional origin and destination are assigned from the
-                  selected produce fixture.
-                </p>
-              </div>
-              <Button type="submit">
-                <Plus size={16} />
-                Add sample shipment
-              </Button>
-            </form>
+            />
           ) : modal === "notifications" ? (
             <>
               <div className="notification-item">
@@ -2010,7 +2038,7 @@ export default function App() {
                 "Inspect FR-101 and its temperature timeline.",
                 "Load the sample comparison in the Rescue Lab.",
                 "Select an option and review the trade-offs.",
-                "Confirm a temporary decision and find it in history.",
+                "Save a local sample decision and find it in history.",
               ].map((s, i) => (
                 <div className="guide-step" key={s}>
                   <span className="step-number">0{i + 1}</span>
