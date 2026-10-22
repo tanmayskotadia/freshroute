@@ -1,0 +1,33 @@
+{
+  "health": [
+    {
+      "id": "i-04143d0a49000a37e",
+      "state": "healthy"
+    },
+    {
+      "id": "i-04f7c094f262545f2",
+      "state": "healthy"
+    }
+  ],
+  "response": {
+    "status": 200,
+    "body": {
+      "node": "i-04f7c094f262545f2",
+      "ebsScratch": "i-04f7c094f262545f2",
+      "sharedSha256": "3ea4cc260300acaa5e3f8b489bf851f5e659209c8c353677b2998be42c11c57c",
+      "fixture": {
+        "capacityKg": 500,
+        "fixture": "FreshRoute fictional receiving manifest",
+        "produce": [
+          "banana",
+          "tomato",
+          "mango"
+        ]
+      },
+      "sharedMounted": true
+    }
+  },
+  "terminatedOriginalNode": "i-037a6a871e46d5e18",
+  "observedNewNode": "i-04f7c094f262545f2",
+  "sameEfsHash": true
+}

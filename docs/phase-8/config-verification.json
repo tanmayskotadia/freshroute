@@ -1,0 +1,28 @@
+{
+  "checks": {
+    "fixtureUnattached": true,
+    "baselineCompliant": true,
+    "driftDetected": true,
+    "remediationObserved": true
+  },
+  "baseline": [
+    {
+      "compliance": "COMPLIANT",
+      "at": "2026-10-22T18:00:55.184000+00:00"
+    }
+  ],
+  "drift": [
+    {
+      "compliance": "NON_COMPLIANT",
+      "at": "2026-10-22T18:08:59.150000+00:00"
+    }
+  ],
+  "remediated": [
+    {
+      "compliance": "COMPLIANT",
+      "at": "2026-10-22T18:11:38.812000+00:00"
+    }
+  ],
+  "temporaryRuleRemoved": true,
+  "note": "The long combined poll result expired; these states were separately observed through GetComplianceDetailsByConfigRule."
+}

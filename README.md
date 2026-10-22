@@ -4,13 +4,13 @@ Perishable-shipment rescue and decision support with an AI copilot. Academic Clo
 
 ## Current status
 
-Phases 0-7 are implemented and deployed on AWS in Mumbai. The app supports Cognito sign-in, owner-scoped persistence, S3 CSV imports through SQS, Step Functions analysis, atomic capacity reservations, fulfilment, private reports and in-app/SNS notifications. Phase 7 adds a working AI copilot, reviewed scenario drafts, briefs, delay sensitivity, atomic multi-destination splits and outcome analytics. Local demo mode remains available; live AI requires cloud sign-in and a saved run.
+Phases 0-8 are implemented. The main AWS app in Mumbai supports authenticated rescue workflows, durable data, background imports/analysis, atomic reservations, fulfilment, private reports, AI explanations/drafts, sensitivity and outcome analytics. Phase 8 adds retained audit/monitoring/budget resources and a cloud engineering evidence screen. Its compute, networking, storage, security, queue recovery and SQL/DMS experiments were run and their disposable stacks deleted. Local demo mode remains available; live AI requires cloud sign-in and a saved run.
 
 Live application: https://dr4sw5bpoi.execute-api.ap-south-1.amazonaws.com
 
 CloudFront requires AWS account verification. The approved API Gateway + Lambda HTTPS frontend serves the private web bucket. See [Phase 4 deployment](docs/phase-4/IMPLEMENTATION.md) and [Phase 6 implementation and demonstration](docs/phase-6/IMPLEMENTATION.md).
 
-Deployment account: `118462784511`. All 47 local tests and 19 live Phase 7 checks pass, including actual AI generation, caching, draft values, write isolation and split reservations. The preceding release passed all 31 Phase 5/6 regression checks. Temporary users and test files were cleaned up. Email delivery and browser visual verification remain manual limitations. See [Phase 7 release status](docs/phase-7/RELEASE_STATUS.md) and [implementation](docs/phase-7/IMPLEMENTATION.md).
+Deployment account: `118462784511`. All 49 local tests and 19 live main-app regression checks pass. Phase 8 separately verified CloudTrail delivery, alarm transitions, EBS/EFS, peering, ASG replacement/scale-out, WAF, Config remediation, DLQ replay and exact DMS row reconciliation. All five lab stacks and residual lab resources were verified removed. Browser visual QA, prior email delivery and an existing import DLQ alarm remain explicit limitations. See [Phase 8 release status](docs/phase-8/RELEASE_STATUS.md) and [implementation](docs/phase-8/IMPLEMENTATION.md).
 
 ## Run locally (PowerShell)
 

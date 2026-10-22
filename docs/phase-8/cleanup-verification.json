@@ -1,0 +1,40 @@
+{
+  "fileSystems": [],
+  "databases": [],
+  "migration": [],
+  "queues": [],
+  "recorders": [],
+  "vpcs": [],
+  "stackStates": {
+    "FreshRouteConfigLab": "DELETE_COMPLETE",
+    "FreshRouteReliabilityLab": "DELETE_COMPLETE",
+    "FreshRouteMigrationLab": "DELETE_COMPLETE",
+    "FreshRouteSqlLab": "DELETE_COMPLETE",
+    "FreshRouteComputeLab": "DELETE_COMPLETE",
+    "FreshRouteOperations": "UPDATE_COMPLETE",
+    "FreshRouteApplication": "UPDATE_COMPLETE",
+    "FreshRouteFoundation": "UPDATE_COMPLETE"
+  },
+  "generatedLabLogGroupsRemoved": [
+    "/aws/lambda/FreshRouteConfigLab-Registration-2v0J6aPJCkvF",
+    "/aws/lambda/FreshRouteConfigLab-Registration-RPZNsoLFoLfv"
+  ],
+  "verifiedAtUtc": "2026-10-22T19:25:00.756435+00:00",
+  "instances": [],
+  "volumes": [],
+  "interfaces": [],
+  "loadBalancerDeleted": true,
+  "checks": {
+    "fiveLabStacksDeleted": true,
+    "noInstances": true,
+    "noVolumes": true,
+    "noInterfaces": true,
+    "noVpcs": true,
+    "noEfs": true,
+    "noRds": true,
+    "noDms": true,
+    "noQueues": true,
+    "noConfigRecorder": true,
+    "mainStacksHealthy": true
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "scaleDown": {
+    "desired": 1,
+    "instances": [
+      {
+        "id": "i-04143d0a49000a37e",
+        "state": "InService"
+      },
+      {
+        "id": "i-04f7c094f262545f2",
+        "state": "Terminating"
+      }
+    ]
+  },
+  "taskStatusBeforeCleanup": "stopped",
+  "taskStatistics": {
+    "FullLoadProgressPercent": 100,
+    "ElapsedTimeMillis": 801,
+    "TablesLoaded": 1,
+    "TablesLoading": 0,
+    "TablesQueued": 0,
+    "TablesErrored": 0,
+    "FreshStartDate": "2026-10-22T18:03:52.921000+00:00",
+    "StartDate": "2026-10-22T18:03:52.921000+00:00",
+    "StopDate": "2026-10-22T18:04:23.026000+00:00",
+    "FullLoadStartDate": "2026-10-22T18:03:53.437000+00:00",
+    "FullLoadFinishDate": "2026-10-22T18:03:54.239000+00:00"
+  },
+  "scaleOut": {
+    "desired": 2,
+    "instanceCount": 2,
+    "healthyTargets": [
+      "i-0fa13f4de908db9e5",
+      "i-04143d0a49000a37e"
+    ]
+  }
+}

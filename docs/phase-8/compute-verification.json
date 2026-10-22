@@ -1,0 +1,66 @@
+{
+  "checks": {
+    "bothNodesReachableAcrossPeering": true,
+    "sameSharedEfsBytes": true,
+    "distinctEbsScratch": true,
+    "sshNotReachable": true,
+    "wafBlocksVerificationHeader": true,
+    "ssmCommandsSucceeded": true
+  },
+  "probes": [
+    {
+      "status": 200,
+      "body": {
+        "node": "i-04143d0a49000a37e",
+        "ebsScratch": "i-04143d0a49000a37e",
+        "sharedSha256": "3ea4cc260300acaa5e3f8b489bf851f5e659209c8c353677b2998be42c11c57c",
+        "fixture": {
+          "capacityKg": 500,
+          "fixture": "FreshRoute fictional receiving manifest",
+          "produce": [
+            "banana",
+            "tomato",
+            "mango"
+          ]
+        },
+        "sharedMounted": true
+      }
+    },
+    {
+      "status": 200,
+      "body": {
+        "node": "i-037a6a871e46d5e18",
+        "ebsScratch": "i-037a6a871e46d5e18",
+        "sharedSha256": "3ea4cc260300acaa5e3f8b489bf851f5e659209c8c353677b2998be42c11c57c",
+        "fixture": {
+          "capacityKg": 500,
+          "fixture": "FreshRoute fictional receiving manifest",
+          "produce": [
+            "banana",
+            "tomato",
+            "mango"
+          ]
+        },
+        "sharedMounted": true
+      }
+    }
+  ],
+  "ssm": [
+    {
+      "instance": "i-037a6a871e46d5e18",
+      "status": "Success",
+      "output": "TARGET      SOURCE      FSTYPE OPTIONS\n/mnt/shared 127.0.0.1:/ nfs4   rw,relatime,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,hard,noresvport,fatal_neterrors=none,proto=tcp,port=20629,timeo=600,retrans=2,sec=sys,clientaddr=127.0.0.1,local_lock=none,addr=127.0.0.1\nNAME          TYPE SIZE MOUNTPOINT\nnvme0n1       disk   8G \n├─nvme0n1p1   part   8G /\n├─nvme0n1p127 part   1M \n└─nvme0n1p128 part  10M /boot/efi\n{\"node\": \"i-037a6a871e46d5e18\", \"ebsScratch\": \"i-037a6a871e46d5e18\", \"sharedSha256\": \"3ea4cc260300acaa5e3f8b489bf851f5e659209c8c353677b2998be42c11c57c\", \"fixture\": {\"capacityKg\": 500, \"fixture\": \"FreshRoute fictional receiving manifest\", \"produce\": [\"banana\", \"tomato\", \"mango\"]}, \"sharedMounted\": true}"
+    },
+    {
+      "instance": "i-04143d0a49000a37e",
+      "status": "Success",
+      "output": "TARGET      SOURCE      FSTYPE OPTIONS\n/mnt/shared 127.0.0.1:/ nfs4   rw,relatime,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,hard,noresvport,fatal_neterrors=none,proto=tcp,port=21020,timeo=600,retrans=2,sec=sys,clientaddr=127.0.0.1,local_lock=none,addr=127.0.0.1\nNAME          TYPE SIZE MOUNTPOINT\nnvme0n1       disk   8G \n├─nvme0n1p1   part   8G /\n├─nvme0n1p127 part   1M \n└─nvme0n1p128 part  10M /boot/efi\n{\"node\": \"i-04143d0a49000a37e\", \"ebsScratch\": \"i-04143d0a49000a37e\", \"sharedSha256\": \"3ea4cc260300acaa5e3f8b489bf851f5e659209c8c353677b2998be42c11c57c\", \"fixture\": {\"capacityKg\": 500, \"fixture\": \"FreshRoute fictional receiving manifest\", \"produce\": [\"banana\", \"tomato\", \"mango\"]}, \"sharedMounted\": true}"
+    }
+  ],
+  "replacementTest": {
+    "terminated": "i-037a6a871e46d5e18",
+    "activityId": "59368592-b93d-0abc-2b67-17970c9d0c78"
+  },
+  "group": "FreshRouteComputeLab-Workers-pqzSmM7Im5Dt",
+  "targetGroup": "arn:aws:elasticloadbalancing:ap-south-1:118462784511:targetgroup/FreshR-Targe-160OPXLFCHXG/a2791460db4e7a29"
+}

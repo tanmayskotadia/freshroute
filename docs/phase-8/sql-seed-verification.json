@@ -1,0 +1,33 @@
+{
+  "seed": {
+    "sourceRows": 3,
+    "targetRows": 0,
+    "identical": false,
+    "source": [
+      {
+        "id": "LEG-101",
+        "produce": "banana",
+        "quantity_grams": 120000,
+        "value_paise": 420000
+      },
+      {
+        "id": "LEG-102",
+        "produce": "tomato",
+        "quantity_grams": 80000,
+        "value_paise": 216000
+      },
+      {
+        "id": "LEG-103",
+        "produce": "mango",
+        "quantity_grams": 60000,
+        "value_paise": 510000
+      }
+    ],
+    "target": [],
+    "tls": {
+      "ssl": true,
+      "version": "TLSv1.3"
+    },
+    "fixtureOnly": true
+  }
+}

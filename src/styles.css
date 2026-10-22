@@ -5459,3 +5459,38 @@ button:disabled {
     max-height: 540px;
   }
 }
+.engineering { display: grid; gap: 24px; }
+.engineering-hero { display:flex; justify-content:space-between; align-items:center; gap:42px; padding:42px 44px; border-radius:24px; color:#eff6ec; background:radial-gradient(circle at 82% 30%,#426149 0,transparent 42%),#183c2f; overflow:hidden; }
+.engineering-hero .eyebrow {color:#b9d598;letter-spacing:.18em;font-size:10px;}
+.engineering-hero h1 {font-size:clamp(32px,3.2vw,49px);line-height:1.14;letter-spacing:-.045em;margin:16px 0;}
+.engineering-hero h1 em {font-style:normal;color:#c7dc9d;}
+.engineering-hero p {max-width:560px;color:#d0ded4;line-height:1.7;font-size:14px;}
+.engineering-chips {display:flex;flex-wrap:wrap;gap:12px;margin-top:24px;}
+.engineering-chips span {display:flex;align-items:center;gap:7px;font-size:10px;border:1px solid #7d9d7f66;padding:7px 10px;border-radius:30px;}
+.engineering-orbit {position:relative;display:grid;place-items:center;flex-shrink:0;width:210px;height:210px;border:1px solid #b4ce9d55;border-radius:50%;margin:20px 25px;color:#d4e7b2;background:radial-gradient(circle,#a6c18922,transparent 70%);}
+.engineering-orbit::before {content:'';position:absolute;inset:23px;border:1px dashed #a8c29b66;border-radius:50%;}
+.orbit-label {position:absolute;background:#284c3a;padding:6px 8px;border-radius:10px;font-size:8px;letter-spacing:.12em;}
+.orbit-label.top {top:-10px}.orbit-label.bottom{bottom:-10px}.orbit-label.left{left:-28px}.orbit-label.right{right:-29px}
+.engineering-stats {display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.engineering-stats .panel {display:grid;gap:10px;padding:22px;}
+.engineering-stats svg {color:#527657}.engineering-stats small {color:var(--muted,#6c756c);font-size:11px;}.engineering-stats strong {font-size:25px;letter-spacing:-.04em;}
+.engineering-tabs {display:flex;gap:8px;border-bottom:1px solid #dfe5d9;overflow:auto;}
+.engineering-tabs button {padding:14px 18px;border:0;border-bottom:3px solid transparent;background:none;color:#71796c;font-weight:650;white-space:nowrap;cursor:pointer;font-size:12px;}
+.engineering-tabs button.active {color:#285638;border-bottom-color:#3d6c44;}
+.engineering-toolbar {display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.engineering-toolbar label {display:flex;gap:9px;align-items:center;flex:1;min-width:210px;border:1px solid #dce3d6;border-radius:12px;background:#fff;padding:10px 13px;}
+.engineering-toolbar label input {border:0;outline:none;width:100%;font:inherit;font-size:12px;background:transparent;}
+.engineering-toolbar select {padding:12px;border-radius:10px;border:1px solid #dce3d6;background:#fff;color:#3e503e;font:inherit;font-size:12px;}
+.engineering-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;}
+.engineering-grid .panel {padding:25px;}.engineering-grid h2 {font-size:18px;line-height:1.4;letter-spacing:-.025em;margin:15px 0 8px;}.engineering-grid p {font-size:12px;line-height:1.8;color:#66725f;}.engineering-grid small {font-size:10px;color:#7a8373;line-height:1.8;}
+.engineering-experiment summary {list-style:none;cursor:pointer;}.engineering-experiment summary::-webkit-details-marker{display:none}
+.engineering-id {display:inline-block;color:#818b74;text-transform:uppercase;font-size:9px;font-weight:700;letter-spacing:.09em;}
+.engineering-status {display:inline-flex;align-items:center;gap:3px;float:right;background:#f2eee0;color:#88754a;padding:4px 7px;border-radius:20px;font-size:9px;}.engineering-status.verified {background:#e8f1df;color:#41663d;}
+.engineering-open {display:flex;gap:6px;align-items:center;margin-top:21px;font-size:10px;color:#3b6741;font-weight:700;}.engineering-proof {border-top:1px solid #e5eadf;margin-top:18px;padding-top:18px;}.engineering-proof small {font-weight:700;letter-spacing:.1em;}.engineering-proof p {color:#41513e;}
+.engineering-architecture {display:grid;gap:22px}.engineering-architecture .panel {padding:30px}.engineering-architecture h2 {font-size:23px;margin:13px 0 25px;letter-spacing:-.03em;}
+.engineering-pipeline {display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}.engineering-pipeline>div {display:grid;gap:10px;background:#f6f8f0;border-radius:13px;padding:18px;position:relative;}.engineering-pipeline strong {font-size:12px;}.engineering-pipeline small {font-size:10px;color:#7c8773;}.engineering-pipeline svg:last-child {position:absolute;right:-17px;top:45%;}.engineering-pipeline>div:last-child svg:last-child{display:none}
+.engineering-boundary {display:flex;gap:15px;margin-top:24px;border:1px dashed #c9d7bd;background:#f7f9f1;padding:18px;border-radius:13px;}.engineering-boundary strong {font-size:12px;}.engineering-boundary p {font-size:11px;line-height:1.7;color:#74806b;}
+.engineering-network {display:flex;align-items:stretch;gap:20px;}.engineering-vpc {flex:1;border:1px solid #cdd9c3;border-radius:16px;background:#fafbf6;padding:22px;}.engineering-vpc h3 {font-size:13px;margin:0 0 16px;}.engineering-vpc p,.engineering-vpc small {font-size:10px;line-height:1.7;color:#7a866f;}.engineering-node {display:flex;align-items:center;gap:9px;border:1px solid #dde5d3;background:white;padding:13px;border-radius:10px;margin:15px 0;font-size:11px;font-weight:650;}.engineering-node svg {width:18px;color:#688654}.engineering-peer {display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;font-size:9px;text-align:center;color:#859276;}.engineering-az {display:flex;gap:12px;}.engineering-az span {flex:1;border:1px dashed #bbcdb0;border-radius:8px;padding:15px;font-size:9px;line-height:2;color:#728465;}.engineering-az strong {font-size:11px;color:#405638;}.engineering-footnote {font-size:11px;color:#808c74;line-height:1.8;margin-top:20px;}
+.engineering-price {display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #e6eadf;padding:15px 0;font-size:11px;}.engineering-price:last-of-type {margin-bottom:18px;}.engineering-price strong {color:#42653b;font-size:11px;}.engineering-lifecycle dt {margin-top:22px;color:#47623f;font-size:12px;font-weight:700;}.engineering-lifecycle dd {margin:7px 0 0;color:#74816a;font-size:12px;line-height:1.7;}
+@media(max-width:1000px){.engineering-hero{padding:30px}.engineering-orbit{width:150px;height:150px;margin-right:20px}.engineering-pipeline{grid-template-columns:repeat(2,1fr)}.engineering-pipeline svg:last-child{display:none}}
+@media(max-width:650px){.engineering-hero{padding:25px}.engineering-orbit{display:none}.engineering-stats{grid-template-columns:repeat(2,1fr);gap:10px}.engineering-stats .panel{padding:16px}.engineering-grid{grid-template-columns:1fr}.engineering-tabs button{padding:13px 10px;font-size:11px}.engineering-toolbar label{flex-basis:100%}.engineering-network{flex-direction:column}.engineering-peer{padding:6px}.engineering-architecture .panel{padding:20px}.engineering-pipeline{gap:10px}.engineering-pipeline>div{padding:13px}.engineering-status{float:none;margin-left:6px}.engineering-hero p{font-size:12px}}

@@ -16,6 +16,7 @@ import type { Construct } from "constructs";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as kms from "aws-cdk-lib/aws-kms";
 import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
+import * as cloudtrail from "aws-cdk-lib/aws-cloudtrail";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as origins from "aws-cdk-lib/aws-cloudfront-origins";
@@ -139,6 +140,26 @@ class Foundation extends Stack {
       new CfnOutput(this, `${name}Table`, { value: table.tableName });
     }
     new CfnOutput(this, "EncryptionKey", { value: key.keyArn });
+    const trailArn = `arn:aws:cloudtrail:${region}:${account}:trail/FreshRouteAudit`;
+    key.addToResourcePolicy(new iam.PolicyStatement({
+      principals: [new iam.ServicePrincipal("cloudtrail.amazonaws.com")],
+      actions: ["kms:GenerateDataKey*", "kms:DescribeKey"],
+      resources: ["*"],
+      conditions: { StringEquals: { "aws:SourceArn": trailArn }, StringLike: { "kms:EncryptionContext:aws:cloudtrail:arn": trailArn } },
+    }));
+    const trail = new cloudtrail.Trail(this, "AuditTrail", {
+      trailName: "FreshRouteAudit", bucket: this.buckets.audit,
+      s3KeyPrefix: "audit", encryptionKey: key,
+      isMultiRegionTrail: true, includeGlobalServiceEvents: true,
+      enableFileValidation: true,
+      managementEvents: cloudtrail.ReadWriteType.WRITE_ONLY,
+      sendToCloudWatchLogs: false,
+    });
+    trail.addS3EventSelector([{ bucket: this.buckets.reports, objectPrefix: "exports/" }], {
+      readWriteType: cloudtrail.ReadWriteType.ALL,
+      includeManagementEvents: false,
+    });
+    new CfnOutput(this, "AuditTrailArn", { value: trail.trailArn });
     if (this.node.tryGetContext("cloudFront") === "enabled") {
       const router = new cloudfront.Function(this, "SpaRoutes", {
         code: cloudfront.FunctionCode.fromInline(

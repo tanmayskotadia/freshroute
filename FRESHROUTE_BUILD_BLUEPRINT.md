@@ -1,6 +1,6 @@
 # FreshRoute: phase-by-phase build blueprint
 
-Revised 22 October 2026. Phases 0-7 are implemented and deployed in account 118462784511. Phase 7 passed 19 live checks, including actual AI generation, caching, exact scenario draft values and atomic split reservations; 47 local tests pass. The prior release passed 31 Phase 5/6 regression checks. Test users and files were cleaned. Browser visual QA, email delivery and CloudFront verification remain limitations. See docs/phase-7/RELEASE_STATUS.md for current evidence. The active AI transport is external; the optional Bedrock adapter remains account-restricted. Engineering labs and later phases remain planned. Read with FRESHROUTE_IMPLEMENTATION_ROADMAP.md; this blueprint supersedes its original schedule.
+Revised 23 October 2026. Phases 0-8 are implemented in account 118462784511. Phase 8 added retained audit/monitoring/budget resources and verified disposable compute, network, storage, security, queue-recovery and SQL/DMS labs. All five lab stacks were deleted and residual resources checked. All 49 local tests and 19 live main-app regression checks pass. See docs/phase-8/RELEASE_STATUS.md for evidence and limitations. Phase 9 remains separate. Study labels remain explicit for expensive, physical and restricted services.
 
 ## 1. Final direction
 
@@ -128,7 +128,7 @@ Multi-AZ, read replicas and Aurora receive separate architecture/SQL compatibili
 
 ## 6. Complete syllabus audit
 
-**Audit result: every named syllabus service and topic has a place below. Not every service is a live deployment.** Core = intended main deployment; Lab = planned short-lived experiment; Study = design/comparison/history. All are currently planned. Expensive lab subfeatures can fall back to Study with transparent evidence labeling.
+**Audit result: every named syllabus service and topic has a place below. Not every service is a live deployment.** Core = main deployment; Lab = short-lived experiment; Study = design/comparison/history. Current implementation and verification are recorded in docs/phase-8/ and the evidence register; this table is a coverage map, not proof every service runs. Expensive lab subfeatures can fall back to Study with transparent evidence labeling.
 
 | Module | Service/topic | Planned treatment and evidence |
 |---|---|---|
@@ -237,7 +237,7 @@ Exit: LLM numbers match stored results, unsupported responses are rejected, a ti
 
 ### Phase 8 - Cloud engineering, security and migration labs
 
-Build: short-lived compute/network stack, EBS/EFS experiment, SSM access, ALB/ASG behavior, peering, scoped Config/WAF experiments, RDS fixture integration and a DMS lab if its estimate fits. Add KMS report encryption, the audit bucket/trail and monitoring dashboard. Run one lab group at a time.
+Built and verified: private ALB/two-worker compute, EBS/EFS, SSM, peering, replacement and controlled scale-out, WAF, Config drift/remediation, RDS TLS fixture, DMS full-load reconciliation and isolated DLQ replay. Audit, monitoring and gross-cost budget resources remain. All five disposable lab stacks were removed after evidence capture. See docs/phase-8/.
 
 Exit: a service has real evidence or an explicit Study label. Explain each failure/availability/scale test, networking path, cost and cleanup. Delete the disposable lab groups after capturing verification. Preserve the main application's functionality without them.
 

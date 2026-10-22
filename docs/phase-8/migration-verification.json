@@ -1,0 +1,112 @@
+{
+  "checks": {
+    "sourceAndTargetConnected": true,
+    "threeSourceRows": true,
+    "threeTargetRows": true,
+    "exactRowsEqual": true,
+    "sqlTlsVerified": true,
+    "tableLoadCompleted": true
+  },
+  "task": {
+    "status": "running",
+    "statistics": {
+      "FullLoadProgressPercent": 0,
+      "ElapsedTimeMillis": 0,
+      "TablesLoaded": 0,
+      "TablesLoading": 0,
+      "TablesQueued": 0,
+      "TablesErrored": 0
+    }
+  },
+  "tables": [
+    {
+      "SchemaName": "legacy",
+      "TableName": "shipments",
+      "Inserts": 0,
+      "Deletes": 0,
+      "Updates": 0,
+      "Ddls": 0,
+      "AppliedInserts": 0,
+      "AppliedDeletes": 0,
+      "AppliedUpdates": 0,
+      "AppliedDdls": 0,
+      "FullLoadRows": 3,
+      "FullLoadCondtnlChkFailedRows": 0,
+      "FullLoadErrorRows": 0,
+      "FullLoadStartTime": "2026-10-22T18:03:54.071000+00:00",
+      "FullLoadEndTime": "2026-10-22T18:03:54.239000+00:00",
+      "FullLoadReloaded": false,
+      "LastUpdateTime": "2026-10-22T18:04:12.026000+00:00",
+      "TableState": "Table completed",
+      "ValidationPendingRecords": 0,
+      "ValidationFailedRecords": 0,
+      "ValidationSuspendedRecords": 0,
+      "ValidationState": "Not enabled",
+      "ResyncState": "Not enabled",
+      "ResyncRowsAttempted": 0,
+      "ResyncRowsSucceeded": 0,
+      "ResyncRowsFailed": 0,
+      "ResyncProgress": 0
+    }
+  ],
+  "sql": {
+    "sourceRows": 3,
+    "targetRows": 3,
+    "identical": true,
+    "source": [
+      {
+        "id": "LEG-101",
+        "produce": "banana",
+        "quantity_grams": 120000,
+        "value_paise": 420000
+      },
+      {
+        "id": "LEG-102",
+        "produce": "tomato",
+        "quantity_grams": 80000,
+        "value_paise": 216000
+      },
+      {
+        "id": "LEG-103",
+        "produce": "mango",
+        "quantity_grams": 60000,
+        "value_paise": 510000
+      }
+    ],
+    "target": [
+      {
+        "id": "LEG-101",
+        "produce": "banana",
+        "quantity_grams": 120000,
+        "value_paise": 420000
+      },
+      {
+        "id": "LEG-102",
+        "produce": "tomato",
+        "quantity_grams": 80000,
+        "value_paise": 216000
+      },
+      {
+        "id": "LEG-103",
+        "produce": "mango",
+        "quantity_grams": 60000,
+        "value_paise": 510000
+      }
+    ],
+    "tls": {
+      "ssl": true,
+      "version": "TLSv1.3"
+    },
+    "fixtureOnly": true
+  },
+  "connections": [
+    {
+      "status": "successful",
+      "endpoint": "freshroute-lab-source"
+    },
+    {
+      "status": "successful",
+      "endpoint": "freshroute-lab-target"
+    }
+  ]
+}

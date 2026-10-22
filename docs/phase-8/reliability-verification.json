@@ -1,0 +1,17 @@
+{
+  "checks": {
+    "poisonReachedDlq": true,
+    "controlledReplayProcessed": true
+  },
+  "pass": true,
+  "detail": {
+    "fixtureId": "phase8-02c8fd13785040fa8385384577c96802",
+    "originalMessageId": "ef953b78-3ef8-4d7f-af92-b1a36e82dfc6",
+    "dlqReceiveCount": "3",
+    "replayMessageId": "22500654-4677-449a-9413-bc6205e4944b",
+    "processingEvidence": [
+      "{\"stage\": \"FIXTURE_PROCESSED\", \"fixtureId\": \"phase8-02c8fd13785040fa8385384577c96802\"}\n"
+    ]
+  },
+  "scope": "Isolated disposable queues only. At-least-once delivery; no exactly-once assertion."
+}

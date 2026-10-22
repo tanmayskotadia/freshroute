@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "key": "index.html",
+      "bytes": 637,
+      "contentType": "text/html",
+      "version": "2DcfoQFZ1ghm5I4pklp6C0xE_gkDJ_Dc",
+      "matchesReleaseBytes": true
+    },
+    {
+      "key": "cloud-config.json",
+      "bytes": 403,
+      "contentType": "application/json",
+      "version": "yIZEf2uguCESw3zpL0iYHrwdjoBUigxQ",
+      "matchesReleaseBytes": true
+    },
+    {
+      "key": "assets/index-BKEhd76f.js",
+      "bytes": 402175,
+      "contentType": "application/javascript",
+      "version": "nplXBNrbisJI7qO75bwrAqbDnBktlZgu",
+      "matchesReleaseBytes": true
+    },
+    {
+      "key": "assets/index-BMC7_rbQ.css",
+      "bytes": 81376,
+      "contentType": "text/css",
+      "version": "m3dgM09Cr9B9Aaa2IprL6YnUOlbeH9b5",
+      "matchesReleaseBytes": true
+    }
+  ],
+  "allReleaseBytesMatch": true,
+  "verifiedAtUtc": "2026-10-22T19:29:47.289744+00:00"
+}

@@ -1,0 +1,130 @@
+{
+  "checks": {
+    "trailLogging": true,
+    "actualAuditObjectDelivered": true,
+    "digestDelivered": true,
+    "auditObjectKmsEncrypted": true,
+    "trailValidationEnabled": true,
+    "dashboardConfigured": true,
+    "alarmTransitionsObserved": true,
+    "alarmNotificationActionSucceeded": true,
+    "grossBudgetConfigured": true,
+    "fiveBudgetThresholds": true
+  },
+  "pass": true,
+  "trailStatus": {
+    "IsLogging": "True",
+    "LatestDeliveryTime": "2026-10-22T17:43:29.340000+00:00",
+    "LatestDigestDeliveryTime": "2026-10-22T17:27:20.106000+00:00"
+  },
+  "auditFile": "audit/AWSLogs/118462784511/CloudTrail/us-east-1/2026/10/22/118462784511_CloudTrail_us-east-1_20261022T1745Z_MSYMepqHNG0y2tfv.json.gz",
+  "auditEncryption": {
+    "algorithm": "aws:kms",
+    "key": "arn:aws:kms:ap-south-1:118462784511:key/b8a54dcf-2595-40ba-b531-cbdacd6838f0"
+  },
+  "alarmHistory": [
+    {
+      "at": "2026-10-22T17:37:36.027000+00:00",
+      "type": "Action",
+      "summary": "Successfully executed action arn:aws:sns:ap-south-1:118462784511:FreshRouteOperationalAlerts"
+    },
+    {
+      "at": "2026-10-22T17:37:35.975000+00:00",
+      "type": "StateUpdate",
+      "summary": "Alarm updated from ALARM to OK"
+    },
+    {
+      "at": "2026-10-22T17:30:36.011000+00:00",
+      "type": "Action",
+      "summary": "Successfully executed action arn:aws:sns:ap-south-1:118462784511:FreshRouteOperationalAlerts"
+    },
+    {
+      "at": "2026-10-22T17:30:35.976000+00:00",
+      "type": "StateUpdate",
+      "summary": "Alarm updated from OK to ALARM"
+    },
+    {
+      "at": "2026-10-22T17:26:36.005000+00:00",
+      "type": "Action",
+      "summary": "Successfully executed action arn:aws:sns:ap-south-1:118462784511:FreshRouteOperationalAlerts"
+    },
+    {
+      "at": "2026-10-22T17:26:35.977000+00:00",
+      "type": "StateUpdate",
+      "summary": "Alarm updated from INSUFFICIENT_DATA to OK"
+    },
+    {
+      "at": "2026-10-22T17:26:04.025000+00:00",
+      "type": "ConfigurationUpdate",
+      "summary": "Alarm \"FreshRoute-AlarmCanary\" created"
+    }
+  ],
+  "alarms": [
+    {
+      "name": "FreshRoute-AiFallbacks",
+      "state": "OK"
+    },
+    {
+      "name": "FreshRoute-AlarmCanary",
+      "state": "OK"
+    },
+    {
+      "name": "FreshRoute-AnalysisWorkerErrors",
+      "state": "OK"
+    },
+    {
+      "name": "FreshRoute-CopilotErrors",
+      "state": "OK"
+    },
+    {
+      "name": "FreshRoute-FreshRouteImportDLQDepth",
+      "state": "ALARM"
+    },
+    {
+      "name": "FreshRoute-FreshRouteOutboxStreamFailuresDepth",
+      "state": "OK"
+    },
+    {
+      "name": "FreshRoute-FreshRoutePostDecisionDLQDepth",
+      "state": "OK"
+    },
+    {
+      "name": "FreshRoute-ImportWorkerErrors",
+      "state": "OK"
+    },
+    {
+      "name": "FreshRoute-OutboxBridgeErrors",
+      "state": "OK"
+    },
+    {
+      "name": "FreshRoute-PostDecisionWorkerErrors",
+      "state": "OK"
+    },
+    {
+      "name": "FreshRoute-WebErrors",
+      "state": "OK"
+    },
+    {
+      "name": "FreshRoute-WorkflowFailures",
+      "state": "OK"
+    },
+    {
+      "name": "FreshRoute-WorkspaceApiErrors",
+      "state": "OK"
+    }
+  ],
+  "budget": {
+    "limit": {
+      "Amount": "200.0",
+      "Unit": "USD"
+    },
+    "thresholds": [
+      100,
+      150,
+      180,
+      25,
+      50
+    ]
+  },
+  "note": "No digest-chain cryptographic validation or email delivery assertion; existing production DLQ contents are preserved for review."
+}

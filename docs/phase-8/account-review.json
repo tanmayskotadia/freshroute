@@ -1,0 +1,13 @@
+{
+  "freeTier": {
+    "accountId": "118462784511",
+    "accountPlanType": "FREE",
+    "accountPlanStatus": "ACTIVE",
+    "accountPlanRemainingCredits": {
+      "amount": 179.94,
+      "unit": "USD"
+    },
+    "accountPlanExpirationDate": "2027-02-28T14:11:22.284000+00:00"
+  },
+  "trustedAdvisor": "An error occurred (SubscriptionRequiredException) when calling the DescribeTrustedAdvisorChecks operation: Amazon Web Services Premium Support Subscription is required to use this service."
+}

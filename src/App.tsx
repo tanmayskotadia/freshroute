@@ -2,6 +2,7 @@ import { Workflow } from "lucide-react";
 import { CloudOperations } from "./cloud/CloudOperations";
 import { Fulfilment } from "./cloud/Fulfilment";
 import { OutcomeAnalytics } from "./cloud/OutcomeAnalytics";
+import { CloudEngineering } from "./cloud/CloudEngineering";
 import { CloudData } from "./cloud/CloudData";
 import { useCloud } from "./cloud/CloudRuntime";
 import React, { useEffect, useState } from "react";
@@ -1233,134 +1234,13 @@ export default function App() {
                 onRetry={refresh}
               />
             ))}
-          {path === "/evidence" && (
-            <>
-              <Heading
-                eyebrow="BUILT TO BE EXPLAINED"
-                title="A clear view behind the experience."
-                description="The intended architecture, honest implementation status and the next checkpoints."
-              />
-              <div className="notice blue">
-                <Network size={20} />
-                <p>
-                  {runtime.config
-                    ? `Deployment stage ${runtime.config.phase || 4}: authenticated cloud workflows are configured from verified AWS stack outputs. CloudFront remains blocked by account verification; HTTPS uses API Gateway and Lambda.`
-                    : "Local calculations are available. Deployment details appear when a verified cloud configuration is present."}
-                </p>
-              </div>
-              <div className="evidence-flow">
-                {[
-                  {
-                    icon: Leaf,
-                    title: "Observe",
-                    text: "Inspect a shipment and its conditions.",
-                  },
-                  {
-                    icon: FlaskConical,
-                    title: "Simulate",
-                    text: "Calculate and compare feasible rescue options.",
-                  },
-                  {
-                    icon: CheckCheck,
-                    title: "Decide",
-                    text: "Review a calculated local plan without reserving capacity.",
-                  },
-                  {
-                    icon: FileText,
-                    title: "Verify",
-                    text: "Build the evidence trail in later phases.",
-                  },
-                ].map(({ icon: Icon, title, text }) => (
-                  <section className="panel" key={title}>
-                    <Icon size={25} />
-                    <h2>{title}</h2>
-                    <p>{text}</p>
-                  </section>
-                ))}
-              </div>
-              <section className="panel">
-                <PanelTitle
-                  title="From interface to cloud"
-                  subtitle="Deployment status from the verified configuration; later services remain explicitly planned."
-                />
-                <div className="service-list">
-                  {[
-                    [
-                      "S3 + KMS",
-                      "Four private versioned buckets; reports and audit encryption",
-                      (runtime.config?.phase || 0) >= 4
-                        ? "Deployed"
-                        : "Planned",
-                    ],
-                    [
-                      "CloudFront + OAC",
-                      "CDN architecture is ready; AWS account verification is required",
-                      runtime.config?.hosting === "api-gateway-fallback"
-                        ? "Blocked by AWS"
-                        : "Planned",
-                    ],
-                    [
-                      "Cognito + API Gateway + Lambda",
-                      "Signed-in API access, owner-scoped records and HTTPS frontend",
-                      runtime.config ? "Deployed" : "Planned",
-                    ],
-                    [
-                      "DynamoDB",
-                      "Conditional versions, transactions and saved analysis records",
-                      runtime.config ? "Deployed" : "Planned",
-                    ],
-                    [
-                      "SQS + Step Functions",
-                      "Queued CSV validation and observable calculation jobs",
-                      (runtime.config?.phase || 0) >= 5
-                        ? "Deployed"
-                        : "Planned",
-                    ],
-                    [
-                      "DynamoDB Streams + SNS + reports",
-                      "Post-reservation reports and notifications",
-                      (runtime.config?.phase || 0) >= 6
-                        ? "Deployed"
-                        : "Planned",
-                    ],
-                    [
-                      "AI copilot",
-                      "Grounded explanations and scenario drafts",
-                      (runtime.config?.phase || 0) >= 7
-                        ? "Integrated; availability shown in responses"
-                        : "Planned",
-                    ],
-                    [
-                      "CloudWatch logs + IAM",
-                      "Request traces, short retention and scoped execution roles",
-                      runtime.config ? "Deployed" : "Planned",
-                    ],
-                    [
-                      "CloudTrail",
-                      "Audit trail delivery to the private audit bucket",
-                      "Planned",
-                    ],
-                  ].map(([name, desc, status]) => (
-                    <div className="service-row" key={name}>
-                      <div>
-                        <strong>{name}</strong>
-                        <p>{desc}</p>
-                      </div>
-                      <Badge tone={status === "Deployed" ? "green" : "gray"}>
-                        {status}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            </>
-          )}
+          {path === "/evidence" && <CloudEngineering />}
           <footer className="footer">
             <span>
               <Leaf size={13} />
               FreshRoute · Thoughtful decisions, fresher possibilities.
             </span>
-            <span>Academic prototype · Phase 4</span>
+            <span>Academic prototype · Phase 8</span>
           </footer>
         </main>
       </div>

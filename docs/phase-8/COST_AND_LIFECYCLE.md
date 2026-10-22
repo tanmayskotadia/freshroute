@@ -1,0 +1,17 @@
+# Phase 8 cost and lifecycle controls
+
+Authorized scope: implement Phase 8, within the user's USD 200 project ceiling. Region ap-south-1; account 118462784511. Labs use fictional fixtures and are deleted after evidence capture. No commitments, Shield Advanced, NAT Gateway, Multi-AZ database, paid support upgrade or provisioned AI throughput.
+
+Price List API checked 22 October 2026: Linux t3.micro USD 0.0112/hour; ALB USD 0.0239/hour plus USD 0.008/LCU-hour; gp3 EBS USD 0.0912/GB-month; EFS Standard USD 0.33/GB-month; db.t3.micro PostgreSQL Single-AZ USD 0.026/hour. WAF base USD 5/web ACL-month plus USD 1/rule-month, prorated hourly, and standard request charges. These are gross regional unit prices, not guaranteed Free Tier coverage. Public IPv4, cross-AZ transfer, storage, Config evaluations and logging are additional.
+
+Compute group: at most two t3.micro workers, 8 GB encrypted gp3 each, one private ALB, one regional WAF rule, tiny EFS fixture, two VPCs and a private Lambda probe. Active target under two hours; conservative gross allowance USD 5 including miscellaneous usage. ASG has a scheduled scale-to-zero after two hours; this is a partial guard, not stack deletion. ALB/EFS/WAF must still be deleted. No live user data enters this group.
+
+Relational group: one private disposable db.t3.micro with 20 GB encrypted gp3, TLS enforcement, managed master secret, and a private SQL client Lambda. DMS t3.small Single-AZ pricing was confirmed at USD 0.053/hour; its two-hour compute cost plus RDS compute is USD 0.158, before storage and miscellaneous usage. Both fit a conservative combined USD 5 allowance. Single-AZ, no backups, no deletion protection and no final snapshot are deliberate disposable-fixture choices, unsuitable for production. The full-load task renames legacy into warehouse on the same disposable RDS instance; this demonstrates migration mechanics, not an observed on-premises migration. No CDC claim without a separate observed CDC test.
+
+Security experiment: Config recording is limited to lab security groups and stopped after the configuration/recheck experiment. It does not continuously record the whole account. No change is made to an existing recorder. WAF is attached only to the compatible disposable ALB, not claimed on the production HTTP API.
+
+Retained group: CloudWatch dashboard, bounded alarms, one custom fallback metric, operational SNS metadata topic, gross-cost budget and encrypted CloudTrail delivery to the existing audit bucket. Budget notifications at USD 25/50/100/150/180 are delayed alerts, not a spending cap. The monthly USD 200 budget is an early-warning proxy for the total project ceiling, not a lifetime cost calculation. Ongoing logs, metrics, alarms, storage, KMS and secret charges remain after labs are deleted; review before retaining beyond evaluation.
+
+Cost Explorer returned estimated month-to-date gross cost USD 0.0000150018 excluding credits/refunds during preflight. This is delayed billing data and does not establish final charges. Keep the USD 55 contingency allocation untouched; stop/redesign any lab that approaches its allocation.
+
+Cleanup order: DMS tasks/endpoints/instance, SQL stack, Config experiment, compute stack. Verify termination of EC2, deletion of ALB/EFS/mount targets and absence of tagged lab ENIs, volumes, RDS and DMS resources. Keep main Foundation, Application and Operations stacks, historical evidence and audit logs. Do not delete retained user buckets or tables.
