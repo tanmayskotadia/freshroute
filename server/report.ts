@@ -43,7 +43,12 @@ export async function reservationPdf(r: Reservation) {
     ["Shipment", r.shipmentId],
     ["Produce", r.produce],
     ["Quantity", `${r.quantity} kg`],
-    ["Receiving destination", r.destination],
+    [
+      "Receiving destination",
+      r.allocations
+        ? "Multiple destinations - see allocation page"
+        : r.destination,
+    ],
     ["Selected action", r.candidateName],
     ["Additional cost", `INR ${(r.costPaise / 100).toFixed(2)}`],
     ["Model-estimated loss", `${r.estimatedLossKg.toFixed(2)} kg`],
@@ -97,5 +102,48 @@ export async function reservationPdf(r: Reservation) {
     muted,
   );
   text(`${r.id} / v${r.version}`, 40, 7, false, muted);
+  if (r.allocations?.length) {
+    const extra = doc.addPage([595, 842]);
+    extra.drawText("FreshRoute / Split receiving record", {
+      x: 44,
+      y: 782,
+      size: 20,
+      font: bold,
+      color: ink,
+    });
+    extra.drawText(`${r.shipmentId} - ${r.quantity} kg - ${r.status}`, {
+      x: 44,
+      y: 748,
+      size: 12,
+      font: regular,
+      color: ink,
+    });
+    r.allocations.forEach((part, i) => {
+      const y = 686 - i * 130;
+      extra.drawText(clean(part.destination).slice(0, 65), {
+        x: 44,
+        y,
+        size: 14,
+        font: bold,
+        color: ink,
+      });
+      extra.drawText(
+        `${part.quantityGrams / 1000} kg | INR ${(part.costPaise / 100).toFixed(2)} planned extra cost`,
+        { x: 44, y: y - 28, size: 11, font: regular, color: ink },
+      );
+      extra.drawText(
+        `Quality index ${part.qualityIndex.toFixed(2)} | estimated loss ${part.estimatedLossKg.toFixed(2)} kg`,
+        { x: 44, y: y - 51, size: 11, font: regular, color: muted },
+      );
+    });
+    extra.drawText(
+      "Allocations share one status and release capacity together.",
+      { x: 44, y: 175, size: 11, font: regular, color: muted },
+    );
+    extra.drawText(
+      "Illustrative model estimates; not partner acceptance or food-safety certification.",
+      { x: 44, y: 145, size: 10, font: regular, color: muted },
+    );
+  }
   return doc.save();
 }

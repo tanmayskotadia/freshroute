@@ -3,6 +3,7 @@ import { mkdirSync } from "node:fs";
 mkdirSync("build/api", { recursive: true });
 await build({
   entryPoints: [
+    "server/copilot.ts",
     "server/api.ts",
     "server/probe.ts",
     "server/importWorker.ts",

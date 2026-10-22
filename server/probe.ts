@@ -1,14 +1,39 @@
 import { defaultOptions, sourceSignature } from "../src/model/engine.ts";
 import { verify6 } from "./probe6.ts";
 import { verify5 } from "./probe5.ts";
+import { verify7 } from "./probe7.ts";
 export async function handler(event: {
   tokenA: string;
   tokenB: string;
   health?: boolean;
   phase6?: boolean;
   phase5?: boolean;
+  phase7?: boolean;
+  quotaCheck?: string;
 }) {
   const api = process.env.API_URL!;
+  if (event.quotaCheck) {
+    const r = await fetch(api + "/v1/copilot", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${event.tokenA}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        runId: event.quotaCheck,
+        mode: "explain",
+        question: "Verify daily limit.",
+      }),
+    });
+    const data = await r.json();
+    return {
+      dailyLimitWorks:
+        r.status === 200 &&
+        data.provenance === "FALLBACK" &&
+        data.reason === "DAILY_LIMIT",
+    };
+  }
+  if (event.phase7) return verify7(event.tokenA, event.tokenB);
   if (event.phase6) return verify6([event.tokenA, event.tokenB]);
   if (event.phase5) return verify5(event.tokenA, event.tokenB);
   if (event.health) {

@@ -1,6 +1,7 @@
 export type ReservationState =
   "CONFIRMED" | "DISPATCHED" | "DELIVERED" | "CANCELLED";
 export type Reservation = {
+  allocations?: import("../model/insights.ts").SplitPart[];
   id: string;
   runId: string;
   shipmentId: string;

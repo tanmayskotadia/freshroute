@@ -1,6 +1,7 @@
 import { Workflow } from "lucide-react";
 import { CloudOperations } from "./cloud/CloudOperations";
 import { Fulfilment } from "./cloud/Fulfilment";
+import { OutcomeAnalytics } from "./cloud/OutcomeAnalytics";
 import { CloudData } from "./cloud/CloudData";
 import { useCloud } from "./cloud/CloudRuntime";
 import React, { useEffect, useState } from "react";
@@ -72,6 +73,7 @@ const links: { label: string; path: string; icon: LucideIcon }[] = [
   { label: "Local data", path: "/settings", icon: Database },
   { label: "Workflow hub", path: "/operations", icon: Workflow },
   { label: "Fulfilment", path: "/fulfilment", icon: Package },
+  { label: "Outcome analytics", path: "/analytics", icon: FlaskConical },
 ];
 function navigate(path: string) {
   window.history.pushState({}, "", path);
@@ -339,6 +341,7 @@ export default function App() {
       "/settings",
       "/operations",
       "/fulfilment",
+      "/analytics",
     ].includes(path);
   const filtered = shipments
     .filter(
@@ -671,11 +674,13 @@ export default function App() {
                                 ? "Workflow hub"
                                 : path === "/fulfilment"
                                   ? "Fulfilment"
-                                  : path === "/settings"
-                                    ? cloud
-                                      ? "Cloud data"
-                                      : "Local data"
-                                    : "Overview"}
+                                  : path === "/analytics"
+                                    ? "Outcome analytics"
+                                    : path === "/settings"
+                                      ? cloud
+                                        ? "Cloud data"
+                                        : "Local data"
+                                      : "Overview"}
             </strong>
           </div>
           <div className="topbar-actions">
@@ -713,7 +718,7 @@ export default function App() {
               {pending
                 ? "Saving changes... wait for confirmation."
                 : cloud
-                  ? "AWS workspace: Cognito sign-in, protected API and DynamoDB persistence. Model parameters are illustrative; no live AI connected."
+                  ? "AWS workspace: private records, shared receiving capacity and explainable model results. Copilot availability is shown with each response."
                   : "Local demo: calculations and saved work stay in this browser. Use AWS sign-in to open the cloud workspace."}
             </span>
             <span className="prototype-version">DESIGN PREVIEW</span>
@@ -1206,6 +1211,7 @@ export default function App() {
           {path === "/fulfilment" && (
             <Fulfilment onNavigate={navigate} onSync={refresh} />
           )}
+          {path === "/analytics" && <OutcomeAnalytics />}
           {path === "/settings" &&
             (cloud ? (
               <CloudData
@@ -1318,9 +1324,11 @@ export default function App() {
                         : "Planned",
                     ],
                     [
-                      "Amazon Bedrock",
+                      "AI copilot",
                       "Grounded explanations and scenario drafts",
-                      "Planned",
+                      (runtime.config?.phase || 0) >= 7
+                        ? "Integrated; availability shown in responses"
+                        : "Planned",
                     ],
                     [
                       "CloudWatch logs + IAM",

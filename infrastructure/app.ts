@@ -1,5 +1,6 @@
 import { provisionWorkflows } from "./workflows.ts";
 import { provisionFulfilment } from "./fulfilment.ts";
+import { provisionCopilot } from "./copilot.ts";
 import { readFileSync } from "node:fs";
 import {
   App,
@@ -14,6 +15,7 @@ import {
 import type { Construct } from "constructs";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as kms from "aws-cdk-lib/aws-kms";
+import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as origins from "aws-cdk-lib/aws-cloudfront-origins";
@@ -42,6 +44,15 @@ class Foundation extends Stack {
       enableKeyRotation: true,
       removalPolicy: RemovalPolicy.RETAIN,
       description: "FreshRoute reports and audit encryption",
+    });
+    const copilotSecret = new secretsmanager.CfnSecret(this, "CopilotApiKey", {
+      name: "freshroute/copilot-api-key",
+      description:
+        "Server-side AI API credential. Store a JSON apiKey field through the AWS console; no key is stored in source.",
+    });
+    copilotSecret.applyRemovalPolicy(RemovalPolicy.RETAIN);
+    new CfnOutput(this, "CopilotApiKeySecretName", {
+      value: "freshroute/copilot-api-key",
     });
     for (const name of ["web", "data", "reports", "audit"]) {
       const bucket = new s3.Bucket(this, name, {
@@ -111,6 +122,7 @@ class Foundation extends Stack {
         deletionProtection: true,
         stream:
           name === "Activity" ? dynamodb.StreamViewType.NEW_IMAGE : undefined,
+        timeToLiveAttribute: name === "Activity" ? "expiresAt" : undefined,
         removalPolicy: RemovalPolicy.RETAIN,
       });
       if (name === "Activity")
@@ -130,7 +142,7 @@ class Foundation extends Stack {
     if (this.node.tryGetContext("cloudFront") === "enabled") {
       const router = new cloudfront.Function(this, "SpaRoutes", {
         code: cloudfront.FunctionCode.fromInline(
-          "function handler(event) { var r = event.request; if (r.uri === '/' || /^\\/(overview|shipments|rescue|runs|network|history|settings|evidence|welcome|sign-in|auth|operations|fulfilment)(\\/|$)/.test(r.uri) && !/\\.[^/]+$/.test(r.uri)) r.uri = '/index.html'; return r; }",
+          "function handler(event) { var r = event.request; if (r.uri === '/' || /^\\/(overview|shipments|rescue|runs|network|history|settings|evidence|welcome|sign-in|auth|operations|fulfilment|analytics)(\\/|$)/.test(r.uri) && !/\\.[^/]+$/.test(r.uri)) r.uri = '/index.html'; return r; }",
         ),
         runtime: cloudfront.FunctionRuntime.JS_2_0,
       });
@@ -420,6 +432,24 @@ class Application extends Stack {
       { jwtAudience: [client.userPoolClientId] },
     );
     const integration = new HttpLambdaIntegration("Workspace", fn);
+    const copilot = provisionCopilot(this, {
+      code: lambda.Code.fromBucket(
+        foundation.buckets.data,
+        artifactKey.valueAsString,
+        artifactVersion.valueAsString,
+      ),
+      runs: foundation.tables.Runs,
+      activity: foundation.tables.Activity,
+      clientId: client.userPoolClientId,
+      poolId: pool.userPoolId,
+    });
+    api.addRoutes({
+      path: "/v1/copilot",
+      methods: [apigw.HttpMethod.POST],
+      integration: new HttpLambdaIntegration("Copilot", copilot),
+      authorizer,
+      authorizationScopes: ["openid", "aws.cognito.signin.user.admin"],
+    });
     api.addRoutes({
       path: "/v1/workspace",
       methods: [apigw.HttpMethod.GET],
@@ -518,5 +548,5 @@ const foundation = new Foundation(app, "FreshRouteFoundation");
 new Application(app, "FreshRouteApplication", foundation);
 Tags.of(app).add("Project", "FreshRoute");
 Tags.of(app).add("Environment", "academic");
-Tags.of(app).add("Phase", "6");
+Tags.of(app).add("Phase", "7");
 app.synth();

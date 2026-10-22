@@ -1,0 +1,52 @@
+{
+  "verification": {
+    "checks": {
+      "unauthenticatedCopilotDenied": true,
+      "foreignRunDenied": true,
+      "invalidModeDenied": true,
+      "copilotReturnsLabelledEvidence": true,
+      "numbersMatchSavedFacts": true,
+      "fallbackDoesNotInventDraft": true,
+      "promptCannotWrite": true,
+      "splitPlanConservesMass": true,
+      "invalidSplitRejected": true,
+      "allSplitCapacitiesReserved": true,
+      "splitRetryIdempotent": true,
+      "splitReportReady": true,
+      "splitPdfDownload": true,
+      "allSplitCapacityReleased": true,
+      "analyticsRouteServed": true
+    },
+    "detail": {
+      "runId": "RUN-6438d704-8a53-4f35-aae7-cf9a42d9bc38",
+      "copilotProvenance": "FALLBACK",
+      "copilotReason": "MODEL_ACCESS_UNAVAILABLE",
+      "reservationId": "RES-RUN-6438d704-8a53-4f35-aae7-cf9a42d9bc38"
+    },
+    "pass": true,
+    "quotaCheck": {
+      "dailyLimitWorks": true
+    },
+    "backgroundEvents": {
+      "pending": 0,
+      "processed": [
+        {
+          "eventId": "RES-RUN-6438d704-8a53-4f35-aae7-cf9a42d9bc38#1",
+          "snsMessageId": "87f86c29-f7c3-5134-a969-0f7db7e1bd90"
+        },
+        {
+          "eventId": "RES-RUN-6438d704-8a53-4f35-aae7-cf9a42d9bc38#2",
+          "snsMessageId": "e70ae1b6-e96a-5261-8a0f-82e2a9493ec5"
+        }
+      ]
+    },
+    "actualStepFunctionsExecutions": []
+  },
+  "cleanup": [
+    {
+      "temporaryUsersDeleted": 2,
+      "ownerPartitionsDeleted": 2,
+      "privateTestFilesDeleted": true
+    }
+  ]
+}

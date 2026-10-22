@@ -1,4 +1,5 @@
 import { useCloud } from "../cloud/CloudRuntime";
+import { DecisionInsights } from "./DecisionInsights";
 import { useMemo, useState } from "react";
 import {
   ArrowLeft,
@@ -150,9 +151,22 @@ export function RescueWorkspace({
   onReview,
 }: Props) {
   const { cloud } = useCloud();
-  const [options, setOptions] = useState<AnalysisOptions>(() =>
-    saved ? structuredClone(saved.input.options) : defaultOptions(shipment),
-  );
+  const [options, setOptions] = useState<AnalysisOptions>(() => {
+    if (saved) return structuredClone(saved.input.options);
+    const key = `freshroute.scenario.${shipment.id}`;
+    try {
+      const raw = sessionStorage.getItem(key);
+      if (raw) {
+        sessionStorage.removeItem(key);
+        const draft = JSON.parse(raw);
+        analyze(makeInput(shipment, destinations, draft));
+        return draft;
+      }
+    } catch {
+      /* Invalid temporary drafts do not replace valid defaults. */
+    }
+    return defaultOptions(shipment);
+  });
   const [selected, setSelected] = useState(
     new URLSearchParams(window.location.search).get("candidate") || "",
   );
@@ -276,6 +290,26 @@ export function RescueWorkspace({
             Explain saved result <Sparkles size={15} />
           </button>
         </div>
+      )}
+      {saved && (
+        <DecisionInsights
+          run={saved}
+          onDraft={(draft) => {
+            sessionStorage.setItem(
+              `freshroute.scenario.${shipment.id}`,
+              JSON.stringify(draft),
+            );
+            onShipment(shipment.id);
+          }}
+          onReserved={() => {
+            void execute(async () => {
+              await repository.refresh?.();
+            }).then(() => {
+              window.history.pushState({}, "", "/fulfilment");
+              window.dispatchEvent(new PopStateEvent("popstate"));
+            });
+          }}
+        />
       )}
       <div className="lab-grid computed-lab">
         <section className="panel lab-controls">

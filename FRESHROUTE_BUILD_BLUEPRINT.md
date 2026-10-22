@@ -1,6 +1,6 @@
 # FreshRoute: phase-by-phase build blueprint
 
-Revised 22 October 2026. This is the implementation blueprint. Current progress: Phases 0-4 are complete; Phase 5 workflows and Phase 6 fulfilment are implemented and deployed in account 118462784511. The final artifact passed 21 Phase 6 checks and 10 CSV-import checks; test cleanup was verified. Email subscription confirmation and browser visual verification remain manual checks. See docs/phase-6/RELEASE_STATUS.md for current evidence. Bedrock and the separate engineering labs remain planned. Read with FRESHROUTE_IMPLEMENTATION_ROADMAP.md; this blueprint supersedes its original schedule and extends its architecture and feature scope.
+Revised 22 October 2026. Phases 0-7 are implemented and deployed in account 118462784511. Phase 7 passed 19 live checks, including actual AI generation, caching, exact scenario draft values and atomic split reservations; 47 local tests pass. The prior release passed 31 Phase 5/6 regression checks. Test users and files were cleaned. Browser visual QA, email delivery and CloudFront verification remain limitations. See docs/phase-7/RELEASE_STATUS.md for current evidence. The active AI transport is external; the optional Bedrock adapter remains account-restricted. Engineering labs and later phases remain planned. Read with FRESHROUTE_IMPLEMENTATION_ROADMAP.md; this blueprint supersedes its original schedule.
 
 ## 1. Final direction
 
@@ -12,7 +12,7 @@ The user supplied a US$200 budget and prioritizes uniqueness, real usefulness, b
 
 ### Three connected architecture layers
 
-1. **Working product:** the full serverless control center with authenticated users, rescue analysis, decision persistence, background work, reports and live Bedrock integration.
+1. **Working product:** the full serverless control center with authenticated users, rescue analysis, decision persistence, background work, reports and a live AI copilot.
 2. **Warehouse/cloud engineering lab:** an on-demand companion stack for EC2, ALB, Auto Scaling, EBS/EFS, VPC and SQL demonstrations using FreshRoute fixtures. It is a real executable extension/comparison, not an always-on dependency of the main product.
 3. **Migration and enterprise design:** a warehouse modernization scenario for DMS, relational availability, hybrid connectivity, SWF comparisons and legacy migration services. Expensive or unavailable services remain clearly identified studies unless actually exercised.
 
@@ -105,7 +105,7 @@ Storage-class coverage: compare Standard, Intelligent-Tiering, IA and Glacier cl
 - **Queues:** separate import and post-decision report/notification queues, each with a DLQ, bounded consumer concurrency, partial failure handling and replay procedures. Distinct workloads can now scale/fail independently.
 - **Events:** DynamoDB Streams on decision state transitions; optional on-demand EventBridge Scheduler incident replay using a dedicated seeded demo, disabled outside rehearsal. Manual replay remains available; never require an always-running schedule.
 - **Messaging:** SNS topic for approved email subscribers and separate application notifications persisted for the inbox. The latter is what read/acknowledge updates modify.
-- **AI:** backend Bedrock adapter, strict structured output validation, result grounding, bounded request budget and a visible deterministic fallback.
+- **AI:** server-side provider adapter, Secrets Manager credential configuration, strict structured output validation, result grounding, bounded request budget and a visible deterministic fallback. The optional Bedrock path is separately documented.
 - **Operations:** CloudWatch dashboard and alarms, CloudTrail trail to audit storage, scoped IAM roles, a KMS report-encryption integration, Budgets and reproducible CloudFormation stacks.
 
 ### Warehouse engineering lab
@@ -231,7 +231,7 @@ Exit: concurrent confirmations cannot overbook a destination; retry does not rep
 
 ### Phase 7 - AI and richer decision features
 
-Build: live Bedrock explanation, validated natural-language what-if drafts, rescue brief, token/cache limits and fallback; then add sensitivity, split allocation and outcome analytics in that order.
+Built and verified: live AI explanation, validated natural-language what-if drafts, rescue brief, token/cache limits and fallback, delay sensitivity, atomic split allocation and outcome analytics. See docs/phase-7/ for deployment and test evidence.
 
 Exit: LLM numbers match stored results, unsupported responses are rejected, a timeout preserves the app flow, and prompts cannot trigger writes. Split quantities conserve mass and respect capacity. Analytics distinguish estimates from recorded results and avoid double counting.
 

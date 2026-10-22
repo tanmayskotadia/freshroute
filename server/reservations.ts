@@ -15,6 +15,7 @@ import {
   networkWrite,
 } from "./network.ts";
 import { grams, transition } from "./reservationRules.ts";
+import { evaluateSplit } from "../src/model/insights.ts";
 const s3 = new S3Client({ region: process.env.AWS_REGION });
 const key = (owner: string, id: string) => ({ owner, id: `RES#${id}` });
 export async function assertShipmentEditable(owner: string, id: string) {
@@ -125,6 +126,22 @@ async function reserve(owner: string, body: any, username: string) {
         "CONFLICT",
         "This run already has another reservation.",
       );
+    if (
+      existing.candidateId === "split" &&
+      JSON.stringify(
+        existing.allocations?.map(
+          ({ candidateId, destinationId, quantityGrams }) => ({
+            candidateId,
+            destinationId,
+            quantityGrams,
+          }),
+        ),
+      ) !== JSON.stringify(body.allocations)
+    )
+      throw new DomainError(
+        "CONFLICT",
+        "This run already has a different split allocation.",
+      );
     return existing;
   } catch (e) {
     if (!(e instanceof DomainError) || e.code !== "NOT_FOUND") throw e;
@@ -143,34 +160,51 @@ async function reserve(owner: string, body: any, username: string) {
       "CONFLICT",
       "Shipment or shared capacity changed. Create a fresh analysis.",
     );
-  const candidate = analyze(run.input).candidates.find(
-    (c) => c.id === body.candidateId,
-  );
+  const split =
+    body.candidateId === "split"
+      ? evaluateSplit(run, body.allocations)
+      : undefined;
+  const candidate = split
+    ? {
+        id: "split",
+        name: "Split receiving allocation",
+        destinationId: split.parts[0].destinationId,
+        destinationName: split.parts.map((p) => p.destination).join(" + "),
+        feasible: true,
+        costPaise: split.costPaise,
+        estimatedLossKg: split.estimatedLossKg,
+      }
+    : analyze(run.input).candidates.find((c) => c.id === body.candidateId);
   if (!candidate?.feasible)
     throw new DomainError(
       "INFEASIBLE",
       "Choose a feasible server-calculated candidate.",
     );
-  const destination = await networkDestination(candidate.destinationId),
-    qty = grams(shipment.quantity),
-    reserved = Math.round(destination.reservedKg * 1000);
-  if (
-    candidate.destinationVersion !== destination.version ||
-    reserved + qty > Math.round(destination.capacity * 1000)
-  )
-    throw new DomainError(
-      "CONFLICT",
-      "Receiving capacity changed. Refresh and run analysis again.",
-    );
-  if (
-    !destination.acceptedProduce.includes(shipment.produce as any) ||
-    !isOpenAt(destination, candidate.arrivalTime) ||
-    candidate.arrivalDayOffset !== 0
-  )
-    throw new DomainError(
-      "INFEASIBLE",
-      "The receiving rules do not allow this arrival.",
-    );
+  const qty = grams(shipment.quantity);
+  const checks = split
+    ? split.parts
+    : [
+        {
+          destinationId: candidate.destinationId,
+          quantityGrams: qty,
+          destinationVersion: (candidate as any).destinationVersion,
+        },
+      ];
+  const capacities = await Promise.all(
+    checks.map(async (part) => {
+      const destination = await networkDestination(part.destinationId),
+        reserved = Math.round(destination.reservedKg * 1000);
+      if (
+        part.destinationVersion !== destination.version ||
+        reserved + part.quantityGrams > Math.round(destination.capacity * 1000)
+      )
+        throw new DomainError(
+          "CONFLICT",
+          "Receiving capacity changed. Refresh and run analysis again.",
+        );
+      return { destination, reserved, quantityGrams: part.quantityGrams };
+    }),
+  );
   const at = new Date().toISOString();
   const r: Reservation = {
     id,
@@ -178,8 +212,9 @@ async function reserve(owner: string, body: any, username: string) {
     shipmentId: shipment.id,
     candidateId: candidate.id,
     candidateName: candidate.name,
-    destinationId: destination.id,
-    destination: destination.name,
+    destinationId: split ? "split" : candidate.destinationId,
+    destination: candidate.destinationName,
+    ...(split ? { allocations: split.parts } : {}),
     produce: shipment.produce,
     quantity: shipment.quantity,
     quantityGrams: qty,
@@ -201,12 +236,6 @@ async function reserve(owner: string, body: any, username: string) {
   const after = structuredClone(w);
   after.revision++;
   after.decisions.unshift({ ...r });
-  const capacity = {
-    ...destination,
-    reservedKg: (reserved + qty) / 1000,
-    version: destination.version + 1,
-    updatedAt: at,
-  };
   const lock = {
     Put: {
       TableName: activityTable,
@@ -216,7 +245,14 @@ async function reserve(owner: string, body: any, username: string) {
   };
   await saveWorkspace(owner, w, after, loaded.persisted, [
     reservationWrite(owner, r),
-    networkWrite(destination, capacity),
+    ...capacities.map(({ destination, reserved, quantityGrams }) =>
+      networkWrite(destination, {
+        ...destination,
+        reservedKg: (reserved + quantityGrams) / 1000,
+        version: destination.version + 1,
+        updatedAt: at,
+      }),
+    ),
     eventWrite(owner, r, username),
     lock,
   ]);
@@ -256,22 +292,26 @@ async function change(owner: string, id: string, body: any, username: string) {
     eventWrite(owner, next, username),
   ];
   if (rule.release) {
-    const destination = await networkDestination(r.destinationId);
-    const remaining =
-      Math.round(destination.reservedKg * 1000) - r.quantityGrams;
-    if (remaining < 0)
-      throw new DomainError(
-        "CONFLICT",
-        "Capacity ledger requires review. No capacity was changed.",
+    for (const allocation of r.allocations || [
+      { destinationId: r.destinationId, quantityGrams: r.quantityGrams },
+    ]) {
+      const destination = await networkDestination(allocation.destinationId);
+      const remaining =
+        Math.round(destination.reservedKg * 1000) - allocation.quantityGrams;
+      if (remaining < 0)
+        throw new DomainError(
+          "CONFLICT",
+          "Capacity ledger requires review. No capacity was changed.",
+        );
+      writes.push(
+        networkWrite(destination, {
+          ...destination,
+          reservedKg: remaining / 1000,
+          version: destination.version + 1,
+          updatedAt: at,
+        }),
       );
-    writes.push(
-      networkWrite(destination, {
-        ...destination,
-        reservedKg: remaining / 1000,
-        version: destination.version + 1,
-        updatedAt: at,
-      }),
-    );
+    }
   }
   if (target === "CANCELLED")
     writes.push({

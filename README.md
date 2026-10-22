@@ -4,13 +4,13 @@ Perishable-shipment rescue and decision support with an AI copilot. Academic Clo
 
 ## Current status
 
-Phases 0-4 are complete. The Phase 5 workflows and Phase 6 fulfilment backend are deployed on AWS in Mumbai; final release verification is recorded in `docs/phase-6/`. The app supports Cognito sign-in, owner-scoped DynamoDB persistence, S3 CSV imports through SQS, Step Functions analysis, atomic shared-capacity reservations, dispatch/delivery/cancellation, private PDF/JSON reports and in-app/SNS notifications. Local demo mode remains available. Bedrock/LLM integration is a later phase and is not connected yet.
+Phases 0-7 are implemented and deployed on AWS in Mumbai. The app supports Cognito sign-in, owner-scoped persistence, S3 CSV imports through SQS, Step Functions analysis, atomic capacity reservations, fulfilment, private reports and in-app/SNS notifications. Phase 7 adds a working AI copilot, reviewed scenario drafts, briefs, delay sensitivity, atomic multi-destination splits and outcome analytics. Local demo mode remains available; live AI requires cloud sign-in and a saved run.
 
 Live application: https://dr4sw5bpoi.execute-api.ap-south-1.amazonaws.com
 
 CloudFront requires AWS account verification. The approved API Gateway + Lambda HTTPS frontend serves the private web bucket. See [Phase 4 deployment](docs/phase-4/IMPLEMENTATION.md) and [Phase 6 implementation and demonstration](docs/phase-6/IMPLEMENTATION.md).
 
-AWS Core is verified to use deployment account `118462784511`. The final artifact passed all 21 live Phase 6 checks plus all 10 CSV-import checks; all 41 local tests pass. Temporary test users and files were cleaned up. Email subscription confirmation and browser visual verification remain manual checks. See [release status](docs/phase-6/RELEASE_STATUS.md).
+Deployment account: `118462784511`. All 47 local tests and 19 live Phase 7 checks pass, including actual AI generation, caching, draft values, write isolation and split reservations. The preceding release passed all 31 Phase 5/6 regression checks. Temporary users and test files were cleaned up. Email delivery and browser visual verification remain manual limitations. See [Phase 7 release status](docs/phase-7/RELEASE_STATUS.md) and [implementation](docs/phase-7/IMPLEMENTATION.md).
 
 ## Run locally (PowerShell)
 

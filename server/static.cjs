@@ -19,7 +19,7 @@ exports.handler = async (event) => {
   }
   const appRoute =
     path === "/" ||
-    (/^\/(overview|shipments|rescue|runs|network|history|settings|evidence|welcome|sign-in|auth|operations|fulfilment)(\/|$)/.test(
+    (/^\/(overview|shipments|rescue|runs|network|history|settings|evidence|welcome|sign-in|auth|operations|fulfilment|analytics)(\/|$)/.test(
       path,
     ) &&
       !/\.[^/]+$/.test(path));

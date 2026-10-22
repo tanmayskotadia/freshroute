@@ -1,0 +1,32 @@
+{
+  "functionState": "Active",
+  "role": "arn:aws:iam::118462784511:role/FreshRouteApplication-CopilotRole8924D10F-8YAChqBmiuTZ",
+  "writeBoundaryChecks": [
+    {
+      "partition": "AI#qa-owner",
+      "decisions": [
+        {
+          "action": "dynamodb:PutItem",
+          "decision": "allowed"
+        },
+        {
+          "action": "dynamodb:UpdateItem",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "partition": "qa-owner",
+      "decisions": [
+        {
+          "action": "dynamodb:PutItem",
+          "decision": "implicitDeny"
+        },
+        {
+          "action": "dynamodb:UpdateItem",
+          "decision": "implicitDeny"
+        }
+      ]
+    }
+  ]
+}

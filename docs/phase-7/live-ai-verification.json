@@ -1,0 +1,63 @@
+{
+  "verifiedDate": "2026-10-22",
+  "account": "118462784511",
+  "region": "ap-south-1",
+  "artifactKey": "releases/phase7/provider-api.zip",
+  "artifactVersion": "DayRJC1v_wic1G97i_SHK40E9tD3gSTl",
+  "verification": {
+    "checks": {
+      "unauthenticatedCopilotDenied": true,
+      "foreignRunDenied": true,
+      "invalidModeDenied": true,
+      "liveAiGeneration": true,
+      "aiResponseCached": true,
+      "copilotReturnsLabelledEvidence": true,
+      "numbersMatchSavedFacts": true,
+      "fallbackDoesNotInventDraft": true,
+      "liveAiDraft": true,
+      "promptCannotWrite": true,
+      "splitPlanConservesMass": true,
+      "invalidSplitRejected": true,
+      "allSplitCapacitiesReserved": true,
+      "splitRetryIdempotent": true,
+      "splitReportReady": true,
+      "splitPdfDownload": true,
+      "allSplitCapacityReleased": true,
+      "analyticsRouteServed": true
+    },
+    "detail": {
+      "runId": "RUN-e8e72caf-2c40-4eed-8130-eb934ec6e372",
+      "liveAiUsage": {
+        "inputTokens": 701,
+        "outputTokens": 72
+      },
+      "copilotProvenance": "AI",
+      "reservationId": "RES-RUN-e8e72caf-2c40-4eed-8130-eb934ec6e372"
+    },
+    "pass": true,
+    "quotaCheck": {
+      "dailyLimitWorks": true
+    },
+    "backgroundEvents": {
+      "pending": 0,
+      "processed": [
+        {
+          "eventId": "RES-RUN-e8e72caf-2c40-4eed-8130-eb934ec6e372#1",
+          "snsMessageId": "72e20953-f7f3-51ec-88e5-6a07b1e5cc4e"
+        },
+        {
+          "eventId": "RES-RUN-e8e72caf-2c40-4eed-8130-eb934ec6e372#2",
+          "snsMessageId": "abe7397f-0c52-5ca4-beb9-5a2b4a453106"
+        }
+      ]
+    },
+    "actualStepFunctionsExecutions": []
+  },
+  "cleanup": [
+    {
+      "temporaryUsersDeleted": 2,
+      "ownerPartitionsDeleted": 2,
+      "privateTestFilesDeleted": true
+    }
+  ]
+}

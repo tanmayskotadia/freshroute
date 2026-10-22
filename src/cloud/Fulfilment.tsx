@@ -267,6 +267,15 @@ export function Fulfilment({
                         {r.destination}
                         <span>{r.candidateName}</span>
                       </p>
+                      {r.allocations && (
+                        <div className="split-reservation-details">
+                          {r.allocations.map((p) => (
+                            <span key={p.destinationId}>
+                              {p.quantityGrams / 1000} kg → {p.destination}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                       <ol className="reservation-timeline">
                         {r.events.map((e) => (
                           <li key={e.status}>
