@@ -4,7 +4,7 @@ Perishable-shipment rescue and decision support with an AI copilot. Academic Clo
 
 ## Current status
 
-Phases 0–2 are complete: design, responsive frontend, and local shipment/receiving workflows. Create and edit shipments, save and restore drafts, maintain receiving rules, inspect entered temperature segments and activity, and keep sample decisions across refreshes. The data layer validates and versions records in this browser's local storage. No HTTP backend, real prediction engine, AWS deployment, live partner booking or live AI integration exists yet.
+Phases 0-3 are complete: design, responsive frontend, local workflows and a deterministic rescue model. Rescue Lab calculates quality curves, quantity below threshold, feasibility and ranked alternatives for saved shipments. Named analyses freeze inputs, parameters and results; local plans and searchable History survive refreshes. No HTTP backend, AWS deployment, partner booking or live LLM is connected yet.
 
 ## Run locally (PowerShell)
 
@@ -35,17 +35,18 @@ Local data uses `freshroute.workspace.v1`, scoped to the browser and origin. Cha
 
 Local optimistic version checks reject known stale edits and browser storage events refresh other tabs. Web Storage is not a transactional multi-user database; real reservations and authorization require later cloud phases. Management controls are intentionally available to this local demo user.
 
-## Sample rescue walkthrough
+## Phase 3 rescue walkthrough
 
-1. Inspect FR-101 from Overview.
-2. Open Rescue Lab and load the static sample comparison.
-3. Select an option, then review the sample plan.
-4. Confirm a demo decision and inspect History.
-5. Refresh: the local sample decision remains. Use Local data for an intentional reset.
+1. Open FR-101 and Rescue Lab. The incident compares continuation, cooling and four alternative destinations.
+2. Adjust future delay, temperature, budget and ranking priorities. Results and rejection reasons recalculate. Expand assumptions to inspect or change route inputs.
+3. Set delay to 0 and temperature to 10 C: continuation ranks first for the unchanged seed. Restore saved shipment inputs to replay the incident.
+4. Name and save an analysis. Refresh and reopen it: frozen inputs and results remain read-only.
+5. Select a feasible option, review and save a local plan. Search for the shipment or analysis in History.
+6. Changes to shipment or receiving rules preserve historical results and block confirming an outdated snapshot. Create a new analysis using current data.
 
-The sliders do not run a model: altered temperature/delay inputs are marked unmatched, and review requires the unchanged, original FR-101 fixture. Editing FR-101 invalidates that fixed comparison. Budget feasibility is a small UI-only comparison; edited destination rules do not recalculate those fixtures. Copilot output remains authored text, not a model response.
+The model uses illustrative Q10 exposure, exponential decay and weighted quality cohorts. Constants are teaching assumptions, not fitted scientific data or food-safety assessments. Route times/costs are declared assumptions. The explanation is deterministic; live AI comes later. Older static demo decisions remain labeled.
 
-See [Phase 2 implementation and verification](docs/phase-2/IMPLEMENTATION.md) for current checks and limits, and [Phase 1 verification](docs/phase-1/IMPLEMENTATION.md) for the original visual foundation.
+See [Phase 3 model and verification](docs/phase-3/IMPLEMENTATION.md), [Phase 2 workflows](docs/phase-2/IMPLEMENTATION.md), and [Phase 1 visual foundation](docs/phase-1/IMPLEMENTATION.md).
 
 ## Tests
 
@@ -54,7 +55,7 @@ npm.cmd run test
 npm.cmd run build
 ```
 
-Tests use Node's native TypeScript stripping and test runner (verified with Node 24). They cover persistence, validation, drafts, stale edits, receiving windows, corrupt/blocked/full storage, export preservation and scoped reset without requiring cloud access.
+Tests use Node's native TypeScript stripping and test runner (verified with Node 24). They cover persistence, validation, drafts, stale edits, receiving windows, corrupt/blocked/full storage, export preservation and scoped reset, plus exposure units, cohort mass, monotonic quality, constraints, deterministic ranking, arrival arithmetic, snapshot migration and tamper detection without cloud access.
 
 ## Start here
 
@@ -66,10 +67,10 @@ Tests use Node's native TypeScript stripping and test runner (verified with Node
 - [Expanded phased roadmap and complete syllabus audit](FRESHROUTE_BUILD_BLUEPRINT.md)
 - [Original project roadmap and model explanation](FRESHROUTE_IMPLEMENTATION_ROADMAP.md)
 
-The Phase 0 documents define the design, Phase 1 establishes the visual foundation, and Phase 2 adds real browser-local workflows. No cloud credentials or deployment are needed for the current application. Phase 3 implements the real calculation model and optimizer.
+The Phase 0 documents define the design, Phase 1 establishes the visual foundation, and Phase 2 adds real browser-local workflows. No cloud credentials or deployment are needed for the current application. Phase 3 adds the implemented illustrative calculation model and deterministic optimizer.
 
 ## Evaluation story
 
-Planned final evaluation story: observe a shipment incident, simulate feasible alternatives, review trade-offs, confirm with current receiving capacity and verify the outcome. The current application records operational inputs and shows static rescue comparisons. Later calculations will be reproducible illustrative estimates; AI will explain stored results and cannot certify food safety or execute rescue actions.
+Planned final evaluation story: observe a shipment incident, simulate feasible alternatives, review trade-offs, confirm with current receiving capacity and verify the outcome. The current application records inputs, calculates illustrative comparisons and saves reproducible analyses. Future AI will explain stored results and cannot certify food safety or execute rescue actions.
 
 Total cloud planning ceiling: US$200 before uncertain credits. Main application, disposable engineering labs and architecture studies are distinguished explicitly. No resource creation is authorized by the design documents.

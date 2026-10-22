@@ -1,0 +1,98 @@
+[
+  {
+    "overflow": false,
+    "page": "saved-analysis",
+    "scrollWidth": 1425,
+    "width": 1440
+  },
+  {
+    "overflow": false,
+    "page": "saved-analysis",
+    "scrollWidth": 1009,
+    "width": 1024
+  },
+  {
+    "overflow": false,
+    "page": "saved-analysis",
+    "scrollWidth": 753,
+    "width": 768
+  },
+  {
+    "overflow": false,
+    "page": "saved-analysis",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "overflow": false,
+    "page": "review",
+    "scrollWidth": 1440,
+    "width": 1440
+  },
+  {
+    "overflow": false,
+    "page": "review",
+    "scrollWidth": 1024,
+    "width": 1024
+  },
+  {
+    "overflow": false,
+    "page": "review",
+    "scrollWidth": 753,
+    "width": 768
+  },
+  {
+    "overflow": false,
+    "page": "review",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "overflow": false,
+    "page": "history",
+    "scrollWidth": 1425,
+    "width": 1440
+  },
+  {
+    "overflow": false,
+    "page": "history",
+    "scrollWidth": 1009,
+    "width": 1024
+  },
+  {
+    "overflow": false,
+    "page": "history",
+    "scrollWidth": 753,
+    "width": 768
+  },
+  {
+    "overflow": false,
+    "page": "history",
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "overflow": false,
+    "page": "rescue-lab",
+    "scrollWidth": 1425,
+    "width": 1440
+  },
+  {
+    "overflow": false,
+    "page": "rescue-lab",
+    "scrollWidth": 1009,
+    "width": 1024
+  },
+  {
+    "overflow": false,
+    "page": "rescue-lab",
+    "scrollWidth": 753,
+    "width": 768
+  },
+  {
+    "overflow": false,
+    "page": "rescue-lab",
+    "scrollWidth": 375,
+    "width": 390
+  }
+]

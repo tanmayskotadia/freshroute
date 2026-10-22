@@ -267,7 +267,11 @@ export function ShipmentForm({
         </div>
       </div>
       <div className="form-grid">
-        {input("plannedTravelHours", "Planned travel (hours)", "number")}
+        {input(
+          "plannedTravelHours",
+          "Remaining planned travel (hours)",
+          "number",
+        )}
         {input("delay", "Additional delay (hours)", "number")}
         {input("eta", "Planned arrival (IST)", "time")}
         <div className="form-field">

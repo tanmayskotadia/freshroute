@@ -40,7 +40,8 @@ export function ShipmentHistory({ shipment }: { shipment: SavedShipment }) {
             Starting quality <strong>{shipment.initialQuality}/100</strong>
           </span>
           <span>
-            Planned travel <strong>{shipment.plannedTravelHours} hours</strong>
+            Remaining planned travel{" "}
+            <strong>{shipment.plannedTravelHours} hours</strong>
           </span>
           <span>
             Unit value{" "}

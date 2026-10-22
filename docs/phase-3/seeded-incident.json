@@ -1,0 +1,693 @@
+{
+  "input": {
+    "shipment": {
+      "id": "FR-101",
+      "produce": "Tomatoes",
+      "icon": "🍅",
+      "quantity": 500,
+      "origin": "Naroda distribution hub",
+      "destination": "Central produce market",
+      "temperature": 18,
+      "eta": "16:30",
+      "status": "Needs attention",
+      "delay": 3,
+      "color": "#f7e5dc",
+      "destinationId": "central",
+      "valuePaisePerKg": 3000,
+      "initialQuality": 95,
+      "plannedTravelHours": 5.5,
+      "segments": [
+        {
+          "durationHours": 2,
+          "temperatureC": 10
+        },
+        {
+          "durationHours": 1,
+          "temperatureC": 18
+        }
+      ],
+      "version": 1,
+      "createdAt": "2026-10-22T07:30:00.000Z",
+      "updatedAt": "2026-10-22T07:30:00.000Z",
+      "events": [
+        {
+          "id": "seed-FR-101",
+          "at": "2026-10-22T07:30:00.000Z",
+          "title": "Demo shipment seeded",
+          "note": "Fictional sample loaded. Status is operator assigned, not a prediction."
+        }
+      ]
+    },
+    "destinations": [
+      {
+        "id": "eastside",
+        "name": "Eastside receiving center",
+        "type": "Distribution partner",
+        "capacity": 600,
+        "reservedKg": 0,
+        "opensAt": "09:00",
+        "closesAt": "19:00",
+        "acceptedProduce": [
+          "Tomatoes",
+          "Bananas"
+        ],
+        "version": 1,
+        "updatedAt": "2026-10-22T07:30:00.000Z"
+      },
+      {
+        "id": "central",
+        "name": "Central produce market",
+        "type": "Wholesale market",
+        "capacity": 900,
+        "reservedKg": 0,
+        "opensAt": "06:00",
+        "closesAt": "20:00",
+        "acceptedProduce": [
+          "Tomatoes",
+          "Bananas",
+          "Leafy greens"
+        ],
+        "version": 1,
+        "updatedAt": "2026-10-22T07:30:00.000Z"
+      },
+      {
+        "id": "riverfront",
+        "name": "Riverfront community kitchen",
+        "type": "Food rescue partner",
+        "capacity": 200,
+        "reservedKg": 0,
+        "opensAt": "08:00",
+        "closesAt": "17:00",
+        "acceptedProduce": [
+          "Leafy greens",
+          "Tomatoes"
+        ],
+        "version": 1,
+        "updatedAt": "2026-10-22T07:30:00.000Z"
+      },
+      {
+        "id": "westside",
+        "name": "Westside fresh market",
+        "type": "Retail receiving partner",
+        "capacity": 450,
+        "reservedKg": 0,
+        "opensAt": "08:00",
+        "closesAt": "18:00",
+        "acceptedProduce": [
+          "Bananas",
+          "Tomatoes"
+        ],
+        "version": 1,
+        "updatedAt": "2026-10-22T07:30:00.000Z"
+      },
+      {
+        "id": "northside",
+        "name": "Northside receiving center",
+        "type": "Distribution partner",
+        "capacity": 800,
+        "reservedKg": 0,
+        "opensAt": "07:00",
+        "closesAt": "20:00",
+        "acceptedProduce": [
+          "Tomatoes",
+          "Leafy greens"
+        ],
+        "version": 1,
+        "updatedAt": "2026-10-22T07:30:00.000Z"
+      }
+    ],
+    "options": {
+      "budgetPaise": 80000,
+      "additionalDelayHours": 3,
+      "futureTemperatureC": 18,
+      "weights": {
+        "loss": 0.65,
+        "cost": 0.2,
+        "time": 0.15
+      },
+      "routes": [
+        {
+          "destinationId": "eastside",
+          "travelHours": 2.25,
+          "delayShare": 0.25,
+          "costPaise": 45000
+        },
+        {
+          "destinationId": "central",
+          "travelHours": 5.5,
+          "delayShare": 1,
+          "costPaise": 60000
+        },
+        {
+          "destinationId": "riverfront",
+          "travelHours": 1.75,
+          "delayShare": 0.1,
+          "costPaise": 30000
+        },
+        {
+          "destinationId": "westside",
+          "travelHours": 3,
+          "delayShare": 0.5,
+          "costPaise": 50000
+        },
+        {
+          "destinationId": "northside",
+          "travelHours": 4,
+          "delayShare": 0.5,
+          "costPaise": 35000
+        }
+      ]
+    },
+    "parameters": {
+      "referenceC": 10,
+      "q10": 2,
+      "minimumQuality": 60,
+      "coolingCostPaise": 65000,
+      "cohorts": [
+        {
+          "weight": 0.1,
+          "multiplier": 0.8
+        },
+        {
+          "weight": 0.2,
+          "multiplier": 0.9
+        },
+        {
+          "weight": 0.4,
+          "multiplier": 1
+        },
+        {
+          "weight": 0.2,
+          "multiplier": 1.05
+        },
+        {
+          "weight": 0.1,
+          "multiplier": 1.1
+        }
+      ],
+      "costScalePaise": 200000,
+      "timeScaleHours": 24,
+      "version": "illustrative-q10-1.0.0",
+      "produce": "Tomatoes",
+      "decayPerHour": 0.025,
+      "minimumC": 5,
+      "maximumC": 35,
+      "coolingC": 10
+    }
+  },
+  "result": {
+    "modelVersion": "illustrative-q10-1.0.0",
+    "currentQuality": 84.37755452333954,
+    "equivalentHistoryHours": 3.7411011265922482,
+    "baselineId": "continue",
+    "winnerId": "reroute:eastside",
+    "ranking": [
+      "reroute:eastside",
+      "reroute:northside",
+      "cooling"
+    ],
+    "candidates": [
+      {
+        "id": "continue",
+        "kind": "continue",
+        "name": "Continue as planned",
+        "destinationId": "central",
+        "destinationName": "Central produce market",
+        "destinationVersion": 1,
+        "costPaise": 0,
+        "travelHours": 5.5,
+        "futureHours": 8.5,
+        "futureTemperatureC": 18,
+        "delayShare": 1,
+        "arrivalTime": "19:30",
+        "arrivalDayOffset": 0,
+        "qualityIndex": 58.28340678928876,
+        "deteriorationIndex": 41.71659321071124,
+        "estimatedLossKg": 350.00000000000006,
+        "avoidedLossKg": 0,
+        "netBenefitPaise": 0,
+        "feasible": false,
+        "reasons": [
+          "Mean modeled quality 58.3 is below the declared 60/100 threshold."
+        ],
+        "score": 0.508125,
+        "rank": null,
+        "curve": [
+          {
+            "hour": 0,
+            "quality": 84.37755452333954
+          },
+          {
+            "hour": 0.7083333333333334,
+            "quality": 81.81572198529555
+          },
+          {
+            "hour": 1.4166666666666667,
+            "quality": 79.33167062958205
+          },
+          {
+            "hour": 2.125,
+            "quality": 76.92303889968241
+          },
+          {
+            "hour": 2.8333333333333335,
+            "quality": 74.5875369395738
+          },
+          {
+            "hour": 3.5416666666666665,
+            "quality": 72.32294441678975
+          },
+          {
+            "hour": 4.25,
+            "quality": 70.12710841157784
+          },
+          {
+            "hour": 4.958333333333333,
+            "quality": 67.99794137014592
+          },
+          {
+            "hour": 5.666666666666667,
+            "quality": 65.93341912005081
+          },
+          {
+            "hour": 6.375,
+            "quality": 63.931578945842894
+          },
+          {
+            "hour": 7.083333333333333,
+            "quality": 61.99051772313722
+          },
+          {
+            "hour": 7.791666666666667,
+            "quality": 60.10839010933683
+          },
+          {
+            "hour": 8.5,
+            "quality": 58.28340678928876
+          }
+        ],
+        "availableKg": 900
+      },
+      {
+        "id": "cooling",
+        "kind": "cooling",
+        "name": "Improve cooling",
+        "destinationId": "central",
+        "destinationName": "Central produce market",
+        "destinationVersion": 1,
+        "costPaise": 65000,
+        "travelHours": 5.5,
+        "futureHours": 8.5,
+        "futureTemperatureC": 10,
+        "delayShare": 1,
+        "arrivalTime": "19:30",
+        "arrivalDayOffset": 0,
+        "qualityIndex": 68.22434217582202,
+        "deteriorationIndex": 31.775657824177983,
+        "estimatedLossKg": 50,
+        "avoidedLossKg": 300.00000000000006,
+        "netBenefitPaise": 835000,
+        "feasible": true,
+        "reasons": [],
+        "score": 0.183125,
+        "rank": 3,
+        "curve": [
+          {
+            "hour": 0,
+            "quality": 84.37755452333954
+          },
+          {
+            "hour": 0.7083333333333334,
+            "quality": 82.89652068474066
+          },
+          {
+            "hour": 1.4166666666666667,
+            "quality": 81.44148263665106
+          },
+          {
+            "hour": 2.125,
+            "quality": 80.01198408893977
+          },
+          {
+            "hour": 2.8333333333333335,
+            "quality": 78.6075767604911
+          },
+          {
+            "hour": 3.5416666666666665,
+            "quality": 77.22782023862669
+          },
+          {
+            "hour": 4.25,
+            "quality": 75.87228184099513
+          },
+          {
+            "hour": 4.958333333333333,
+            "quality": 74.54053647988557
+          },
+          {
+            "hour": 5.666666666666667,
+            "quality": 73.2321665289232
+          },
+          {
+            "hour": 6.375,
+            "quality": 71.9467616921044
+          },
+          {
+            "hour": 7.083333333333333,
+            "quality": 70.68391887513056
+          },
+          {
+            "hour": 7.791666666666667,
+            "quality": 69.44324205900062
+          },
+          {
+            "hour": 8.5,
+            "quality": 68.22434217582202
+          }
+        ],
+        "availableKg": 900
+      },
+      {
+        "id": "reroute:eastside",
+        "kind": "reroute",
+        "name": "Redirect: Eastside receiving center",
+        "destinationId": "eastside",
+        "destinationName": "Eastside receiving center",
+        "destinationVersion": 1,
+        "costPaise": 45000,
+        "travelHours": 2.25,
+        "futureHours": 3,
+        "futureTemperatureC": 18,
+        "delayShare": 0.25,
+        "arrivalTime": "14:00",
+        "arrivalDayOffset": 0,
+        "qualityIndex": 74.0483930849204,
+        "deteriorationIndex": 25.951606915079594,
+        "estimatedLossKg": 0,
+        "avoidedLossKg": 350.00000000000006,
+        "netBenefitPaise": 1005000,
+        "feasible": true,
+        "reasons": [],
+        "score": 0.06375,
+        "rank": 1,
+        "curve": [
+          {
+            "hour": 0,
+            "quality": 84.37755452333954
+          },
+          {
+            "hour": 0.25,
+            "quality": 83.46434565516114
+          },
+          {
+            "hour": 0.5,
+            "quality": 82.56102034477996
+          },
+          {
+            "hour": 0.75,
+            "quality": 81.66747162355153
+          },
+          {
+            "hour": 1,
+            "quality": 80.78359368054117
+          },
+          {
+            "hour": 1.25,
+            "quality": 79.90928184999402
+          },
+          {
+            "hour": 1.5,
+            "quality": 79.04443259894116
+          },
+          {
+            "hour": 1.75,
+            "quality": 78.18894351493935
+          },
+          {
+            "hour": 2,
+            "quality": 77.34271329394389
+          },
+          {
+            "hour": 2.25,
+            "quality": 76.50564172831237
+          },
+          {
+            "hour": 2.5,
+            "quality": 75.67762969493862
+          },
+          {
+            "hour": 2.75,
+            "quality": 74.85857914351473
+          },
+          {
+            "hour": 3,
+            "quality": 74.0483930849204
+          }
+        ],
+        "availableKg": 600
+      },
+      {
+        "id": "reroute:northside",
+        "kind": "reroute",
+        "name": "Redirect: Northside receiving center",
+        "destinationId": "northside",
+        "destinationName": "Northside receiving center",
+        "destinationVersion": 1,
+        "costPaise": 35000,
+        "travelHours": 4,
+        "futureHours": 5.5,
+        "futureTemperatureC": 18,
+        "delayShare": 0.5,
+        "arrivalTime": "16:30",
+        "arrivalDayOffset": 0,
+        "qualityIndex": 66.413478122737,
+        "deteriorationIndex": 33.586521877262996,
+        "estimatedLossKg": 50,
+        "avoidedLossKg": 300.00000000000006,
+        "netBenefitPaise": 865000,
+        "feasible": true,
+        "reasons": [],
+        "score": 0.134375,
+        "rank": 2,
+        "curve": [
+          {
+            "hour": 0,
+            "quality": 84.37755452333954
+          },
+          {
+            "hour": 0.4583333333333333,
+            "quality": 82.71089275895837
+          },
+          {
+            "hour": 0.9166666666666666,
+            "quality": 81.07715161490735
+          },
+          {
+            "hour": 1.375,
+            "quality": 79.47568082892806
+          },
+          {
+            "hour": 1.8333333333333333,
+            "quality": 77.90584298302204
+          },
+          {
+            "hour": 2.2916666666666665,
+            "quality": 76.3670132497454
+          },
+          {
+            "hour": 2.75,
+            "quality": 74.85857914351473
+          },
+          {
+            "hour": 3.2083333333333335,
+            "quality": 73.37994027682552
+          },
+          {
+            "hour": 3.6666666666666665,
+            "quality": 71.9305081212855
+          },
+          {
+            "hour": 4.125,
+            "quality": 70.50970577336848
+          },
+          {
+            "hour": 4.583333333333333,
+            "quality": 69.11696772479497
+          },
+          {
+            "hour": 5.041666666666667,
+            "quality": 67.75173963744835
+          },
+          {
+            "hour": 5.5,
+            "quality": 66.413478122737
+          }
+        ],
+        "availableKg": 800
+      },
+      {
+        "id": "reroute:riverfront",
+        "kind": "reroute",
+        "name": "Redirect: Riverfront community kitchen",
+        "destinationId": "riverfront",
+        "destinationName": "Riverfront community kitchen",
+        "destinationVersion": 1,
+        "costPaise": 30000,
+        "travelHours": 1.75,
+        "futureHours": 2.05,
+        "futureTemperatureC": 18,
+        "delayShare": 0.1,
+        "arrivalTime": "13:03",
+        "arrivalDayOffset": 0,
+        "qualityIndex": 77.17456947587044,
+        "deteriorationIndex": 22.82543052412956,
+        "estimatedLossKg": 0,
+        "avoidedLossKg": 350.00000000000006,
+        "netBenefitPaise": 1020000,
+        "feasible": false,
+        "reasons": [
+          "Needs 500 kg capacity; only 200 kg is entered as available."
+        ],
+        "score": 0.042812499999999996,
+        "rank": null,
+        "curve": [
+          {
+            "hour": 0,
+            "quality": 84.37755452333954
+          },
+          {
+            "hour": 0.1708333333333333,
+            "quality": 83.75245400586061
+          },
+          {
+            "hour": 0.3416666666666666,
+            "quality": 83.13198446707216
+          },
+          {
+            "hour": 0.5125,
+            "quality": 82.51611159895006
+          },
+          {
+            "hour": 0.6833333333333332,
+            "quality": 81.90480134763689
+          },
+          {
+            "hour": 0.8541666666666666,
+            "quality": 81.29801991155892
+          },
+          {
+            "hour": 1.025,
+            "quality": 80.69573373955721
+          },
+          {
+            "hour": 1.195833333333333,
+            "quality": 80.09790952903231
+          },
+          {
+            "hour": 1.3666666666666665,
+            "quality": 79.50451422410283
+          },
+          {
+            "hour": 1.5374999999999999,
+            "quality": 78.91551501377786
+          },
+          {
+            "hour": 1.7083333333333333,
+            "quality": 78.33087933014255
+          },
+          {
+            "hour": 1.8791666666666664,
+            "quality": 77.7505748465573
+          },
+          {
+            "hour": 2.05,
+            "quality": 77.17456947587044
+          }
+        ],
+        "availableKg": 200
+      },
+      {
+        "id": "reroute:westside",
+        "kind": "reroute",
+        "name": "Redirect: Westside fresh market",
+        "destinationId": "westside",
+        "destinationName": "Westside fresh market",
+        "destinationVersion": 1,
+        "costPaise": 50000,
+        "travelHours": 3,
+        "futureHours": 4.5,
+        "futureTemperatureC": 18,
+        "delayShare": 0.5,
+        "arrivalTime": "15:30",
+        "arrivalDayOffset": 0,
+        "qualityIndex": 69.36813053336205,
+        "deteriorationIndex": 30.63186946663795,
+        "estimatedLossKg": 50,
+        "avoidedLossKg": 300.00000000000006,
+        "netBenefitPaise": 850000,
+        "feasible": false,
+        "reasons": [
+          "Needs 500 kg capacity; only 450 kg is entered as available."
+        ],
+        "score": 0.143125,
+        "rank": null,
+        "curve": [
+          {
+            "hour": 0,
+            "quality": 84.37755452333954
+          },
+          {
+            "hour": 0.375,
+            "quality": 83.01145426806777
+          },
+          {
+            "hour": 0.75,
+            "quality": 81.66747162355153
+          },
+          {
+            "hour": 1.125,
+            "quality": 80.34524849842558
+          },
+          {
+            "hour": 1.5,
+            "quality": 79.04443259894116
+          },
+          {
+            "hour": 1.875,
+            "quality": 77.76467733510071
+          },
+          {
+            "hour": 2.25,
+            "quality": 76.50564172831237
+          },
+          {
+            "hour": 2.625,
+            "quality": 75.26699032053934
+          },
+          {
+            "hour": 3,
+            "quality": 74.0483930849204
+          },
+          {
+            "hour": 3.375,
+            "quality": 72.84952533783733
+          },
+          {
+            "hour": 3.75,
+            "quality": 71.67006765240606
+          },
+          {
+            "hour": 4.125,
+            "quality": 70.50970577336848
+          },
+          {
+            "hour": 4.5,
+            "quality": 69.36813053336205
+          }
+        ],
+        "availableKg": 450
+      }
+    ],
+    "skippedDestinations": []
+  }
+}

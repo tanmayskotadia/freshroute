@@ -12,6 +12,13 @@ import type {
   SavedShipment,
 } from "../domain.ts";
 import type { DemoDecision } from "../fixtures.ts";
+import {
+  analyze,
+  makeInput,
+  sourceSignature,
+  validateSavedAnalysis,
+} from "../model/engine.ts";
+import type { AnalysisOptions, SavedAnalysis } from "../model/engine.ts";
 export const STORAGE_KEY = "freshroute.workspace.v1";
 export interface StoragePort {
   getItem(key: string): string | null;
@@ -31,6 +38,13 @@ export interface WorkspaceRepository {
   clearDecisions(): void;
   reset(): void;
   exportRaw(): string;
+  saveAnalysis(
+    shipmentId: string,
+    options: AnalysisOptions,
+    name: string,
+    expectedSource: string,
+  ): SavedAnalysis;
+  confirmAnalysis(runId: string, candidateId: string): DemoDecision;
 }
 function assertWorkspace(value: unknown): asserts value is Workspace {
   const w = value as Workspace;
@@ -47,6 +61,11 @@ function assertWorkspace(value: unknown): asserts value is Workspace {
     throw new Error("Unsupported workspace structure.");
   if (w.shipments.length === 0 || w.destinations.length === 0)
     throw new Error("Required demo collections are missing.");
+  // Additive migration: Phase 2 workspaces have no analysis collection yet.
+  if (!Object.hasOwn(w, "analyses")) w.analyses = [];
+  if (!Array.isArray(w.analyses) || !uniqueAnalysisIds(w.analyses))
+    throw new Error("Invalid analysis collection.");
+  w.analyses.forEach(validateSavedAnalysis);
   const unique = (items: { id: string }[]) =>
     items.every((x) => typeof x?.id === "string" && x.id.length > 0) &&
     new Set(items.map((x) => x.id)).size === items.length;
@@ -135,6 +154,12 @@ function assertWorkspace(value: unknown): asserts value is Workspace {
         throw new Error("Invalid draft fields.");
     }
   }
+}
+function uniqueAnalysisIds(values: SavedAnalysis[]) {
+  return (
+    values.every((v) => v && typeof v.id === "string") &&
+    new Set(values.map((v) => v.id)).size === values.length
+  );
 }
 export class LocalWorkspaceRepository implements WorkspaceRepository {
   private storage: StoragePort;
@@ -291,6 +316,88 @@ export class LocalWorkspaceRepository implements WorkspaceRepository {
     const w = this.load();
     w.decisions = [];
     this.write(w);
+  }
+  saveAnalysis(
+    shipmentId: string,
+    options: AnalysisOptions,
+    name: string,
+    expectedSource: string,
+  ): SavedAnalysis {
+    const w = this.load(),
+      shipment = w.shipments.find((s) => s.id === shipmentId);
+    if (
+      !shipment ||
+      sourceSignature(shipment, w.destinations) !== expectedSource
+    )
+      throw new DomainError(
+        "CONFLICT",
+        "Shipment or receiving rules changed. Reload the current shipment and rerun before saving.",
+      );
+    if (typeof name !== "string" || !name.trim() || name.trim().length > 80)
+      throw new DomainError(
+        "VALIDATION",
+        "Give the analysis a name of 1–80 characters.",
+      );
+    const input = makeInput(shipment, w.destinations, options),
+      result = analyze(input);
+    const run: SavedAnalysis = {
+      id: `RUN-${crypto.randomUUID()}`,
+      name: name.trim(),
+      createdAt: new Date().toISOString(),
+      shipmentId,
+      shipmentVersion: shipment.version,
+      input,
+      result,
+    };
+    w.analyses.unshift(run);
+    this.write(w);
+    return structuredClone(run);
+  }
+  confirmAnalysis(runId: string, candidateId: string): DemoDecision {
+    const w = this.load(),
+      run = w.analyses.find((r) => r.id === runId),
+      current = run && w.shipments.find((s) => s.id === run.shipmentId);
+    if (!run || !current)
+      throw new DomainError("NOT_FOUND", "Saved analysis not found.");
+    if (
+      sourceSignature(current, w.destinations) !==
+      sourceSignature(run.input.shipment, run.input.destinations)
+    )
+      throw new DomainError(
+        "CONFLICT",
+        "Shipment or receiving rules changed after this analysis. Create a new analysis before confirming a local plan.",
+      );
+    const candidate = run.result.candidates.find((c) => c.id === candidateId);
+    if (!candidate?.feasible)
+      throw new DomainError(
+        "INFEASIBLE",
+        "Only a feasible candidate in this saved analysis can be selected.",
+      );
+    const existing = w.decisions.find((d) => d.runId === runId);
+    if (existing) {
+      if (existing.candidateId !== candidateId)
+        throw new DomainError(
+          "CONFLICT",
+          "This analysis already has a local plan. Save a new analysis to choose a different action.",
+        );
+      return structuredClone(existing);
+    }
+    const decision: DemoDecision = {
+      id: `PLAN-${crypto.randomUUID().slice(0, 8)}`,
+      shipmentId: run.shipmentId,
+      runId,
+      candidateId,
+      candidateName: candidate.name,
+      quantity: run.input.shipment.quantity,
+      destination: candidate.destinationName,
+      createdAt: new Date().toISOString(),
+      modelVersion: run.result.modelVersion,
+      estimatedLossKg: candidate.estimatedLossKg,
+      costPaise: candidate.costPaise,
+    };
+    w.decisions.unshift(decision);
+    this.write(w);
+    return structuredClone(decision);
   }
   reset() {
     this.write(seedWorkspace());

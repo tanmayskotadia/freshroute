@@ -63,7 +63,7 @@ export function Welcome({ onEnter }: { onEnter: () => void }) {
         <div className="welcome-entry-inner">
           <span className="badge blue">
             <span className="dot" />
-            Phase 2 · local workspace
+            Phase 3 · calculated local workspace
           </span>
           <h2>See the possibilities.</h2>
           <p>
@@ -84,11 +84,11 @@ export function Welcome({ onEnter }: { onEnter: () => void }) {
             </li>
             <li>
               <Check size={17} />
-              Compare three sample rescue options
+              Calculate and compare feasible rescue options
             </li>
             <li>
               <Check size={17} />
-              Review and save a local sample decision
+              Save an analysis and review a calculated local plan
             </li>
           </ul>
           <button className="button" onClick={onEnter}>
@@ -105,7 +105,8 @@ export function Welcome({ onEnter }: { onEnter: () => void }) {
           <div className="welcome-ai-note">
             <Sparkles size={16} />
             <span>
-              Copilot explanations are authored samples in this phase.
+              Explanations use calculated results; live LLM integration comes
+              later.
             </span>
           </div>
         </div>

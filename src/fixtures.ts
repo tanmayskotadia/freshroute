@@ -141,6 +141,10 @@ export const destinations = [
   },
 ];
 export type DemoDecision = {
+  runId?: string;
+  modelVersion?: string;
+  estimatedLossKg?: number;
+  costPaise?: number;
   id: string;
   shipmentId: string;
   candidateId: string;

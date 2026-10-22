@@ -11,3 +11,5 @@ E09,VPC peering routes security groups,LAB,PLANNED,Network isolation,,Allowed pa
 E10,WAF and Config,LAB,PLANNED,Security experiment,,Benign test blocked and configuration rechecked,,,,NOT_CREATED
 E11,RDS and DMS,LAB_OR_STUDY,PLANNED,Legacy modernization,,Compatible migration reconciles source and target,,,,NOT_CREATED
 E12,Cost management and cleanup,CORE,PLANNED,Resource lifecycle,,Removed and retained resources verified,,,,NOT_CREATED
+L03,Deterministic model,LOCAL,VERIFIED,Rescue calculation,src/model/engine.ts,Reproducible constraints and ranking,32 tests pass; incident and stable winners verified,docs/phase-3/seeded-incident.json,2026-10-22,NO_CLOUD_RESOURCES
+L04,Saved analysis and plan,LOCAL,VERIFIED,Snapshot persistence,Browser local storage,Read-only snapshot survives refresh; selected plan recorded,Browser verified; no capacity reservation or LLM,docs/phase-3/IMPLEMENTATION.md,2026-10-22,NO_CLOUD_RESOURCES

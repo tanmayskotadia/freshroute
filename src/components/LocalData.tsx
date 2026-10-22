@@ -54,6 +54,9 @@ export function LocalData({
           </p>
           <div className="local-counts">
             <span>
+              <strong>{workspace.analyses.length}</strong>analyses
+            </span>
+            <span>
               <strong>{workspace.shipments.length}</strong>shipments
             </span>
             <span>
@@ -91,9 +94,9 @@ export function LocalData({
           <h2>Reset to the original demo</h2>
           <p>
             This replaces only FreshRoute’s local workspace. Saved shipments,
-            drafts, receiving-rule edits and sample decision history will be
-            removed. Export first if you want a backup; JSON re-import is not
-            implemented yet.
+            drafts, saved analyses, receiving-rule edits and local plan history
+            will be removed. Export first if you want a backup; JSON re-import
+            is not implemented yet.
           </p>
           <label className="field-label" htmlFor="reset-confirmation">
             Type RESET to replace the local workspace

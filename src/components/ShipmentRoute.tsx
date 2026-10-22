@@ -59,7 +59,8 @@ export function ShipmentRoute({
         </div>
         <div className="route-facts">
           <span>
-            Planned travel <strong>{shipment.plannedTravelHours}h</strong>
+            Remaining planned travel{" "}
+            <strong>{shipment.plannedTravelHours}h</strong>
           </span>
           <span>
             Additional delay <strong>{shipment.delay}h</strong>

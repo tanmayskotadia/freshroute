@@ -1,6 +1,6 @@
 # FreshRoute: phase-by-phase build blueprint
 
-Revised 22 October 2026. This is the implementation blueprint. Current progress: Phases 0–2 are complete: design, frontend and local shipment/receiving workflows; see docs/phase-2/IMPLEMENTATION.md for current verification. A browser-local repository is implemented; the HTTP backend, real rescue calculations and cloud resources are not. Read with FRESHROUTE_IMPLEMENTATION_ROADMAP.md; this blueprint supersedes its original schedule and extends its architecture and feature scope.
+Revised 22 October 2026. This is the implementation blueprint. Current progress: Phases 0-3 are complete: design, frontend, local workflows and deterministic illustrative rescue calculations; see docs/phase-3/IMPLEMENTATION.md. A browser-local repository and pure TypeScript model are implemented; the HTTP backend and cloud resources remain planned. Read with FRESHROUTE_IMPLEMENTATION_ROADMAP.md; this blueprint supersedes its original schedule and extends its architecture and feature scope.
 
 ## 1. Final direction
 
@@ -209,7 +209,7 @@ Exit: saved data survives reload; invalid units/inputs are rejected; main list-t
 
 Build: independent calculation modules, parameter versions, quality cohorts, deterministic feasibility/ranking, three intervention types, instant preview, authoritative run action, saved scenarios and incident replay controls.
 
-Exit: reproducibility, no cooling-induced quality recovery, unit consistency, ties, tight budgets, missing capacity and no-feasible-option cases pass. Compare UI values with backend fixture calculations. Complete the local business demo before cloud expansion.
+Exit: reproducibility, no cooling-induced quality recovery, unit consistency, ties, tight budgets, missing capacity and no-feasible-option cases pass. Compare UI values with independent calculation-module fixtures. Phase 3 uses one pure TypeScript engine shared by preview and repository saving; a future Node Lambda can reuse it rather than duplicate a Python engine. Complete the local business demo before cloud expansion.
 
 ### Phase 4 - Cloud foundation, authentication and persistence
 

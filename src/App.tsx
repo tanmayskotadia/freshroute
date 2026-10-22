@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   ArrowDown,
@@ -36,7 +36,10 @@ import {
   Pencil,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { candidates } from "./fixtures";
+import { Dialog } from "./components/Dialog";
+import { RescueWorkspace } from "./components/RescueWorkspace";
+import { RunReview } from "./components/RunReview";
+import { AnalysisHistory } from "./components/AnalysisHistory";
 import type { Shipment } from "./fixtures";
 import type { SavedShipment, Destination } from "./domain";
 import { formatIST } from "./domain";
@@ -235,189 +238,6 @@ function RouteMap({ compact = false }: { compact?: boolean }) {
     </div>
   );
 }
-function QualityChart({ temperature = false }: { temperature?: boolean }) {
-  return (
-    <div className="chart">
-      <svg
-        viewBox="0 0 680 230"
-        role="img"
-        aria-label={
-          temperature
-            ? "Illustrative temperature history rising from 10 to 18 degrees Celsius over six hours."
-            : "Fixture quality comparison: original route ends at 48, cooling 69, redirect 82. These are display fixtures, not calculated predictions."
-        }
-      >
-        <defs>
-          <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="#83b991" stopOpacity=".23" />
-            <stop offset="1" stopColor="#83b991" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        {[35, 80, 125, 170].map((y, i) => (
-          <g key={y}>
-            <line
-              x1="42"
-              y1={y}
-              x2="652"
-              y2={y}
-              stroke="#e8ece6"
-              strokeDasharray="4 4"
-            />
-            <text x="7" y={y + 4}>
-              {temperature ? [22, 18, 14, 10][i] : [100, 80, 60, 40][i]}
-            </text>
-          </g>
-        ))}
-        {temperature ? (
-          <>
-            <path
-              d="M44 165L145 160L245 143L345 143L445 84L550 80L650 80L650 185L44 185Z"
-              fill="url(#chartFill)"
-            />
-            <path
-              d="M44 165L145 160L245 143L345 143L445 84L550 80L650 80"
-              fill="none"
-              stroke="#b77b37"
-              strokeWidth="3"
-            />
-          </>
-        ) : (
-          <>
-            <path
-              d="M44 38C220 40 380 50 650 78L650 185L44 185Z"
-              fill="url(#chartFill)"
-            />
-            <path
-              d="M44 38C220 40 380 50 650 78"
-              fill="none"
-              stroke="#377654"
-              strokeWidth="3"
-            />
-            <path
-              d="M44 38C240 48 350 90 650 110"
-              fill="none"
-              stroke="#839a75"
-              strokeWidth="3"
-            />
-            <path
-              d="M44 38C200 58 400 130 650 154"
-              fill="none"
-              stroke="#c88b65"
-              strokeWidth="3"
-              strokeDasharray="6 5"
-            />
-          </>
-        )}
-        {["Now", "+1h", "+2h", "+3h", "+4h", "+5h"].map((s, i) => (
-          <text key={s} x={43 + i * 119} y="210">
-            {temperature ? `${i + 8}:00` : s}
-          </text>
-        ))}
-      </svg>
-      <div className="chart-legend">
-        {temperature ? (
-          <span>
-            <i style={{ background: "#b77b37" }} />
-            Temperature (°C) · illustrative history
-          </span>
-        ) : (
-          <>
-            <span>
-              <i style={{ background: "#377654" }} />
-              Redirect nearby
-            </span>
-            <span>
-              <i style={{ background: "#839a75" }} />
-              Improve cooling
-            </span>
-            <span>
-              <i style={{ background: "#c88b65" }} />
-              Original route
-            </span>
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
-function Dialog({
-  title,
-  children,
-  onClose,
-  wide = false,
-}: {
-  wide?: boolean;
-  title: string;
-  children: React.ReactNode;
-  onClose: () => void;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const closeRef = useRef(onClose);
-  closeRef.current = onClose;
-  useEffect(() => {
-    const previous = document.activeElement as HTMLElement;
-    const priorOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const dialog = ref.current;
-    const focusables = () =>
-      Array.from(
-        dialog?.querySelectorAll<HTMLElement>(
-          'button,input,select,textarea,[tabindex="0"]',
-        ) || [],
-      );
-    focusables()[0]?.focus();
-    const key = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeRef.current();
-      if (e.key === "Tab") {
-        const all = focusables();
-        const first = all[0],
-          last = all[all.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last?.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first?.focus();
-        }
-      }
-    };
-    document.addEventListener("keydown", key);
-    return () => {
-      document.removeEventListener("keydown", key);
-      document.body.style.overflow = priorOverflow;
-      previous?.focus();
-    };
-  }, []);
-  return (
-    <div
-      className="modal-backdrop"
-      onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      <div
-        className={`dialog ${wide ? "wide-dialog" : ""}`}
-        role="dialog"
-        aria-modal="true"
-        aria-label={title}
-        ref={ref}
-      >
-        <div className="dialog-title">
-          <h2>{title}</h2>
-          <button
-            className="icon-button"
-            aria-label="Close dialog"
-            onClick={onClose}
-          >
-            <X size={20} />
-          </button>
-        </div>
-        {children}
-      </div>
-    </div>
-  );
-}
-
 export default function App() {
   const path = usePath();
   const [mobile, setMobile] = useState(false);
@@ -436,17 +256,10 @@ export default function App() {
   const [filter, setFilter] = useState("All statuses");
   const [produce, setProduce] = useState("All produce");
   const [sort, setSort] = useState("priority");
-  const [copilot, setCopilot] = useState(false);
   const [modal, setModal] = useState<
     "new" | "edit" | "destination" | "notifications" | "guide" | null
   >(null);
-  const [selected, setSelected] = useState("reroute");
-  const [budget, setBudget] = useState(800);
-  const [delay, setDelay] = useState(3);
-  const [temperature, setTemperature] = useState(18);
-  const [fixtureLoaded, setFixtureLoaded] = useState(false);
   const [toast, setToast] = useState("");
-  const [historyQuery, setHistoryQuery] = useState("");
   useEffect(() => {
     if (!mobile) return;
     const previous = document.activeElement as HTMLElement;
@@ -480,23 +293,27 @@ export default function App() {
   }, [mobile]);
   useEffect(() => {
     setMobile(false);
-    document.title = `${path.startsWith("/rescue") ? "Rescue Lab" : path.startsWith("/shipments/") ? "Shipment workspace" : path.includes("review") ? "Decision review" : path === "/history" ? "History" : "Control center"} · FreshRoute`;
+    document.title = `${path.startsWith("/rescue") ? "Rescue Lab" : path.startsWith("/shipments/") ? "Shipment workspace" : path.includes("review") ? "Decision review" : path.startsWith("/runs/") ? "Saved analysis" : path === "/history" ? "History" : "Control center"} · FreshRoute`;
   }, [path]);
   useEffect(() => {
     if (!toast) return;
     const t = window.setTimeout(() => setToast(""), 5000);
     return () => window.clearTimeout(t);
   }, [toast]);
+  const routeRunId = path.startsWith("/runs/") ? path.split("/")[2] : undefined;
+  const currentRun = workspace.analyses.find((run) => run.id === routeRunId);
   const shipmentId =
-    path.startsWith("/shipments/") || path.startsWith("/rescue/")
+    currentRun?.shipmentId ||
+    (path.startsWith("/shipments/") || path.startsWith("/rescue/")
       ? path.split("/")[2]
-      : new URLSearchParams(window.location.search).get("shipment") || "FR-101";
+      : new URLSearchParams(window.location.search).get("shipment") ||
+        "FR-101");
   const matchedShipment = shipments.find((s) => s.id === shipmentId);
   const shipment = matchedShipment || shipments[0];
-  const candidate = candidates.find((c) => c.id === selected)!;
   const isLab = path.startsWith("/rescue/") && !!matchedShipment;
   const isDetail = path.startsWith("/shipments/") && !!matchedShipment;
-  const isReview = path.startsWith("/runs/sample-") && path.endsWith("/review");
+  const isReview = !!currentRun && path.endsWith("/review");
+  const isSavedAnalysis = !!currentRun && !isReview;
   const isList = path === "/shipments";
   const known =
     path === "/" ||
@@ -504,6 +321,7 @@ export default function App() {
     isLab ||
     isDetail ||
     isReview ||
+    isSavedAnalysis ||
     isList ||
     ["/history", "/network", "/evidence", "/settings"].includes(path);
   const filtered = shipments
@@ -534,13 +352,6 @@ export default function App() {
           networkProduce as "Tomatoes" | "Bananas" | "Leafy greens",
         )),
   );
-  const safely = (operation: () => void) => {
-    try {
-      operation();
-    } catch (error) {
-      notify((error as Error).message);
-    }
-  };
   const exportLocal = () => {
     const raw = repository.exportRaw();
     const blob = new Blob([raw], { type: "application/json" });
@@ -551,20 +362,6 @@ export default function App() {
     a.click();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
-  const changeFixture = () => setFixtureLoaded(false);
-  const reset = () => {
-    setDelay(3);
-    setBudget(800);
-    setTemperature(18);
-    setSelected("reroute");
-    setFixtureLoaded(false);
-  };
-  const fixtureMatches =
-    delay === 3 &&
-    temperature === 18 &&
-    shipment.id === "FR-101" &&
-    shipment.quantity === 500 &&
-    shipment.version === 1;
   const table = (
     <>
       <div className="filters">
@@ -764,7 +561,7 @@ export default function App() {
                 }
                 onClick={(e) => {
                   e.preventDefault();
-                  if (isLab && href.startsWith("/rescue")) reset();
+
                   navigate(href);
                 }}
               >
@@ -834,23 +631,25 @@ export default function App() {
             <span>Workspace</span>
             <ChevronRight size={13} />
             <strong>
-              {isLab
-                ? "Rescue Lab"
-                : isDetail
-                  ? "Shipment detail"
-                  : isReview
-                    ? "Decision review"
-                    : isList
-                      ? "Shipments"
-                      : path === "/history"
-                        ? "History"
-                        : path === "/network"
-                          ? "Receiving network"
-                          : path === "/evidence"
-                            ? "Project evidence"
-                            : path === "/settings"
-                              ? "Local data"
-                              : "Overview"}
+              {isSavedAnalysis
+                ? "Saved analysis"
+                : isLab
+                  ? "Rescue Lab"
+                  : isDetail
+                    ? "Shipment detail"
+                    : isReview
+                      ? "Decision review"
+                      : isList
+                        ? "Shipments"
+                        : path === "/history"
+                          ? "History"
+                          : path === "/network"
+                            ? "Receiving network"
+                            : path === "/evidence"
+                              ? "Project evidence"
+                              : path === "/settings"
+                                ? "Local data"
+                                : "Overview"}
             </strong>
           </div>
           <div className="topbar-actions">
@@ -881,9 +680,9 @@ export default function App() {
           <div className="prototype-strip">
             <FlaskConical size={14} />
             <span>
-              Phase 2 local workspace · Shipments, drafts and rules save in this
-              browser. Rescue comparisons remain fixtures; no AWS or live AI
-              connected.
+              Phase 3 local workspace · Calculations, saved analyses and plans
+              stay in this browser. Model parameters are illustrative; no AWS or
+              live AI connected.
             </span>
             <span className="prototype-version">DESIGN PREVIEW</span>
           </div>
@@ -944,7 +743,6 @@ export default function App() {
                   </p>
                   <button
                     onClick={() => {
-                      reset();
                       navigate("/rescue/FR-101");
                     }}
                   >
@@ -1009,9 +807,9 @@ export default function App() {
                     tone: "blue",
                   },
                   {
-                    label: "Demo decisions",
+                    label: "Local selections",
                     value: String(decisions.length).padStart(2, "0"),
-                    sub: "Sample decisions · saved locally",
+                    sub: "Calculated plans + legacy samples",
                     icon: CheckCheck,
                     tone: "green",
                   },
@@ -1092,7 +890,6 @@ export default function App() {
                       className="icon-button"
                       aria-label="Compare rescue possibilities"
                       onClick={() => {
-                        reset();
                         navigate("/rescue/FR-101");
                       }}
                     >
@@ -1103,7 +900,7 @@ export default function App() {
                     <span className="step-number">03</span>
                     <div>
                       <strong>Make an informed choice</strong>
-                      <p>Review a sample plan before confirming.</p>
+                      <p>Save an analysis, then review a local plan.</p>
                     </div>
                     <ShieldCheck size={18} className="muted" />
                   </div>
@@ -1165,7 +962,6 @@ export default function App() {
                     </Button>
                     <Button
                       onClick={() => {
-                        reset();
                         navigate(`/rescue/${shipment.id}`);
                       }}
                     >
@@ -1202,478 +998,63 @@ export default function App() {
               <ShipmentHistory shipment={shipment} />
             </>
           )}
-          {isLab && (
-            <>
-              <button
-                className="text-button back"
-                onClick={() => navigate(`/shipments/${shipment.id}`)}
-              >
-                <ArrowLeft size={15} />
-                Back to {shipment.id}
-              </button>
-              <Heading
-                eyebrow="EXPLORE BEFORE YOU DECIDE"
-                title="A better next move starts here."
-                description={`${shipment.icon} ${shipment.produce} · ${shipment.quantity} kg · ${shipment.id}`}
-                action={
-                  <Button secondary onClick={() => setCopilot(true)}>
-                    <Sparkles size={16} />
-                    Explain the sample
-                  </Button>
-                }
-              />
-              <div className="lab-grid">
-                <section className="panel lab-controls">
-                  <PanelTitle
-                    title="What if…"
-                    subtitle="Adjust the scenario inputs."
-                  />
-                  <label className="range-label" htmlFor="delay">
-                    Additional delay <strong>{delay} hours</strong>
-                  </label>
-                  <input
-                    id="delay"
-                    type="range"
-                    min="0"
-                    max="8"
-                    step="1"
-                    value={delay}
-                    onChange={(e) => {
-                      setDelay(+e.target.value);
-                      changeFixture();
-                    }}
-                  />
-                  <div className="range-ends">
-                    <span>0 hours</span>
-                    <span>8 hours</span>
-                  </div>
-                  <label className="range-label" htmlFor="temperature">
-                    Temperature <strong>{temperature}°C</strong>
-                  </label>
-                  <input
-                    id="temperature"
-                    type="range"
-                    min="4"
-                    max="30"
-                    value={temperature}
-                    onChange={(e) => {
-                      setTemperature(+e.target.value);
-                      changeFixture();
-                    }}
-                  />
-                  <div className="range-ends">
-                    <span>4°C</span>
-                    <span>30°C</span>
-                  </div>
-                  <label className="field-label" htmlFor="budget">
-                    Rescue budget (₹)
-                  </label>
-                  <input
-                    className="budget-input"
-                    id="budget"
-                    type="number"
-                    min="0"
-                    max="10000"
-                    value={budget}
-                    onChange={(e) => {
-                      setBudget(Math.max(0, Math.min(10000, +e.target.value)));
-                      changeFixture();
-                    }}
-                  />
-                  <div className="controls-separator" />
-                  <div className="field-label">Sample ranking priority</div>
-                  <div className="priority-pill">
-                    <Leaf size={15} />
-                    Preserve quality <Check size={14} />
-                  </div>
-                  <p className="fine-print">
-                    A fixed comparison fixture. Real calculations and
-                    customizable ranking arrive in Phase 3.
-                  </p>
-                  <Button
-                    onClick={() => {
-                      if (fixtureMatches) {
-                        setFixtureLoaded(true);
-                        notify(
-                          "Static comparison fixture loaded. No model or cloud job was run.",
-                        );
-                      } else
-                        notify(
-                          "No calculation engine yet. Restore the FR-101 sample inputs to load its fixture.",
-                        );
-                    }}
-                  >
-                    <FlaskConical size={16} />
-                    Load sample comparison
-                  </Button>
-                  <button className="text-button reset-button" onClick={reset}>
-                    <RotateCcw size={14} />
-                    Restore sample inputs
-                  </button>
-                </section>
-                <div className="lab-results">
-                  <div className="results-meta">
-                    <Badge tone={fixtureLoaded ? "green" : "amber"}>
-                      {fixtureLoaded
-                        ? "Fixture loaded"
-                        : "Unsaved input preview"}
-                    </Badge>
-                    <span>Display fixture v0.1 · not a prediction</span>
-                  </div>
-                  {!fixtureMatches && (
-                    <div className="notice amber">
-                      <TriangleAlert size={18} />
-                      <p>
-                        These inputs have no matching fixture. The comparisons
-                        below stay fixed for FR-101 (500 kg, +3h, 18°C); they do
-                        not recalculate. Restore that sample to review a plan.
-                      </p>
-                    </div>
-                  )}
-                  <div className="candidate-grid">
-                    {candidates.map((c, i) => {
-                      const available = c.cost <= budget;
-                      return (
-                        <button
-                          key={c.id}
-                          className={`candidate-card ${selected === c.id ? "selected" : ""} ${!available ? "unavailable" : ""}`}
-                          aria-pressed={selected === c.id}
-                          onClick={() => setSelected(c.id)}
-                        >
-                          <div className="candidate-top">
-                            <span className="candidate-number">0{i + 1}</span>
-                            <span className="radio-circle">
-                              {selected === c.id && <span />}
-                            </span>
-                          </div>
-                          <small>{c.short}</small>
-                          <h3>{c.name}</h3>
-                          {c.id === "reroute" && (
-                            <span className="recommended">
-                              SAMPLE PREFERENCE
-                            </span>
-                          )}
-                          <div className="candidate-quality">
-                            {c.quality}
-                            <small>/100</small>
-                          </div>
-                          <p>Illustrative quality index</p>
-                          <div className="quality-bar">
-                            <span style={{ width: `${c.quality}%` }} />
-                          </div>
-                          <div className="candidate-data">
-                            <span>
-                              Extra cost<strong>{money(c.cost)}</strong>
-                            </span>
-                            <span>
-                              Travel time<strong>{c.hours}</strong>
-                            </span>
-                          </div>
-                          <div
-                            className={`feasibility ${available ? "" : "over-budget"}`}
-                          >
-                            {available ? (
-                              <Check size={13} />
-                            ) : (
-                              <TriangleAlert size={13} />
-                            )}{" "}
-                            {available
-                              ? "Within entered budget"
-                              : "Over entered budget"}
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <section className="panel quality-panel">
-                    <PanelTitle
-                      title="One shipment. Different possibilities."
-                      subtitle="Static illustrative quality curves — not computed from the controls."
-                      action={
-                        <span className="chart-unit">QUALITY INDEX / 100</span>
-                      }
-                    />
-                    <QualityChart />
-                  </section>
-                  <section className="selection-strip">
-                    <div>
-                      <span className="selection-icon">
-                        <SlidersHorizontal size={20} />
-                      </span>
-                      <div>
-                        <strong>{candidate.name}</strong>
-                        <p>{candidate.note}</p>
-                      </div>
-                    </div>
-                    <Button
-                      disabled={
-                        !fixtureLoaded ||
-                        !fixtureMatches ||
-                        candidate.cost > budget
-                      }
-                      onClick={() =>
-                        navigate(
-                          `/runs/sample-${shipment.id}/review?shipment=${shipment.id}`,
-                        )
-                      }
-                    >
-                      Review sample plan <ArrowRight size={16} />
-                    </Button>
-                  </section>
-                  <p className="fine-print results-footnote">
-                    Load the matching sample to enable review. Budget checks are
-                    local UI behavior; destination availability is not reserved
-                    or verified.
-                  </p>
-                </div>
-              </div>
-            </>
+          {(isLab || isSavedAnalysis) && (
+            <RescueWorkspace
+              key={currentRun?.id || shipment.id}
+              shipment={shipment}
+              destinations={destinations}
+              shipments={shipments}
+              saved={isSavedAnalysis ? currentRun : undefined}
+              repository={repository}
+              execute={execute}
+              onBack={() =>
+                navigate(
+                  isSavedAnalysis ? "/history" : `/shipments/${shipment.id}`,
+                )
+              }
+              onShipment={(id) => navigate(`/rescue/${id}`)}
+              onOpen={(id, candidate) =>
+                navigate(
+                  `/runs/${id}${candidate ? "?candidate=" + encodeURIComponent(candidate) : ""}`,
+                )
+              }
+              onReview={(id, candidate) =>
+                navigate(
+                  `/runs/${id}/review?candidate=${encodeURIComponent(candidate)}`,
+                )
+              }
+            />
           )}
-          {isReview && (
-            <>
-              <button
-                className="text-button back"
-                onClick={() => navigate(`/rescue/${shipment.id}`)}
-              >
-                <ArrowLeft size={15} />
-                Back to comparison
-              </button>
-              <Heading
-                eyebrow="A MOMENT TO REVIEW"
-                title="A clear plan. A considered choice."
-                description="Review the sample action and its assumptions before trying the confirmation flow."
-              />
-              <div className="review-grid">
-                <section className="panel review-main">
-                  <div className="review-icon">
-                    <Truck size={28} />
-                  </div>
-                  <Badge>Selected sample action</Badge>
-                  <h2>{candidate.name}</h2>
-                  <p>
-                    {shipment.produce} · {shipment.quantity} kg · {shipment.id}
-                  </p>
-                  <div className="review-destination">
-                    <MapPin size={21} />
-                    <div>
-                      <small>Sample destination</small>
-                      <strong>{candidate.destination}</strong>
-                    </div>
-                  </div>
-                  <div className="review-metrics">
-                    <div>
-                      <small>Extra intervention cost</small>
-                      <strong>{money(candidate.cost)}</strong>
-                    </div>
-                    <div>
-                      <small>Sample travel time</small>
-                      <strong>{candidate.hours}</strong>
-                    </div>
-                    <div>
-                      <small>Fixture quality index</small>
-                      <strong>{candidate.quality}/100</strong>
-                    </div>
-                  </div>
-                  <h3>What this sample shows</h3>
-                  <ul className="check-list">
-                    <li>
-                      <CheckCircle2 size={17} />A destination with illustrative
-                      spare capacity.
-                    </li>
-                    <li>
-                      <CheckCircle2 size={17} />
-                      An action compared against the original route.
-                    </li>
-                    <li>
-                      <CheckCircle2 size={17} />A human reviews the trade-offs
-                      before confirmation.
-                    </li>
-                  </ul>
-                  <div className="notice amber">
-                    <ShieldCheck size={20} />
-                    <p>
-                      Local sample only. Confirmation saves a demo decision in
-                      this browser. It does not reserve capacity, send email,
-                      run a model or create an AWS record.
-                    </p>
-                  </div>
-                </section>
-                <section className="panel review-sidebar">
-                  <h2>Plan summary</h2>
-                  <div className="summary-line">
-                    <span>Shipment</span>
-                    <strong>{shipment.id}</strong>
-                  </div>
-                  <div className="summary-line">
-                    <span>Quantity</span>
-                    <strong>{shipment.quantity} kg</strong>
-                  </div>
-                  <div className="summary-line">
-                    <span>Fixture capacity</span>
-                    <strong>{candidate.capacity} kg</strong>
-                  </div>
-                  <div className="summary-line">
-                    <span>Entered budget</span>
-                    <strong>{money(budget)}</strong>
-                  </div>
-                  <div className="summary-line">
-                    <span>Sample input state</span>
-                    <strong>
-                      {fixtureLoaded && fixtureMatches
-                        ? "Loaded"
-                        : "Not loaded"}
-                    </strong>
-                  </div>
-                  <p className="fine-print">
-                    No live availability or food-safety verification. All values
-                    are illustrative.
-                  </p>
-                  <Button
-                    disabled={
-                      !fixtureLoaded ||
-                      !fixtureMatches ||
-                      candidate.cost > budget
-                    }
-                    onClick={() => {
-                      safely(() => {
-                        const decision = execute(() =>
-                          repository.addDecision({
-                            shipmentId: shipment.id,
-                            candidateId: candidate.id,
-                            candidateName: candidate.name,
-                            quantity: shipment.quantity,
-                            destination: candidate.destination,
-                            createdAt: new Date().toISOString(),
-                          }),
-                        );
-                        setFixtureLoaded(false);
-                        navigate("/history");
-                        notify(
-                          `${decision.id} saved locally. No reservation or notification was made.`,
-                        );
-                      });
-                    }}
-                  >
-                    <Check size={16} />
-                    Confirm demo decision
-                  </Button>
-                  <button
-                    className="text-button"
-                    onClick={() => navigate(`/rescue/${shipment.id}`)}
-                  >
-                    Return to Rescue Lab <ArrowLeft size={14} />
-                  </button>
-                </section>
-              </div>
-            </>
+          {isReview && currentRun && (
+            <RunReview
+              key={currentRun.id}
+              run={currentRun}
+              candidateId={
+                new URLSearchParams(window.location.search).get("candidate") ||
+                currentRun.result.winnerId ||
+                ""
+              }
+              currentShipment={matchedShipment}
+              destinations={destinations}
+              repository={repository}
+              execute={execute}
+              onBack={() => navigate(`/runs/${currentRun.id}`)}
+              onConfirmed={() => {
+                navigate("/history");
+                notify(
+                  "Calculated local plan saved. No capacity was reserved and no notification was sent.",
+                );
+              }}
+            />
           )}
           {path === "/history" && (
-            <>
-              <Heading
-                eyebrow="YOUR DECISION TRAIL"
-                title="Good decisions leave a clear trail."
-                description="Revisit locally saved demo decisions and their sample assumptions."
-                action={
-                  decisions.length > 0 ? (
-                    <Button secondary onClick={() => navigate("/settings")}>
-                      <RotateCcw size={16} />
-                      Manage local data
-                    </Button>
-                  ) : undefined
-                }
-              />
-              <section className="panel">
-                <PanelTitle
-                  title="Local sample history"
-                  subtitle="Saved on this browser and origin. These are sample decisions, not real bookings."
-                />
-                <div className="filters">
-                  <div className="search-field">
-                    <Search size={16} />
-                    <input
-                      aria-label="Search decision history"
-                      placeholder="Search decision or shipment…"
-                      value={historyQuery}
-                      onChange={(e) => setHistoryQuery(e.target.value)}
-                    />
-                  </div>
-                </div>
-                {decisions.filter((d) =>
-                  (d.id + d.shipmentId + d.candidateName)
-                    .toLowerCase()
-                    .includes(historyQuery.toLowerCase()),
-                ).length === 0 ? (
-                  <div className="empty-state">
-                    <span className="empty-icon">
-                      <History size={28} />
-                    </span>
-                    <h2>
-                      {historyQuery
-                        ? "No matching decisions"
-                        : "Your next decision starts a story."}
-                    </h2>
-                    <p>
-                      {historyQuery
-                        ? "Try a different search."
-                        : "Explore a sample comparison, review a plan, then confirm a demo decision."}
-                    </p>
-                    <Button
-                      onClick={() => {
-                        if (historyQuery) setHistoryQuery("");
-                        else {
-                          reset();
-                          navigate("/rescue/FR-101");
-                        }
-                      }}
-                    >
-                      {historyQuery ? "Clear search" : "Open Rescue Lab"}
-                      <ArrowRight size={16} />
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="history-list">
-                    {decisions
-                      .filter((d) =>
-                        (d.id + d.shipmentId + d.candidateName)
-                          .toLowerCase()
-                          .includes(historyQuery.toLowerCase()),
-                      )
-                      .map((d) => (
-                        <article key={d.id} className="history-card">
-                          <div className="history-check">
-                            <Check size={20} />
-                          </div>
-                          <div>
-                            <small>
-                              {d.id} · {d.shipmentId}
-                            </small>
-                            <h3>{d.candidateName}</h3>
-                            <p>
-                              {d.quantity} kg → {d.destination}
-                            </p>
-                            <small>
-                              {new Date(d.createdAt).toLocaleString("en-IN", {
-                                timeZone: "Asia/Kolkata",
-                              })}{" "}
-                              IST · static fixture v0.1
-                            </small>
-                          </div>
-                          <Badge tone="blue">Saved locally</Badge>
-                          <button
-                            className="icon-button"
-                            aria-label={`Open shipment for ${d.id}`}
-                            onClick={() =>
-                              navigate(`/shipments/${d.shipmentId}`)
-                            }
-                          >
-                            <ArrowUpRight size={18} />
-                          </button>
-                        </article>
-                      ))}
-                  </div>
-                )}
-              </section>
-            </>
+            <AnalysisHistory
+              analyses={workspace.analyses}
+              decisions={decisions}
+              onOpen={(id) => navigate(`/runs/${id}`)}
+              onNew={() => navigate("/rescue/FR-101")}
+              onShipment={(id) => navigate(`/shipments/${id}`)}
+            />
           )}
           {path === "/network" && (
             <>
@@ -1769,7 +1150,6 @@ export default function App() {
                     <button
                       className="text-button"
                       onClick={() => {
-                        reset();
                         navigate("/rescue/FR-101");
                       }}
                     >
@@ -1787,7 +1167,6 @@ export default function App() {
               onExport={exportLocal}
               onReset={() => {
                 execute(() => repository.reset());
-                setFixtureLoaded(false);
                 notify("Local workspace reset to the original fictional demo.");
               }}
               onRetry={refresh}
@@ -1803,9 +1182,9 @@ export default function App() {
               <div className="notice blue">
                 <Network size={20} />
                 <p>
-                  Phase 2 provides local persistence and operational workflows.
-                  All cloud services below are planned and have no deployment
-                  evidence yet.
+                  Phase 3 adds deterministic analysis, constraint checks and
+                  versioned snapshots. All cloud services below are planned and
+                  have no deployment evidence yet.
                 </p>
               </div>
               <div className="evidence-flow">
@@ -1818,12 +1197,12 @@ export default function App() {
                   {
                     icon: FlaskConical,
                     title: "Simulate",
-                    text: "Compare sample rescue possibilities.",
+                    text: "Calculate and compare feasible rescue options.",
                   },
                   {
                     icon: CheckCheck,
                     title: "Decide",
-                    text: "Review and save a local sample action.",
+                    text: "Review a calculated local plan without reserving capacity.",
                   },
                   {
                     icon: FileText,
@@ -1888,68 +1267,10 @@ export default function App() {
               <Leaf size={13} />
               FreshRoute · Thoughtful decisions, fresher possibilities.
             </span>
-            <span>Academic prototype · Phase 2</span>
+            <span>Academic prototype · Phase 3</span>
           </footer>
         </main>
       </div>
-      {copilot && (
-        <div
-          className="drawer-backdrop"
-          onMouseDown={(e) => {
-            if (e.target === e.currentTarget) setCopilot(false);
-          }}
-        >
-          <section className="copilot-drawer" aria-label="Sample explanation">
-            <Dialog
-              title="FreshRoute Copilot"
-              onClose={() => setCopilot(false)}
-            >
-              <Badge tone="blue">Authored demo explanation · no live AI</Badge>
-              <div className="copilot-mark">
-                <Sparkles size={25} />
-              </div>
-              <h3>Why explore a nearby destination?</h3>
-              <p>
-                The fixed FR-101 fixture illustrates how shorter travel can
-                preserve more quality than continuing through a delay.
-              </p>
-              <div className="explanation-metrics">
-                <span>
-                  Original route<strong>5h 30m</strong>
-                </span>
-                <ArrowRight size={18} />
-                <span>
-                  Nearby destination<strong>2h 15m</strong>
-                </span>
-              </div>
-              <p>
-                The sample reroute costs {money(450)} and lists 600 kg of
-                receiving capacity. These are authored comparison values, not
-                model outputs or verified availability.
-              </p>
-              <div className="notice amber">
-                <TriangleAlert size={18} />
-                <p>
-                  Real explanations will use the calculated result and validated
-                  destination constraints. This prototype makes no food-safety
-                  claim.
-                </p>
-              </div>
-              <Button
-                secondary
-                onClick={() => {
-                  setCopilot(false);
-                  notify(
-                    "The explanation uses the static FR-101 comparison fixture. Live provenance arrives with the backend.",
-                  );
-                }}
-              >
-                Understood <Check size={15} />
-              </Button>
-            </Dialog>
-          </section>
-        </div>
-      )}
       {modal && (
         <Dialog
           wide={modal === "new" || modal === "edit" || modal === "destination"}
@@ -1983,7 +1304,6 @@ export default function App() {
               onCancel={() => setModal(null)}
               onSaved={(id) => {
                 setModal(null);
-                setFixtureLoaded(false);
                 navigate(`/shipments/${id}`);
                 notify("Shipment saved locally. It will remain after refresh.");
               }}
@@ -2035,10 +1355,10 @@ export default function App() {
                 One shipment. A few possibilities. A clearer decision.
               </p>
               {[
-                "Inspect FR-101 and its temperature timeline.",
-                "Load the sample comparison in the Rescue Lab.",
-                "Select an option and review the trade-offs.",
-                "Save a local sample decision and find it in history.",
+                "Inspect a shipment and its entered temperature history.",
+                "Adjust assumptions and calculate alternatives in the Rescue Lab.",
+                "Save the analysis snapshot and review a feasible option.",
+                "Save a local plan and reopen its source analysis in history.",
               ].map((s, i) => (
                 <div className="guide-step" key={s}>
                   <span className="step-number">0{i + 1}</span>
@@ -2048,8 +1368,9 @@ export default function App() {
               <div className="notice blue">
                 <FlaskConical size={18} />
                 <p>
-                  This is a UI walkthrough, not a live calculation or cloud
-                  deployment. All data and explanations are illustrative.
+                  This is a local calculation walkthrough, not a cloud
+                  deployment. Parameters and shipment data are illustrative, not
+                  food-safety assessments.
                 </p>
               </div>
               <Button

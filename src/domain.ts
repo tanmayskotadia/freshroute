@@ -1,5 +1,6 @@
 import type { DemoDecision, Shipment } from "./fixtures.ts";
 import { shipments as fixtures } from "./fixtures.ts";
+import type { SavedAnalysis } from "./model/engine.ts";
 
 export const PRODUCE = ["Tomatoes", "Bananas", "Leafy greens"] as const;
 export type Produce = (typeof PRODUCE)[number];
@@ -72,6 +73,7 @@ export type Workspace = {
   destinations: Destination[];
   decisions: DemoDecision[];
   drafts: Draft[];
+  analyses: SavedAnalysis[];
 };
 export class DomainError extends Error {
   code: string;
@@ -339,5 +341,6 @@ export function seedWorkspace(): Workspace {
     destinations,
     decisions: [],
     drafts: [],
+    analyses: [],
   };
 }
