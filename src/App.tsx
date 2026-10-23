@@ -538,7 +538,12 @@ export default function App() {
             <button onClick={() => setModal("guide")}>
               Explore the walkthrough <ArrowRight size={14} />
             </button>
-            <button onClick={() => { setPresenting(true); setMobile(false); }}>
+            <button
+              onClick={() => {
+                setPresenting(true);
+                setMobile(false);
+              }}
+            >
               Seven-minute presentation <ArrowRight size={14} />
             </button>
           </div>
@@ -557,7 +562,7 @@ export default function App() {
             <ArrowUpRight size={14} />
           </a>
           <div className="user">
-            <span className="avatar">DK</span>
+            <span className="avatar">FR</span>
             <div>
               <strong>{cloud ? "Cloud operator" : "Demo operator"}</strong>
               <small>
@@ -645,7 +650,7 @@ export default function App() {
               <Bell size={19} />
               <i />
             </button>
-            <span className="avatar small">DK</span>
+            <span className="avatar small">FR</span>
           </div>
         </header>
         <main id="main" tabIndex={-1}>
@@ -658,7 +663,9 @@ export default function App() {
                   ? "AWS workspace: private records, shared receiving capacity and explainable model results. Copilot availability is shown with each response."
                   : "Local demo: calculations and saved work stay in this browser. Use AWS sign-in to open the cloud workspace."}
             </span>
-            <span className="prototype-version">DESIGN PREVIEW</span>
+            <span className="prototype-version">
+              {cloud ? "AWS WORKSPACE" : "INTERACTIVE DEMO"}
+            </span>
           </div>
           {storageError && (
             <div className="notice amber" role="alert">
@@ -704,11 +711,11 @@ export default function App() {
                 <div>
                   <span className="hero-kicker">
                     <span />
-                    YOUR NEXT BEST MOVE
+                    INCIDENT REVIEW · FR-101
                   </span>
                   <h2>
-                    A small detour.
-                    <br />A fresh possibility.
+                    Fresh produce.
+                    <br />A clearer way forward.
                   </h2>
                   <p>
                     FR-101 needs a closer look. Explore cooling and nearby
@@ -736,7 +743,7 @@ export default function App() {
                     <div className="tomato t3" />
                     <div className="tomato t4" />
                     <div className="crate-lines" />
-                    <span>HANDLE WITH POSSIBILITY</span>
+                    <span>FRESHROUTE · HANDLE WITH CARE</span>
                   </div>
                   <div className="art-sticker">
                     <Leaf size={17} />
@@ -750,13 +757,15 @@ export default function App() {
               </section>
               <section
                 className="metric-grid"
-                aria-label="Demo shipment metrics"
+                aria-label="Shipment workspace metrics"
               >
                 {[
                   {
                     label: "Active shipments",
                     value: String(shipments.length).padStart(2, "0"),
-                    sub: "In this demo workspace",
+                    sub: cloud
+                      ? "In your AWS workspace"
+                      : "In this demo workspace",
                     icon: Truck,
                     tone: "green",
                   },
@@ -801,6 +810,42 @@ export default function App() {
                     </div>
                     <p>{sub}</p>
                   </article>
+                ))}
+              </section>
+              <section
+                className="workspace-shortcuts"
+                aria-label="Explore your workspace"
+              >
+                {[
+                  {
+                    icon: FlaskConical,
+                    label: "Rescue Lab",
+                    detail: "Compare the next best move",
+                    href: "/rescue/FR-101",
+                  },
+                  {
+                    icon: MapPin,
+                    label: "Receiving network",
+                    detail: "Find capacity and produce rules",
+                    href: "/network",
+                  },
+                  {
+                    icon: History,
+                    label: "Saved analyses",
+                    detail: "Revisit the evidence behind a plan",
+                    href: "/history",
+                  },
+                ].map(({ icon: Icon, label, detail, href }) => (
+                  <button key={href} onClick={() => navigate(href)}>
+                    <span className="shortcut-icon">
+                      <Icon size={21} />
+                    </span>
+                    <span>
+                      <strong>{label}</strong>
+                      <small>{detail}</small>
+                    </span>
+                    <ArrowUpRight size={18} />
+                  </button>
                 ))}
               </section>
               <section className="panel shipment-panel">
@@ -1283,8 +1328,11 @@ export default function App() {
               <div className="notice blue">
                 <FlaskConical size={18} />
                 <p>
-                  {cloud ? "Your signed-in workspace uses AWS persistence, workflows and AI. " : "This walkthrough uses browser-local calculations; use AWS sign-in for cloud features. "}
-                  Parameters and shipment data are illustrative, not food-safety assessments.
+                  {cloud
+                    ? "Your signed-in workspace uses AWS persistence, workflows and AI. "
+                    : "This walkthrough uses browser-local calculations; use AWS sign-in for cloud features. "}
+                  Parameters and shipment data are illustrative, not food-safety
+                  assessments.
                 </p>
               </div>
               <Button
@@ -1312,7 +1360,17 @@ export default function App() {
           </button>
         </div>
       )}
-      {presenting && <PresentationMode shipmentId={shipments.find(s => s.id === "FR-101")?.id || shipments[0]?.id} runId={workspace.analyses[0]?.id} cloud={cloud} onNavigate={navigate} onClose={() => setPresenting(false)} />}
+      {presenting && (
+        <PresentationMode
+          shipmentId={
+            shipments.find((s) => s.id === "FR-101")?.id || shipments[0]?.id
+          }
+          runId={workspace.analyses[0]?.id}
+          cloud={cloud}
+          onNavigate={navigate}
+          onClose={() => setPresenting(false)}
+        />
+      )}
     </>
   );
 }

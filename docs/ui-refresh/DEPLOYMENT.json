@@ -1,0 +1,31 @@
+{
+  "account": "118462784511",
+  "bucket": "freshroute-118462784511-ap-south-1-web",
+  "website": "https://dr4sw5bpoi.execute-api.ap-south-1.amazonaws.com/overview",
+  "files": [
+    {
+      "key": "assets/index-DaaQgNMb.js",
+      "bytes": 411187,
+      "etag": "\"d03ca1ec124e7b04d0f5a9676d239053\"",
+      "contentType": "application/javascript",
+      "version": "k80s6oi6lJzc4um3.YME402KnHI9arvS"
+    },
+    {
+      "key": "assets/index-Di4ukgV_.css",
+      "bytes": 94875,
+      "etag": "\"8268e0b7a6fa19f803eb21c16fa2c6ca\"",
+      "contentType": "text/css",
+      "version": "Xq4cSNZ98r7WdnYHArnX1j_0JKqPnvXp"
+    },
+    {
+      "key": "index.html",
+      "bytes": 637,
+      "etag": "\"252d18694fac118832d783f95da88227\"",
+      "contentType": "text/html",
+      "version": "e6iirKdMVYwgFcSbj7IJyTRWombbfjDF"
+    }
+  ],
+  "build": "npm run build passed",
+  "checksumVerification": "All three S3 ETags and byte counts match the local built files.",
+  "browserVisualVerification": "Blocked by saved browser origin permission; no live visual verification claimed."
+}
