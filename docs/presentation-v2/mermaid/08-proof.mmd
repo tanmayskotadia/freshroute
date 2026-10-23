@@ -1,0 +1,19 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial","fontSize":"28px","lineColor":"#91AC9B","primaryTextColor":"#F0F4E9","edgeLabelBackground":"#111B17"},"flowchart":{"htmlLabels":false,"curve":"linear","nodeSpacing":36,"rankSpacing":60,"padding":20,"wrappingWidth":400},"securityLevel":"strict"}}%%
+flowchart TB
+ A["Cloud evidence"] --> B["RETAINED APP"]
+ A --> C["VERIFIED LABS<br/>Deleted after testing"]
+ A --> D["STUDY TOPICS"]
+ B --> E["Serverless and storage<br/>Security and audit"]
+ C --> F["EC2, EBS and EFS<br/>Peering, WAF and Config"]
+ C --> G["Private RDS and DMS<br/>Full load of 3 exact rows"]
+ D --> H["Aurora, Multi-AZ, SWF<br/>Direct Connect, Snow"]
+ class A accent
+ class B,E result
+ class C,F,G input
+ class D,H risk
+
+classDef default fill:#172420,stroke:#3D5950,stroke-width:1.5px,color:#F0F4E9;
+classDef input fill:#23352F,stroke:#82998A,color:#F0F4E9;
+classDef accent fill:#D9ED70,stroke:#D9ED70,color:#112019;
+classDef result fill:#245345,stroke:#74D2AF,color:#F1FFF8;
+classDef risk fill:#4C302A,stroke:#DD9F85,color:#FFE8DE;

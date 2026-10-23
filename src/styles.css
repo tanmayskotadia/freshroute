@@ -2188,11 +2188,12 @@ td > small {
   border-top: 1px solid #eef1e7;
   min-height: 230px;
 }
-.route-map svg {
+.route-map > .route-map-canvas {
   width: 100%;
   display: block;
   position: relative;
   z-index: 1;
+  height: 300px;
 }
 .map-grid {
   position: absolute;
@@ -2218,15 +2219,18 @@ td > small {
   stroke: #e5e8db;
 }
 .map-original {
-  stroke: #a3b28d;
-  stroke-width: 3;
+  stroke: #899478;
+  stroke-width: 4;
   fill: none;
-  stroke-dasharray: 6 5;
+  stroke-dasharray: 9 7;
+  stroke-linecap: round;
 }
 .map-alternative {
-  stroke: #518064;
-  stroke-width: 3;
+  stroke: #34775c;
+  stroke-width: 5;
   fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 .map-node {
   stroke: white;
@@ -2237,29 +2241,33 @@ td > small {
   fill: #9eae8d;
 }
 .map-warning {
-  fill: #bf865f;
-  stroke: #f7ecdc;
-  stroke-width: 10;
+  fill: #bc6940;
+  stroke: #fffaf2;
+  stroke-width: 4;
 }
 .map-label {
-  fill: #6b7b61;
-  font:
-    11px "DM Sans",
-    sans-serif;
+  fill: #304b3f;
+  font: 600 15px "DM Sans", sans-serif;
+  paint-order: stroke;
+  stroke: #fafbf6;
+  stroke-width: 5;
+  stroke-linejoin: round;
 }
 .map-tag {
   position: absolute;
-  bottom: 15px;
-  left: 17px;
-  font-size: 8px;
-  background: #ffffffdd;
-  border: 1px solid #e2e7d6;
-  border-radius: 4px;
-  padding: 4px 7px;
+  top: 16px;
+  left: 16px;
+  height: fit-content;
+  font-size: 12px;
+  font-weight: 700;
+  background: #fffffff0;
+  border: 1px solid #dde4d7;
+  border-radius: 9px;
+  padding: 10px 12px;
   display: flex;
   align-items: center;
-  gap: 5px;
-  color: #859373;
+  gap: 10px;
+  color: #304b3f;
   z-index: 2;
 }
 .map-key {
@@ -2269,30 +2277,49 @@ td > small {
   display: flex;
   gap: 15px;
   z-index: 2;
-  background: #fff9;
-  padding: 5px;
+  background: #fffffff0;
+  border: 1px solid #dde4d7;
+  border-radius: 8px;
+  padding: 10px 12px;
 }
 .map-key span {
-  font-size: 8px;
+  font-size: 11px;
   color: #657c5d;
   display: flex;
   gap: 5px;
   align-items: center;
 }
 .map-key i {
-  width: 16px;
-  height: 2px;
-  background: #a3b28d;
+  width: 24px;
+  height: 0;
+  border-top: 3px dashed #899478;
 }
-.map-key .dashed {
-  background: #518064;
+.map-key .alternative {
+  border-top-style: solid;
+  border-color: #34775c;
 }
 .compact {
   min-height: 190px;
 }
-.compact svg {
+.route-map.compact > .route-map-canvas {
   height: 210px;
 }
+.map-tag > span { color: #7b8877; font-size: 10px; font-weight: 400; }
+.map-parks { fill: #d8e2c9; stroke: #cbd8bb; stroke-width: 1; }
+.city-river-bank { fill: none; stroke: #c6ddd8; stroke-width: 65; }
+.city-river { fill: none; stroke: #a9cfd0; stroke-width: 46; }
+.city-street-casing, .city-streets { fill: none; stroke-linejoin: round; }
+.city-street-casing { stroke: #d9d7ca; stroke-width: 13; }
+.city-streets { stroke: #fffdf6; stroke-width: 10; }
+.city-ring-casing { fill: none; stroke: #d4c7a3; stroke-width: 14; }
+.city-ring-road { fill: none; stroke: #f7eac5; stroke-width: 10; }
+.city-rail { fill: none; stroke: #b9b9af; stroke-width: 3; stroke-dasharray: 3 6; }
+.city-districts { fill: #8b9285; font: 500 13px "DM Sans", sans-serif; letter-spacing: 2px; }
+.city-road-labels { fill: #89978b; font: 12px "DM Sans", sans-serif; }
+.map-route-halo { fill: none; stroke: #fffdf8; stroke-width: 10; stroke-linejoin: round; }
+.map-truck { fill: none; stroke: white; stroke-width: 1.8; stroke-linejoin: round; }
+.map-north { fill: #657869; font: 600 13px "DM Sans", sans-serif; }
+.map-north path { fill: none; stroke: #657869; stroke-width: 2; }
 .step-item {
   display: flex;
   align-items: center;
@@ -2975,8 +3002,8 @@ td > small {
 .network-map .route-map {
   max-height: 400px;
 }
-.network-map svg {
-  height: 340px;
+.network-map .route-map > .route-map-canvas {
+  height: 400px;
 }
 .network-cards {
   display: grid;
@@ -3934,11 +3961,12 @@ td > small {
   .route-map {
     min-height: 180px;
   }
-  .compact svg {
+  .route-map.compact > .route-map-canvas {
     height: 190px;
   }
-  .network-map svg {
-    height: 240px;
+  .network-map .route-map > .route-map-canvas {
+    height: auto;
+    min-height: 240px;
   }
   .chart-legend {
     gap: 9px;

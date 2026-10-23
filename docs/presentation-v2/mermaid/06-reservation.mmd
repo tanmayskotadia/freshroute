@@ -1,0 +1,20 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial","fontSize":"28px","lineColor":"#91AC9B","primaryTextColor":"#F0F4E9","edgeLabelBackground":"#111B17"},"flowchart":{"htmlLabels":false,"curve":"linear","nodeSpacing":36,"rankSpacing":60,"padding":20,"wrappingWidth":400},"securityLevel":"strict"}}%%
+flowchart LR
+ A["Review<br/>saved analysis"] --> B{"Versions and<br/>capacity current?"}
+ B -->|"Yes"| C["DynamoDB transaction<br/>Capacity held"]
+ B -->|"No"| X["Recalculate<br/>or reject"]
+ C --> D["Streams to SQS<br/>Post-decision worker"]
+ D --> E["Private PDF<br/>App inbox and SNS"]
+ C --> F["Dispatch<br/>Record delivery"]
+ F --> G["Release capacity<br/>once"]
+ C -->|"Cancel before dispatch"| G
+ class A input
+ class B,C,D accent
+ class X risk
+ class E,F,G result
+
+classDef default fill:#172420,stroke:#3D5950,stroke-width:1.5px,color:#F0F4E9;
+classDef input fill:#23352F,stroke:#82998A,color:#F0F4E9;
+classDef accent fill:#D9ED70,stroke:#D9ED70,color:#112019;
+classDef result fill:#245345,stroke:#74D2AF,color:#F1FFF8;
+classDef risk fill:#4C302A,stroke:#DD9F85,color:#FFE8DE;

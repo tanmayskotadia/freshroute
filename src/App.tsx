@@ -1,3 +1,4 @@
+import { RouteMap } from "./components/RouteMap";
 import { Workflow } from "lucide-react";
 import { CloudOperations } from "./cloud/CloudOperations";
 import { Fulfilment } from "./cloud/Fulfilment";
@@ -176,76 +177,6 @@ function PanelTitle({
         {subtitle && <p>{subtitle}</p>}
       </div>
       {action}
-    </div>
-  );
-}
-function RouteMap({ compact = false }: { compact?: boolean }) {
-  return (
-    <div className={`route-map ${compact ? "compact" : ""}`}>
-      <div className="map-grid" />
-      <svg
-        viewBox="0 0 700 300"
-        role="img"
-        aria-label="Fictional route schematic from Naroda hub through a delay checkpoint to two receiving destinations. Not a road navigation map."
-      >
-        <path
-          className="river"
-          d="M310 -30C250 30 350 85 300 130S270 215 350 330"
-        />
-        <g className="roads">
-          <path d="M0 80L700 170M20 240L650 20M100 0L220 300M490 0L430 300M0 160L700 90" />
-          <path d="M0 85L700 175M25 245L655 25" />
-        </g>
-        <path
-          className="map-original"
-          d="M130 190C210 210 240 140 350 140S440 220 555 215"
-        />
-        <path className="map-alternative" d="M350 140Q435 62 555 65" />
-        <g>
-          <circle cx="130" cy="190" r="9" className="map-node" />
-          <circle cx="350" cy="140" r="12" className="map-warning" />
-          <circle cx="555" cy="65" r="9" className="map-node" />
-          <circle cx="555" cy="215" r="9" className="map-node pale" />
-        </g>
-        <g className="map-label">
-          <text x="74" y="225">
-            Naroda hub
-          </text>
-          <text x="302" y="114">
-            Delay checkpoint
-          </text>
-          <text x="476" y="42">
-            Eastside center
-          </text>
-          <text x="480" y="248">
-            Central market
-          </text>
-        </g>
-        <g transform="translate(329,129)">
-          <rect width="42" height="24" rx="7" fill="#bc6940" />
-          <path
-            d="M10 7h13v9H10zm13 4h7l3 5H23"
-            fill="none"
-            stroke="white"
-            strokeWidth="2"
-          />
-        </g>
-      </svg>
-      <span className="map-tag">
-        <MapPin size={12} /> Ahmedabad · fictional network
-      </span>
-      {!compact && (
-        <div className="map-key">
-          <span>
-            <i />
-            Original route
-          </span>
-          <span>
-            <i className="dashed" />
-            Nearby alternative
-          </span>
-        </div>
-      )}
     </div>
   );
 }
@@ -1111,7 +1042,7 @@ export default function App() {
               <section className="panel network-map">
                 <PanelTitle
                   title="Ahmedabad receiving network"
-                  subtitle="Original seeded schematic; edits below change receiving rules, not this illustration. No live tracking."
+                  subtitle="Illustrative routes between fictional receiving partners. Explore produce rules and capacity below."
                 />
                 <RouteMap />
               </section>
