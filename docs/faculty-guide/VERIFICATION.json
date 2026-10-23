@@ -1,0 +1,18 @@
+{
+  "pages": 38,
+  "sections": 36,
+  "allSectionTitlesPresent": true,
+  "visualReview": "All 38 pages inspected; final navigation-row revision rechecked separately.",
+  "renderer": "Installed Microsoft Word export with heading bookmarks; bundled LibreOffice renderer unavailable.",
+  "basis": "Implementation source and dated project evidence; official AWS definitions consulted 23 October 2026.",
+  "files": {
+    "FreshRoute-Website-and-Faculty-Guide.docx": {
+      "bytes": 114665,
+      "sha256": "049b1425fdde7bd07ac5f13cecfe9b32c438f4fda98aa2af8698dbb1e282c25d"
+    },
+    "FreshRoute-Website-and-Faculty-Guide.pdf": {
+      "bytes": 541886,
+      "sha256": "bf65f64d8af88e8f2af87ba17a2d278d86dbc2392db73481c629cfc19e6be99f"
+    }
+  }
+}
