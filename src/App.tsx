@@ -58,6 +58,7 @@ import { ShipmentRoute } from "./components/ShipmentRoute";
 import { LocalData } from "./components/LocalData";
 
 import { Welcome } from "./Welcome";
+import { PresentationMode } from "./components/PresentationMode";
 
 const money = (value: number) =>
   new Intl.NumberFormat("en-IN", {
@@ -272,6 +273,7 @@ export default function App() {
     "new" | "edit" | "destination" | "notifications" | "guide" | null
   >(null);
   const [toast, setToast] = useState("");
+  const [presenting, setPresenting] = useState(false);
   useEffect(() => {
     if (!mobile) return;
     const previous = document.activeElement as HTMLElement;
@@ -604,6 +606,9 @@ export default function App() {
             <p>A better decision starts with seeing the possibilities.</p>
             <button onClick={() => setModal("guide")}>
               Explore the walkthrough <ArrowRight size={14} />
+            </button>
+            <button onClick={() => { setPresenting(true); setMobile(false); }}>
+              Seven-minute presentation <ArrowRight size={14} />
             </button>
           </div>
           <a
@@ -1240,7 +1245,7 @@ export default function App() {
               <Leaf size={13} />
               FreshRoute · Thoughtful decisions, fresher possibilities.
             </span>
-            <span>Academic prototype · Phase 8</span>
+            <span>Academic prototype · Phase 9</span>
           </footer>
         </main>
       </div>
@@ -1347,9 +1352,8 @@ export default function App() {
               <div className="notice blue">
                 <FlaskConical size={18} />
                 <p>
-                  This is a local calculation walkthrough, not a cloud
-                  deployment. Parameters and shipment data are illustrative, not
-                  food-safety assessments.
+                  {cloud ? "Your signed-in workspace uses AWS persistence, workflows and AI. " : "This walkthrough uses browser-local calculations; use AWS sign-in for cloud features. "}
+                  Parameters and shipment data are illustrative, not food-safety assessments.
                 </p>
               </div>
               <Button
@@ -1377,6 +1381,7 @@ export default function App() {
           </button>
         </div>
       )}
+      {presenting && <PresentationMode shipmentId={shipments.find(s => s.id === "FR-101")?.id || shipments[0]?.id} runId={workspace.analyses[0]?.id} cloud={cloud} onNavigate={navigate} onClose={() => setPresenting(false)} />}
     </>
   );
 }

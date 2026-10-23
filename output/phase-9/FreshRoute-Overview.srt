@@ -1,0 +1,47 @@
+1
+00:00:00,000 --> 00:00:07,500
+FreshRoute: decision support for delayed perishable shipments. This is an architecture overview, not a live app recording.
+
+2
+00:00:07,500 --> 00:00:15,000
+Compare continuation, cooling and rerouting using entered temperature, route, cost and capacity assumptions.
+
+3
+00:00:15,000 --> 00:00:22,500
+The original fictional seed has 500 kg of tomatoes and a three-hour delay. Model outputs are not measured spoilage.
+
+4
+00:00:22,500 --> 00:00:30,000
+Hard constraints run before ranking. Frozen inputs and results preserve the reasoning behind a saved analysis.
+
+5
+00:00:30,000 --> 00:00:37,500
+The retained AWS application connects authenticated APIs, DynamoDB, Step Functions, queues and background workers.
+
+6
+00:00:37,500 --> 00:00:45,000
+Four private buckets separate web assets, import data, owner-bound reports and audit evidence.
+
+7
+00:00:45,000 --> 00:00:52,500
+AI explains calculated facts and prepares drafts. The operator reviews actions; AI cannot reserve capacity.
+
+8
+00:00:52,500 --> 00:01:00,000
+Current versions and atomic capacity checks protect reservations. Background jobs generate private reports.
+
+9
+00:01:00,000 --> 00:01:07,500
+Compute, network, security, recovery and SQL migration experiments were verified, then their five stacks were deleted.
+
+10
+00:01:07,500 --> 00:01:15,000
+The syllabus matrix covers all eight modules and distinguishes deployed services, deleted labs and studies.
+
+11
+00:01:15,000 --> 00:01:22,500
+USD 200 is a planning ceiling. CloudFront verification, email delivery and live browser visual QA remain limitations.
+
+12
+00:01:22,500 --> 00:01:30,000
+Reproduce the calculation, review the decision, inspect the evidence. Use the seven-minute guide for the full demonstration.

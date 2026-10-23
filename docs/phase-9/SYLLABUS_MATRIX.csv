@@ -1,0 +1,72 @@
+Module,Exact syllabus topic,Actual treatment,Evidence or explanation
+1,Introduction to Cloud Computing,Core,"On-demand HTTP API, Lambda and object storage"
+1,Overview of AWS Global Infrastructure,Study,"Mumbai region, AZ and edge scope; no multi-region test"
+1,AWS Shared Responsibility Model,Core + study,Customer IAM/data controls versus AWS infrastructure
+1,AWS Identity and Access Management (IAM),Core,Scoped execution roles
+1,IAM Users,Study,Human access design; no unnecessary long-lived user keys
+1,IAM Groups,Study,"Human group design, separate from Cognito app identity"
+1,IAM Policies,Core,Resource and owner-prefix restrictions
+1,IAM Roles,Core,"Lambda, workflow and service trust policies"
+1,IAM Best Practices,Core + study,Least privilege and short-lived identity; human MFA discussed
+2,AWS Compute Services,Core + lab deleted,Lambda product and bounded EC2 experiment
+2,Amazon EC2,Lab deleted,Two workers and SSM command evidence
+2,EC2 Instance Types,Lab + study,t3.micro chosen; workload sizing comparison
+2,EC2 Pricing Models,Study,"On-Demand, Spot and commitments; no commitments purchased"
+2,EC2 Instance Lifecycle,Lab deleted,"Launch, terminate and replacement observed; no stop/start claim"
+2,Auto Scaling,Lab deleted,Controlled 1-to-2 scale-out and replacement
+2,Elastic Load Balancing,Lab deleted,Internal ALB and healthy target checks
+2,AWS Storage Services,Core + lab deleted,"Object, block and shared-file boundaries"
+2,Amazon S3,Core,Four private versioned buckets
+2,S3 Storage Classes,Study,Hot Standard objects; archive trade-offs
+2,S3 Lifecycle Policies,Core,Configured expiry/noncurrent/multipart policies; not archive proof
+2,Amazon EBS,Lab deleted,Distinct per-worker scratch content
+2,Amazon Glacier,Study,Archive and restore design; no restore executed
+2,Amazon EFS,Lab deleted,Same shared-file checksum on both workers
+3,AWS Networking and Content Delivery,Core + lab deleted,HTTPS fallback plus isolated network experiments
+3,Amazon VPC,Lab deleted,Two non-overlapping lab VPCs
+3,VPC Subnets,Lab deleted,Two-AZ compute lab and private SQL subnets
+3,Route Tables,Lab deleted,Scoped return routes for peering
+3,Security Groups,Lab deleted,Allowed connectivity and denied SSH
+3,VPC Peering,Lab deleted,Bidirectional connectivity checks
+3,AWS Direct Connect,Study,Warehouse hybrid-link design; no physical circuit
+3,Amazon CloudFront,Blocked / study,Account verification prevents creation; approved API Gateway HTTPS fallback
+4,AWS Database Services,Core + lab deleted,DynamoDB live; relational fixture lab
+4,Amazon RDS,Lab deleted,Private PostgreSQL fixture and verified SQL TLS
+4,RDS Multi-AZ Deployments,Study,Standby/failover design; no DB failover test
+4,RDS Read Replicas,Study,Read routing and lag comparison
+4,Amazon Aurora,Study,Relational cluster alternative
+4,Amazon DynamoDB,Core,"Four tables, conditional writes and capacity transactions"
+4,DynamoDB Streams,Core,Decision outbox event to background worker
+5,AWS Management Tools,Core + lab deleted,"CDK/CloudFormation, monitoring and managed operations"
+5,AWS CloudWatch,Core,"Dashboard, 14 alarms and canary state transitions"
+5,AWS CloudTrail,Core,Encrypted audit objects/digests and selected actual API event
+5,AWS Config,Lab deleted,"Compliant, drift, remediation and recheck"
+5,AWS Systems Manager,Lab deleted,Managed Run Command without SSH
+5,AWS Cost Management,Core,Dated estimated Cost Explorer snapshot and cleanup evidence
+5,AWS Free Tier,Account review,Dated account credits and expiry; not all services free
+5,AWS Billing and Account Management,Account review,Resource ownership and delayed gross-cost view
+5,AWS Budgets,Core,Five gross-cost thresholds; not a spending cap
+5,AWS Trusted Advisor,Restricted / study,Support API subscription required; no upgrade purchased
+6,AWS Security and Compliance,Core + study,Controls demonstrated; no compliance certification
+6,AWS Shared Responsibility Model,Core + study,Service-specific customer control allocation
+6,AWS Key Management Service (KMS),Core,Rotating customer-managed key for reports and audit
+6,AWS WAF,Lab deleted,Benign test 403 versus allowed 200 on lab ALB
+6,AWS Shield,Study,DDoS protection comparison; no Advanced subscription/test
+6,AWS Security Best Practices,Core,"TLS, owner checks, private S3, input validation, bounded AI"
+7,AWS Application Integration,Core,"Event-driven import, analysis and post-decision jobs"
+7,Amazon SQS,Core,"Import/post-decision queues, DLQs and failure queue"
+7,Amazon SNS,Core; email unverified,Topics and publish evidence; rescue email confirmation still unverified
+7,Amazon SWF,Study,Worker coordination compared with Step Functions
+7,AWS Step Functions,Core,Standard analysis workflow with retry/catch
+7,AWS Well-Architected Framework,Review,Six-pillar project review and trade-offs
+7,Design Principles for AWS Cloud Architectures,Review,"Managed services, loose coupling and explicit failure paths"
+7,Scalability and Elasticity,Core + lab deleted,Queue/concurrency design and controlled ASG scale-out
+7,High Availability and Fault Tolerance,Core + lab deleted,Managed-service design plus observed instance replacement; no uptime SLA
+7,Security,Core,Owner-bound APIs and private artifacts
+7,Cost Optimization,Core,"Deleted labs, bounded tokens, quotas and retention"
+8,AWS Migration and Hybrid Architecture,Study + lab deleted,Warehouse migration design and isolated reconciliation
+8,AWS Database Migration Service (DMS),Lab deleted,"Full load, 100%, one table, zero errors, three exact rows"
+8,AWS Server Migration Service (SMS),Historical study,Syllabus comparison only; not provisioned
+8,AWS Snowball,Study,Offline transfer scenario; not ordered
+8,AWS Snowball Edge,Study,Edge processing/transfer scenario; not ordered
+8,AWS Snowmobile,Historical study,Large-scale offline transfer comparison; not provisioned

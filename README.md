@@ -4,7 +4,7 @@ Perishable-shipment rescue and decision support with an AI copilot. Academic Clo
 
 ## Current status
 
-Phases 0-8 are implemented. The main AWS app in Mumbai supports authenticated rescue workflows, durable data, background imports/analysis, atomic reservations, fulfilment, private reports, AI explanations/drafts, sensitivity and outcome analytics. Phase 8 adds retained audit/monitoring/budget resources and a cloud engineering evidence screen. Its compute, networking, storage, security, queue recovery and SQL/DMS experiments were run and their disposable stacks deleted. Local demo mode remains available; live AI requires cloud sign-in and a saved run.
+Phases 0-9 are implemented. Phase 9 adds a guided presentation mode and an evaluation package in output/phase-9; remaining browser/human checks are recorded in docs/phase-9/RELEASE_STATUS.md. The main AWS app in Mumbai supports authenticated rescue workflows, durable data, background imports/analysis, atomic reservations, fulfilment, private reports, AI explanations/drafts, sensitivity and outcome analytics. Phase 8 adds retained audit/monitoring/budget resources and a cloud engineering evidence screen. Its compute, networking, storage, security, queue recovery and SQL/DMS experiments were run and their disposable stacks deleted. Local demo mode remains available; live AI requires cloud sign-in and a saved run.
 
 Live application: https://dr4sw5bpoi.execute-api.ap-south-1.amazonaws.com
 
@@ -50,7 +50,7 @@ Local optimistic version checks reject known stale edits and browser storage eve
 5. Select a feasible option, review and save a local plan. Search for the shipment or analysis in History.
 6. Changes to shipment or receiving rules preserve historical results and block confirming an outdated snapshot. Create a new analysis using current data.
 
-The model uses illustrative Q10 exposure, exponential decay and weighted quality cohorts. Constants are teaching assumptions, not fitted scientific data or food-safety assessments. Route times/costs are declared assumptions. The explanation is deterministic; live AI comes later. Older static demo decisions remain labeled.
+The model uses illustrative Q10 exposure, exponential decay and weighted quality cohorts. Constants are teaching assumptions, not fitted scientific data or food-safety assessments. Route times/costs are declared assumptions. The local explanation is deterministic; the authenticated cloud workspace adds grounded live AI with a deterministic fallback. Older static demo decisions remain labeled.
 
 See [Phase 3 model and verification](docs/phase-3/IMPLEMENTATION.md), [Phase 2 workflows](docs/phase-2/IMPLEMENTATION.md), and [Phase 1 visual foundation](docs/phase-1/IMPLEMENTATION.md).
 
@@ -77,6 +77,6 @@ The Phase 0 documents define the design, Phase 1 establishes the visual foundati
 
 ## Evaluation story
 
-Planned final evaluation story: observe a shipment incident, simulate feasible alternatives, review trade-offs, confirm with current receiving capacity and verify the outcome. The current application records inputs, calculates illustrative comparisons and saves reproducible analyses. Future AI will explain stored results and cannot certify food safety or execute rescue actions.
+Planned final evaluation story: observe a shipment incident, simulate feasible alternatives, review trade-offs, confirm with current receiving capacity and verify the outcome. The current application records inputs, calculates illustrative comparisons and saves reproducible analyses. Cloud AI explains stored results and prepares reviewed drafts; it cannot certify food safety or reserve capacity.
 
 Total cloud planning ceiling: US$200 before uncertain credits. Main application, disposable engineering labs and architecture studies are distinguished explicitly. No resource creation is authorized by the design documents.

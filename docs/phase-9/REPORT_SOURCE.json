@@ -1,0 +1,191 @@
+[
+  {
+    "title": "FreshRoute",
+    "paras": [
+      "Cloud Architecture Design | BCSE355L | Phase 9 submission | 23 October 2026",
+      "A cloud decision-support platform for perishable shipments. Observe a delay, compare practical rescue options, preserve the calculation, and review a capacity-backed operational decision.",
+      "Submission contents: technical report, editable presentation, viva cards, seven-minute demo script, syllabus matrix, source and deployment guide, recorded AWS evidence, and a captioned architecture overview video.",
+      "Deployment: AWS account 118462784511, Mumbai (ap-south-1). Website: https://dr4sw5bpoi.execute-api.ap-south-1.amazonaws.com",
+      "Evidence boundary: the application and monitoring remain deployed. Disposable engineering labs were verified and deleted. Studies are labelled individually. This academic model is not a food-safety assessment."
+    ],
+    "table": null
+  },
+  {
+    "title": "1. Problem, users and practical value",
+    "paras": [
+      "A delayed produce shipment creates a time-sensitive choice: continue, cool the shipment, or reroute to a receiving location. A dispatcher needs a reproducible comparison of likely quality, travel assumptions, cost, receiving hours and available capacity.",
+      "FreshRoute serves a fictional distributor operator and an administrator who manages receiving rules. Operators inspect shipments, calculate alternatives, save analyses and explicitly approve operational decisions. Administrators control destination rules. The cloud API checks ownership on every relevant object.",
+      "The distinctive feature is the connection between explanation and execution. A saved calculation is immutable; a later reservation checks current versions and capacity. AI explains calculated facts and proposes drafts, while the application owns the arithmetic and transaction.",
+      "The intended real-life use is dispatcher decision support. There is no live GPS, IoT sensor feed, traffic prediction, recipient marketplace, logistics dispatch integration or verified food-safety guarantee. Shipment observations and route assumptions are entered by the user."
+    ],
+    "table": null
+  },
+  {
+    "title": "2. Product journey and interface",
+    "paras": [
+      "The forest-and-cream interface groups the journey into Observe, Simulate and Decide. Overview and Shipments expose search, filters and incident details. Shipment forms preserve drafts; receiving rules and entered temperature segments remain editable with validation.",
+      "Rescue Lab compares continuation, cooling and alternative destinations, explains rejected options and shows sensitivity to changed assumptions. History reopens saved inputs/results. Split planning conserves quantity and checks aggregate budget and destination capacity.",
+      "The AWS workspace adds Cognito sign-in, cloud persistence, CSV imports, background analysis jobs, AI explanations and scenario drafts, reservations, private PDF reports, notification records and outcome analytics. Local mode supports browser-local calculation workflows without AWS credentials.",
+      "Phase 9 adds a collapsible seven-minute presentation guide with screen navigation, segment timings and a pauseable clock. It never automatically creates a reservation. Keyboard focus filtering now skips disabled/hidden dialog controls and includes links.",
+      "Visual QA limitation: the existing browser-origin policy blocked live preview checks. Production compilation and source review passed, but phone/desktop screenshots and a human keyboard rehearsal remain pre-submission checks. Earlier screenshots are dated Phase 3 evidence, not current captures."
+    ],
+    "table": null
+  },
+  {
+    "title": "3. Retained cloud architecture",
+    "paras": [
+      "Browser requests reach an HTTPS API Gateway frontend and the Web Lambda, which reads the private web bucket. CloudFront creation is blocked by account verification; the user approved this HTTPS fallback. API Gateway HTTP API routes authenticated requests to application handlers using Cognito access tokens.",
+      "Eight Lambda functions separate Web, Workspace API, Verification, Import Worker, Analysis Worker, Outbox Bridge, Post-decision Worker and Copilot responsibilities. Four DynamoDB tables store Shipments, Runs, Destinations and Activity with owner-aware keys, on-demand billing and point-in-time recovery.",
+      "Step Functions Standard coordinates analysis. SQS separates import and post-decision work with dead-letter handling. DynamoDB Streams drives an outbox bridge. SNS supports notifications; CloudWatch observes operations. CloudTrail delivers audit objects and digests to encrypted storage.",
+      "The application remains useful after lab deletion. EC2, ALB, EFS, RDS, DMS, Config and WAF experiments are evidence of syllabus learning rather than dependencies of the retained dispatcher application."
+    ],
+    "table": null
+  },
+  {
+    "title": "4. Storage and data boundaries",
+    "paras": [
+      "Four S3 buckets exist for different readers, writers and retention needs. The web bucket stores release assets; data stores uploads and fixtures; reports stores generated owner-bound downloads; audit receives CloudTrail evidence. All are private, versioned and require TLS. A customer-managed KMS key protects reports and audit data.",
+      "DynamoDB owner partition keys and object identifiers support per-user access. Activity stores jobs, notification records and AI cache/quota items; the JobsByOwnerTime index supports history queries. TTL is used for expiring cache-related records and is not an immediate delete guarantee.",
+      "Capacity uses whole grams; money uses integer paise. Conditional transactions prevent a stale calculation or duplicate submission from silently consuming capacity twice. A terminal transition releases capacity once under the allowed state machine.",
+      "Lifecycle rules are configuration evidence. Tiny hot objects remain in Standard; no actual Glacier transition or restore is claimed. Four buckets are justified by access/retention boundaries, not by multiplying storage for presentation value."
+    ],
+    "table": null
+  },
+  {
+    "title": "5. Deterministic model and worked example",
+    "paras": [
+      "The illustrative Q10 model converts each entered temperature segment into equivalent hours at 10 C: effectiveHours = sum(hours * 2^((temperatureC - 10) / 10)). Each quality cohort then decays exponentially using produce-specific teaching parameters.",
+      "Estimated loss sums the mass of cohorts below the declared quality threshold; it is not quantity multiplied by one minus average quality. Feasibility checks receiving hours, accepted produce, capacity, budget and modeled quality before weighted ranking. Route times and costs are declared assumptions.",
+      "The unchanged FR-101 seed contains 500 kg of tomatoes. Continuation has modeled quality 58.3/100 and 350 kg below threshold; it is infeasible. The seeded winner is Eastside receiving center with modeled quality 74.0/100, estimated loss 0 kg and declared transport cost INR 450.",
+      "These are reproducible outputs of docs/phase-3/seeded-incident.json, not measured waste savings or a commercial forecast. A saved snapshot preserves model version, source versions, input signature and results. Later shipment/rule edits require a new calculation before confirmation."
+    ],
+    "table": null
+  },
+  {
+    "title": "6. AI integration and operator control",
+    "paras": [
+      "The neutral AI interface explains a saved analysis and proposes a structured scenario draft. The current backend uses the Groq API, model openai/gpt-oss-20b, through a server-side adapter. A Bedrock adapter remains optional; successful Bedrock use is not claimed.",
+      "The API credential stays in Secrets Manager and resolves through a CloudFormation dynamic reference at deployment. It is never included in the browser bundle or submission. The runtime request has an 800-token limit and a nine-second deadline.",
+      "Structured output can reference only authoritative fact identifiers and validated draft fields. Unsupported output, timeout or missing availability falls back to deterministic explanations. Cache entries last one hour and include owner, model/provider, question, run and prompt version in the key.",
+      "Daily uncached request limits are 20 per owner and 200 globally in UTC. Failed uncached attempts count. IAM limits AI writes to AI-prefixed state, so it cannot create decisions or reserve capacity. Applying a draft and confirming a reservation are separate explicit operator actions."
+    ],
+    "table": null
+  },
+  {
+    "title": "7. Operational reliability and security",
+    "paras": [
+      "Cognito PKCE avoids a browser client secret. The API verifies the access token and owner context. Private reports are downloaded through short-lived links after authorization; direct anonymous S3 access is denied. Backend validation recomputes authoritative results rather than trusting a browser-supplied score.",
+      "Imports and post-decision workloads have independent queues and dead-letter handling. Retries use idempotent business transitions; duplicate events must not double-book or release capacity twice. The isolated reliability lab observed poison-message redrive and corrected replay without consuming production DLQ messages.",
+      "CloudWatch has a dashboard and 14 alarms. A canary moved OK to ALARM and back to OK with successful SNS actions. CloudTrail delivered encrypted objects and digests, and an actual Auto Scaling termination API event was selected. Digest-chain cryptographic validation was not executed.",
+      "Email delivery remains a limitation: the earlier rescue subscription was still pending at its last verification, and the operational topic has no email subscriber. In-app notification records and SNS publish success are distinct from confirmed human email delivery. No compliance certification or uptime SLA is asserted."
+    ],
+    "table": null
+  },
+  {
+    "title": "8. Engineering labs: evidence and limits",
+    "paras": [
+      "Compute/network: two healthy workers behind an internal ALB; equal EFS file checksums and distinct EBS scratch content; bidirectional VPC peering; denied SSH; Systems Manager Run Command. Terminating a worker produced a new healthy replacement with the same shared-file checksum. Controlled scaling changed desired capacity from one to two.",
+      "Security/configuration: WAF returned 403 for a benign test pattern while the ordinary request returned 200. A temporary security-group drift moved the Config check from COMPLIANT to NON_COMPLIANT, then back after remediation. These tests do not demonstrate WAF on the main HTTP API or DDoS resistance.",
+      "SQL/migration: private PostgreSQL accepted a client connection with verified TLS 1.3. DMS full load reached 100%, one table loaded and zero tables errored; three source and target rows matched exactly. Source and target were schemas on the same disposable RDS instance. There was no on-premises migration, CDC or production cutover.",
+      "All five stacks reached DELETE_COMPLETE: ComputeLab, SqlLab, MigrationLab, ConfigLab and ReliabilityLab. Inventory checked absent lab compute, storage, network, RDS, DMS, queues and recorder. Retained Foundation, Application and Operations stacks remain deployed."
+    ],
+    "table": null
+  },
+  {
+    "title": "9. Syllabus coverage: modules 1-4",
+    "paras": [
+      "The full CSV contains one row for every named topic in the supplied BCSE355L syllabus. Coverage is not a claim that every service is active."
+    ],
+    "table": [
+      [
+        "Module",
+        "Implemented evidence",
+        "Studies / limits"
+      ],
+      [
+        "1: Foundations & IAM",
+        "Execution roles, policies, ownership and shared controls",
+        "Global infrastructure; human users/groups and MFA design"
+      ],
+      [
+        "2: Compute & storage",
+        "Lambda; four S3 buckets; deleted EC2/ASG/ALB/EBS/EFS lab",
+        "Instance/pricing comparison; storage classes/Glacier; no archive restore"
+      ],
+      [
+        "3: Networking",
+        "VPCs, subnets, routes, SGs and peering lab; HTTPS product",
+        "Direct Connect study; CloudFront blocked by verification"
+      ],
+      [
+        "4: Databases",
+        "DynamoDB/Streams product; private RDS fixture lab",
+        "Multi-AZ, read replicas and Aurora studies; no DB failover test"
+      ]
+    ]
+  },
+  {
+    "title": "10. Syllabus coverage: modules 5-8",
+    "paras": [
+      "Service coverage is supported by retained resources, dated experimental evidence or a labelled design comparison. Historical syllabus entries are discussed without implying provisioning or current availability."
+    ],
+    "table": [
+      [
+        "Module",
+        "Implemented evidence",
+        "Studies / limits"
+      ],
+      [
+        "5: Management & cost",
+        "CloudWatch, CloudTrail, Budgets; deleted Config/SSM lab; account review",
+        "Trusted Advisor support API restricted; delayed billing"
+      ],
+      [
+        "6: Security",
+        "KMS, TLS, owner checks; WAF lab and Config remediation",
+        "Shield comparison; no Advanced subscription or compliance certification"
+      ],
+      [
+        "7: Integration & design",
+        "SQS/SNS, Streams, Step Functions; replacement/scale tests",
+        "SWF study; Well-Architected review; no human email delivery claim"
+      ],
+      [
+        "8: Migration & hybrid",
+        "DMS full load with exact three-row reconciliation",
+        "SMS, Snowball, Snowball Edge, Snowmobile and hybrid design studies"
+      ]
+    ]
+  },
+  {
+    "title": "11. Cost, lifecycle and Well-Architected review",
+    "paras": [
+      "USD 200 is the project planning ceiling, not a hard cap. Budgets thresholds are USD 25, 50, 100, 150 and 180; notification latency means the user must still monitor and delete resources. Lab deletion limits ongoing spend, while retained application, logs, key and storage continue normal charges.",
+      "Dated account evidence showed USD 179.94 remaining credits and plan expiry 28 February 2027. A 22 October UTC account-wide estimated gross Cost Explorer snapshot excluding credits/refunds reported USD 0.0000150018 for 1-22 October. Billing is delayed and the figure is not isolated project spend or a final invoice.",
+      "Operational excellence: versioned infrastructure, evidence and runbooks. Security: owner checks, private storage and scoped roles. Reliability: idempotence, queues, catch paths and observed replacement. Performance efficiency: managed on-demand services and bounded AI requests.",
+      "Cost optimization: deleted labs, quotas and lifecycle rules. Sustainability: retain the useful application and remove idle teaching infrastructure. Production expansion would require calibrated quality models, stronger operational recovery evidence, recipient integration, load tests and confirmed notification delivery."
+    ],
+    "table": null
+  },
+  {
+    "title": "12. Reproduce and demonstrate",
+    "paras": [
+      "Local setup: install Node 24, run npm.cmd ci, npm.cmd test and npm.cmd run build, then npm.cmd run dev. Open the displayed localhost URL. No AWS credentials or AI secret is needed for the local demo. The ZIP excludes node_modules, secrets, signed URLs, temporary transfer files and the .git directory.",
+      "Cloud setup is documented in RUN_DEPLOY_GUIDE.md and earlier phase deployment notes. CDK synthesis describes Foundation/Application; Operations and lab templates have their own scripts. Review change sets, retain-state policies and the approved hosting fallback before deployment. Do not recreate deleted labs merely to open the website.",
+      "Demonstration: incident (45 s), calculation (85 s), frozen history (60 s), AI (60 s), fulfilment (70 s), architecture/evidence (70 s), value/limitations (30 s). Total 420 seconds. Presentation mode provides notes and navigation; a human should rehearse with the saved demo data before evaluation.",
+      "Fresh Phase 9 checks cover production compilation, 49 unit tests, server type checks, isolated install/build verification and cloud hosting smoke checks. The earlier 19 live application checks remain dated Phase 8 regression evidence; they must not be relabelled as a new Phase 9 run."
+    ],
+    "table": null
+  },
+  {
+    "title": "13. Evidence register and references",
+    "paras": [
+      "Primary requirements: supplied CLOUD-ARCHITECTURE-DESIGN.pdf, BCSE355L syllabus version 2.0, modules 1-8. The submission matrix was checked against the supplied text, including historical migration/transfer topics.",
+      "Implementation: src/model/engine.ts and parameters.ts; server/ handlers and probes; infrastructure/ CDK; scripts/ operations and laboratory templates. Phase 3 seeded-incident.json supports the worked example. docs/phase-7/ documents AI behavior and actual provider configuration.",
+      "Measured cloud evidence: docs/phase-8/application-regression.json; compute-verification.json; replacement-verification.json; scale-and-migration-completion.json; config-verification.json; reliability-verification.json; migration-verification.json; operations-final-verification.json; cleanup-verification.json; cost-verification.json and account-review.json.",
+      "Phase 9 evidence and reproduction: docs/phase-9/VERIFICATION.json, EVIDENCE_INDEX.md, RUN_DEPLOY_GUIDE.md, DEMO_SCRIPT.md and SYLLABUS_MATRIX.csv. Machine evidence records actual observations; a successful API call alone is not proof of all service behavior.",
+      "The report intentionally records unresolved limits: browser visual verification, CloudFront account verification, email subscription/delivery and human rehearsal. No grade, actual food rescued, commercial savings or food-safety outcome is guaranteed."
+    ],
+    "table": null
+  }
+]

@@ -22,14 +22,15 @@ export function Dialog({
     const focusables = () =>
       Array.from(
         dialog?.querySelectorAll<HTMLElement>(
-          'button,input,select,textarea,[tabindex="0"]',
+          'a[href],button,input,select,textarea,[tabindex]',
         ) || [],
-      );
-    focusables()[0]?.focus();
+      ).filter((element) => element.tabIndex >= 0 && !element.matches(":disabled") && element.getClientRects().length > 0);
+    (focusables()[0] || dialog)?.focus();
     const key = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeRef.current();
       if (e.key === "Tab") {
         const all = focusables();
+        if (!all.length) { e.preventDefault(); dialog?.focus(); return; }
         const first = all[0],
           last = all[all.length - 1];
         if (e.shiftKey && document.activeElement === first) {
@@ -61,6 +62,7 @@ export function Dialog({
         aria-modal="true"
         aria-label={title}
         ref={ref}
+        tabIndex={-1}
       >
         <div className="dialog-title">
           <h2>{title}</h2>

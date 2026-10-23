@@ -1,0 +1,115 @@
+{
+  "checkedAtUtc": "2026-10-23T00:59:53.380002+00:00",
+  "local": {
+    "unitTests": {
+      "passed": 49,
+      "failed": 0
+    },
+    "frontendProductionBuild": "pass",
+    "serverTypecheck": "pass",
+    "backendBundleBuild": "pass",
+    "freshInstall": {
+      "npmCi": "pass",
+      "noCloudConfig": true,
+      "unitTests": 49,
+      "productionBuild": "pass"
+    }
+  },
+  "cloud": {
+    "account": "118462784511",
+    "checkedAtUtc": "2026-10-23T00:59:53.380002+00:00",
+    "files": [
+      {
+        "key": "index.html",
+        "etag": "\"a2aafe2c04eac0507ea9a916088da8e9\"",
+        "bytes": 637,
+        "version": "rPSkvrkMImL_enS_92kUppNxCLkctSKZ",
+        "matchesReleaseBytes": true
+      },
+      {
+        "key": "cloud-config.json",
+        "etag": "\"3ebb6b9267ef890ef5cab529d4c9bfb8\"",
+        "bytes": 405,
+        "version": "_cyHjb4RQ1RvuVA.ta5ca2SzmIakMg6w",
+        "matchesReleaseBytes": true
+      },
+      {
+        "key": "assets/index-CY1Y2LFK.js",
+        "etag": "\"8f911f0b77b3f0fe6ed043c1008a1300\"",
+        "bytes": 407370,
+        "version": "_ROj5DJI7CC6qKKf5KiFH.ia4bYXeJfO",
+        "matchesReleaseBytes": true
+      },
+      {
+        "key": "assets/index-NVtYSw2L.css",
+        "etag": "\"12f5c46bf359c45cef327af79e853e66\"",
+        "bytes": 83028,
+        "version": "00hbJg0Y6lj.meUtipRLFVGgJoBlR87b",
+        "matchesReleaseBytes": true
+      }
+    ],
+    "health": {
+      "httpsFrontend": true,
+      "securityHeaders": true,
+      "configMatchesApi": true,
+      "anonymousS3Denied": true
+    },
+    "apiCalls": [
+      {
+        "service": "sts",
+        "operation": "GetCallerIdentity",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "HeadObject",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "HeadObject",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "HeadObject",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "HeadObject",
+        "status": "success"
+      },
+      {
+        "service": "lambda",
+        "operation": "Invoke",
+        "status": "success"
+      }
+    ]
+  },
+  "presentation": {
+    "slides": 12,
+    "speakingSeconds": 420,
+    "packageAndLayoutValidation": "pass",
+    "font": "Arial"
+  },
+  "report": {
+    "pdfPages": 14,
+    "docxRenderedPages": 14
+  },
+  "viva": {
+    "questions": 40,
+    "pdfPages": 8
+  },
+  "syllabus": {
+    "modules": 8,
+    "topicEntries": 71
+  },
+  "limitations": [
+    "Browser visual verification blocked by existing origin policy; not bypassed.",
+    "Human timed/keyboard rehearsal remains.",
+    "CloudFront account verification unresolved.",
+    "Human email receipt unverified.",
+    "The 19 business regression checks are dated Phase 8 evidence, not rerun in Phase 9."
+  ]
+}

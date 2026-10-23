@@ -63,7 +63,7 @@ export function Welcome({ onEnter }: { onEnter: () => void }) {
         <div className="welcome-entry-inner">
           <span className="badge blue">
             <span className="dot" />
-            Phase 3 · calculated local workspace
+            FreshRoute · decision support for food rescue
           </span>
           <h2>See the possibilities.</h2>
           <p>
@@ -98,15 +98,15 @@ export function Welcome({ onEnter }: { onEnter: () => void }) {
             <ShieldCheck size={18} />
             <p>
               No account or password needed. This local preview uses fictional
-              data saved in this browser. Live authentication and AWS
-              integrations arrive in later phases.
+              data saved in this browser. Choose AWS sign-in in the workspace
+              switch to use cloud storage, workflows and fulfilment.
             </p>
           </div>
           <div className="welcome-ai-note">
             <Sparkles size={16} />
             <span>
-              Explanations use calculated results; live LLM integration comes
-              later.
+              In the AWS workspace, AI explains saved calculations and prepares
+              drafts for your review.
             </span>
           </div>
         </div>
