@@ -1,0 +1,60 @@
+{
+  "status": "success",
+  "stdout": "",
+  "return_value": {
+    "checkedAtUtc": "2026-10-23T01:15:52.471129+00:00",
+    "files": [
+      {
+        "key": "index.html",
+        "etag": "\"a2aafe2c04eac0507ea9a916088da8e9\"",
+        "bytes": 637,
+        "version": "rPSkvrkMImL_enS_92kUppNxCLkctSKZ"
+      },
+      {
+        "key": "cloud-config.json",
+        "etag": "\"3ebb6b9267ef890ef5cab529d4c9bfb8\"",
+        "bytes": 405,
+        "version": "_cyHjb4RQ1RvuVA.ta5ca2SzmIakMg6w"
+      },
+      {
+        "key": "assets/index-CY1Y2LFK.js",
+        "etag": "\"8f911f0b77b3f0fe6ed043c1008a1300\"",
+        "bytes": 407370,
+        "version": "_ROj5DJI7CC6qKKf5KiFH.ia4bYXeJfO"
+      },
+      {
+        "key": "assets/index-NVtYSw2L.css",
+        "etag": "\"12f5c46bf359c45cef327af79e853e66\"",
+        "bytes": 83028,
+        "version": "00hbJg0Y6lj.meUtipRLFVGgJoBlR87b"
+      }
+    ]
+  },
+  "api_calls": [
+    {
+      "service": "sts",
+      "operation": "GetCallerIdentity",
+      "status": "success"
+    },
+    {
+      "service": "s3",
+      "operation": "HeadObject",
+      "status": "success"
+    },
+    {
+      "service": "s3",
+      "operation": "HeadObject",
+      "status": "success"
+    },
+    {
+      "service": "s3",
+      "operation": "HeadObject",
+      "status": "success"
+    },
+    {
+      "service": "s3",
+      "operation": "HeadObject",
+      "status": "success"
+    }
+  ]
+}

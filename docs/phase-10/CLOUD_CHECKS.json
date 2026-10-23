@@ -1,0 +1,191 @@
+{
+  "status": "success",
+  "stdout": "",
+  "return_value": {
+    "account": "118462784511",
+    "checkedAtUtc": "2026-10-23T01:11:29.845803+00:00",
+    "stacks": [
+      {
+        "name": "FreshRouteOperations",
+        "status": "UPDATE_COMPLETE"
+      },
+      {
+        "name": "FreshRouteApplication",
+        "status": "UPDATE_COMPLETE"
+      },
+      {
+        "name": "FreshRouteFoundation",
+        "status": "UPDATE_COMPLETE"
+      }
+    ],
+    "alarms": [
+      {
+        "name": "FreshRoute-AiFallbacks",
+        "state": "OK",
+        "reason": "Threshold Crossed: no datapoints were received for 2 periods and 2 missing datapoints were treated as [NonBreaching].",
+        "updatedAt": "2026-10-22T17:26:53.105000+00:00",
+        "actionsEnabled": true
+      },
+      {
+        "name": "FreshRoute-AlarmCanary",
+        "state": "OK",
+        "reason": "Threshold Crossed: no datapoints were received for 2 periods and 2 missing datapoints were treated as [NonBreaching].",
+        "updatedAt": "2026-10-22T17:37:35.975000+00:00",
+        "actionsEnabled": true
+      },
+      {
+        "name": "FreshRoute-AnalysisWorkerErrors",
+        "state": "OK",
+        "reason": "Threshold Crossed: no datapoints were received for 2 periods and 2 missing datapoints were treated as [NonBreaching].",
+        "updatedAt": "2026-10-22T17:27:37.770000+00:00",
+        "actionsEnabled": true
+      },
+      {
+        "name": "FreshRoute-ApiServerErrors",
+        "state": "OK",
+        "reason": "Threshold Crossed: no datapoints were received for 2 periods and 2 missing datapoints were treated as [NonBreaching].",
+        "updatedAt": "2026-10-22T17:53:05.228000+00:00",
+        "actionsEnabled": true
+      },
+      {
+        "name": "FreshRoute-CopilotErrors",
+        "state": "OK",
+        "reason": "Threshold Crossed: no datapoints were received for 2 periods and 2 missing datapoints were treated as [NonBreaching].",
+        "updatedAt": "2026-10-22T17:26:56.329000+00:00",
+        "actionsEnabled": true
+      },
+      {
+        "name": "FreshRoute-FreshRouteImportDLQDepth",
+        "state": "ALARM",
+        "reason": "Threshold Crossed: 2 out of the last 2 datapoints [3.0 (22/10/26 17:25:00), 3.0 (22/10/26 17:24:00)] were greater than or equal to the threshold (1.0) (minimum 1 datapoint for OK -> ALARM transition).",
+        "updatedAt": "2026-10-22T17:27:27.898000+00:00",
+        "actionsEnabled": true
+      },
+      {
+        "name": "FreshRoute-FreshRouteOutboxStreamFailuresDepth",
+        "state": "OK",
+        "reason": "Threshold Crossed: 2 out of the last 2 datapoints [0.0 (22/10/26 17:24:00), 0.0 (22/10/26 17:23:00)] were not greater than or equal to the threshold (1.0) (minimum 2 datapoints for ALARM -> OK transition).",
+        "updatedAt": "2026-10-22T17:26:13.987000+00:00",
+        "actionsEnabled": true
+      },
+      {
+        "name": "FreshRoute-FreshRoutePostDecisionDLQDepth",
+        "state": "OK",
+        "reason": "Threshold Crossed: 2 out of the last 2 datapoints [0.0 (22/10/26 17:24:00), 0.0 (22/10/26 17:23:00)] were not greater than or equal to the threshold (1.0) (minimum 2 datapoints for ALARM -> OK transition).",
+        "updatedAt": "2026-10-22T17:26:51.049000+00:00",
+        "actionsEnabled": true
+      },
+      {
+        "name": "FreshRoute-ImportWorkerErrors",
+        "state": "OK",
+        "reason": "Threshold Crossed: no datapoints were received for 2 periods and 2 missing datapoints were treated as [NonBreaching].",
+        "updatedAt": "2026-10-22T17:26:35.742000+00:00",
+        "actionsEnabled": true
+      },
+      {
+        "name": "FreshRoute-OutboxBridgeErrors",
+        "state": "OK",
+        "reason": "Threshold Crossed: no datapoints were received for 2 periods and 2 missing datapoints were treated as [NonBreaching].",
+        "updatedAt": "2026-10-22T17:26:47.753000+00:00",
+        "actionsEnabled": true
+      },
+      {
+        "name": "FreshRoute-PostDecisionWorkerErrors",
+        "state": "OK",
+        "reason": "Threshold Crossed: no datapoints were received for 2 periods and 2 missing datapoints were treated as [NonBreaching].",
+        "updatedAt": "2026-10-22T17:27:18.096000+00:00",
+        "actionsEnabled": true
+      },
+      {
+        "name": "FreshRoute-WebErrors",
+        "state": "OK",
+        "reason": "Threshold Crossed: no datapoints were received for 2 periods and 2 missing datapoints were treated as [NonBreaching].",
+        "updatedAt": "2026-10-22T17:27:10.718000+00:00",
+        "actionsEnabled": true
+      },
+      {
+        "name": "FreshRoute-WorkflowFailures",
+        "state": "OK",
+        "reason": "Threshold Crossed: no datapoints were received for 2 periods and 2 missing datapoints were treated as [NonBreaching].",
+        "updatedAt": "2026-10-22T17:27:24.607000+00:00",
+        "actionsEnabled": true
+      },
+      {
+        "name": "FreshRoute-WorkspaceApiErrors",
+        "state": "OK",
+        "reason": "Threshold Crossed: no datapoints were received for 2 periods and 2 missing datapoints were treated as [NonBreaching].",
+        "updatedAt": "2026-10-22T17:27:00.638000+00:00",
+        "actionsEnabled": true
+      }
+    ],
+    "queues": {
+      "QueueUrls": [
+        "https://sqs.ap-south-1.amazonaws.com/118462784511/FreshRouteImportDLQ",
+        "https://sqs.ap-south-1.amazonaws.com/118462784511/FreshRouteImports",
+        "https://sqs.ap-south-1.amazonaws.com/118462784511/FreshRouteOutboxStreamFailures",
+        "https://sqs.ap-south-1.amazonaws.com/118462784511/FreshRoutePostDecision",
+        "https://sqs.ap-south-1.amazonaws.com/118462784511/FreshRoutePostDecisionDLQ"
+      ]
+    },
+    "rescueSubscription": {
+      "Subscriptions": [
+        {
+          "SubscriptionArn": "PendingConfirmation",
+          "Owner": "118462784511",
+          "Protocol": "email",
+          "Endpoint": "tanmayskotadia@gmail.com",
+          "TopicArn": "arn:aws:sns:ap-south-1:118462784511:FreshRouteRescueUpdates"
+        }
+      ]
+    },
+    "health": {
+      "payload": "{\"httpsFrontend\":true,\"securityHeaders\":true,\"configMatchesApi\":true,\"anonymousS3Denied\":true}"
+    }
+  },
+  "api_calls": [
+    {
+      "service": "sts",
+      "operation": "GetCallerIdentity",
+      "status": "success"
+    },
+    {
+      "service": "cloudformation",
+      "operation": "DescribeStacks",
+      "status": "success",
+      "n_items": {
+        "Stacks": 3
+      }
+    },
+    {
+      "service": "cloudwatch",
+      "operation": "DescribeAlarms",
+      "status": "success",
+      "n_items": {
+        "MetricAlarms": 14,
+        "CompositeAlarms": 0,
+        "LogAlarms": 0
+      }
+    },
+    {
+      "service": "sqs",
+      "operation": "ListQueues",
+      "status": "success",
+      "n_items": {
+        "QueueUrls": 5
+      }
+    },
+    {
+      "service": "sns",
+      "operation": "ListSubscriptionsByTopic",
+      "status": "success",
+      "n_items": {
+        "Subscriptions": 1
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "Invoke",
+      "status": "success"
+    }
+  ]
+}

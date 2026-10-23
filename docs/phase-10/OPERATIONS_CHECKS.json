@@ -1,0 +1,137 @@
+{
+  "status": "success",
+  "stdout": "",
+  "return_value": {
+    "checkedAtUtc": "2026-10-23T01:12:46.128320+00:00",
+    "queues": [
+      {
+        "name": "FreshRouteImportDLQ",
+        "attributes": {
+          "Attributes": {
+            "ApproximateNumberOfMessages": "3",
+            "ApproximateNumberOfMessagesNotVisible": "0",
+            "ApproximateNumberOfMessagesDelayed": "0",
+            "MessageRetentionPeriod": "1209600",
+            "VisibilityTimeout": "30"
+          }
+        }
+      },
+      {
+        "name": "FreshRouteImports",
+        "attributes": {
+          "Attributes": {
+            "ApproximateNumberOfMessages": "0",
+            "ApproximateNumberOfMessagesNotVisible": "0",
+            "ApproximateNumberOfMessagesDelayed": "0",
+            "MessageRetentionPeriod": "345600",
+            "VisibilityTimeout": "180",
+            "RedrivePolicy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:ap-south-1:118462784511:FreshRouteImportDLQ\",\"maxReceiveCount\":3}"
+          }
+        }
+      },
+      {
+        "name": "FreshRouteOutboxStreamFailures",
+        "attributes": {
+          "Attributes": {
+            "ApproximateNumberOfMessages": "0",
+            "ApproximateNumberOfMessagesNotVisible": "0",
+            "ApproximateNumberOfMessagesDelayed": "0",
+            "MessageRetentionPeriod": "1209600",
+            "VisibilityTimeout": "30"
+          }
+        }
+      },
+      {
+        "name": "FreshRoutePostDecision",
+        "attributes": {
+          "Attributes": {
+            "ApproximateNumberOfMessages": "0",
+            "ApproximateNumberOfMessagesNotVisible": "0",
+            "ApproximateNumberOfMessagesDelayed": "0",
+            "MessageRetentionPeriod": "345600",
+            "VisibilityTimeout": "270",
+            "RedrivePolicy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:ap-south-1:118462784511:FreshRoutePostDecisionDLQ\",\"maxReceiveCount\":3}"
+          }
+        }
+      },
+      {
+        "name": "FreshRoutePostDecisionDLQ",
+        "attributes": {
+          "Attributes": {
+            "ApproximateNumberOfMessages": "0",
+            "ApproximateNumberOfMessagesNotVisible": "0",
+            "ApproximateNumberOfMessagesDelayed": "0",
+            "MessageRetentionPeriod": "1209600",
+            "VisibilityTimeout": "30"
+          }
+        }
+      }
+    ],
+    "cost": [
+      {
+        "TimePeriod": {
+          "Start": "2026-10-01",
+          "End": "2026-10-24"
+        },
+        "Total": {
+          "UnblendedCost": {
+            "Amount": "0.0045837956",
+            "Unit": "USD"
+          }
+        },
+        "Groups": [],
+        "Estimated": true
+      }
+    ],
+    "costScope": "Account-wide gross estimated unblended cost excluding credits/refunds; delayed, not final invoice or project-isolated spend."
+  },
+  "api_calls": [
+    {
+      "service": "sts",
+      "operation": "GetCallerIdentity",
+      "status": "success"
+    },
+    {
+      "service": "sqs",
+      "operation": "ListQueues",
+      "status": "success",
+      "n_items": {
+        "QueueUrls": 5
+      }
+    },
+    {
+      "service": "sqs",
+      "operation": "GetQueueAttributes",
+      "status": "success"
+    },
+    {
+      "service": "sqs",
+      "operation": "GetQueueAttributes",
+      "status": "success"
+    },
+    {
+      "service": "sqs",
+      "operation": "GetQueueAttributes",
+      "status": "success"
+    },
+    {
+      "service": "sqs",
+      "operation": "GetQueueAttributes",
+      "status": "success"
+    },
+    {
+      "service": "sqs",
+      "operation": "GetQueueAttributes",
+      "status": "success"
+    },
+    {
+      "service": "ce",
+      "operation": "GetCostAndUsage",
+      "status": "success",
+      "n_items": {
+        "ResultsByTime": 1,
+        "DimensionValueAttributes": 0
+      }
+    }
+  ]
+}

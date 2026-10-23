@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "payloadFiles": 199,
+  "allChecksumsVerified": true,
+  "crcVerified": true,
+  "excludedPathsAbsent": true,
+  "credentialSignatureScan": "no matches (not a comprehensive secret audit)",
+  "archive": "FreshRoute-Final-Submission.zip",
+  "archiveBytes": 13587029,
+  "archiveSha256": "ed04d7ad15aeab38c27f8cab0de73442c008f974e2eccdc0a07dd3f248004c3f"
+}

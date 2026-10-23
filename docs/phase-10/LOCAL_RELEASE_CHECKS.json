@@ -1,0 +1,113 @@
+{
+  "checkedAtUtc": "2026-10-23T01:18:08.327Z",
+  "pass": true,
+  "checks": [
+    {
+      "name": "Entry point references production assets",
+      "pass": true
+    },
+    {
+      "name": "Asset stays inside dist: index-CY1Y2LFK.js",
+      "pass": true
+    },
+    {
+      "name": "Referenced asset exists: index-CY1Y2LFK.js",
+      "pass": true
+    },
+    {
+      "name": "Asset stays inside dist: index-NVtYSw2L.css",
+      "pass": true
+    },
+    {
+      "name": "Referenced asset exists: index-NVtYSw2L.css",
+      "pass": true
+    },
+    {
+      "name": "HTML mounts the React application",
+      "pass": true
+    },
+    {
+      "name": "Deployment config exists",
+      "pass": true
+    },
+    {
+      "name": "HTTPS config: apiUrl",
+      "pass": true
+    },
+    {
+      "name": "HTTPS config: websiteUrl",
+      "pass": true
+    },
+    {
+      "name": "HTTPS config: authDomain",
+      "pass": true
+    },
+    {
+      "name": "Deployment region is Mumbai",
+      "pass": true
+    },
+    {
+      "name": "No credential fields in public config",
+      "pass": true
+    },
+    {
+      "name": "AWS identity matches deployed account",
+      "pass": true
+    },
+    {
+      "name": "Fresh cloud health: httpsFrontend",
+      "pass": true
+    },
+    {
+      "name": "Fresh cloud health: securityHeaders",
+      "pass": true
+    },
+    {
+      "name": "Fresh cloud health: configMatchesApi",
+      "pass": true
+    },
+    {
+      "name": "Fresh cloud health: anonymousS3Denied",
+      "pass": true
+    },
+    {
+      "name": "All retained stacks have completed deployment",
+      "pass": true
+    },
+    {
+      "name": "Captured AWS health is less than 24 hours old",
+      "pass": true
+    },
+    {
+      "name": "Verification Lambda completed without error",
+      "pass": true
+    },
+    {
+      "name": "Published bytes match local release: index.html",
+      "pass": true
+    },
+    {
+      "name": "Published bytes match local release: cloud-config.json",
+      "pass": true
+    },
+    {
+      "name": "Published bytes match local release: assets/index-CY1Y2LFK.js",
+      "pass": true
+    },
+    {
+      "name": "Published bytes match local release: assets/index-NVtYSw2L.css",
+      "pass": true
+    }
+  ],
+  "assets": [
+    {
+      "file": "/assets/index-CY1Y2LFK.js",
+      "sha256": "c68ea8647e17a6711748346da94c8fee6f80faf0bb345ddd9cf6274eb7255349"
+    },
+    {
+      "file": "/assets/index-NVtYSw2L.css",
+      "sha256": "a3516de7c178c933546d284daf6f98ca71bf558b740347038bb3622bac7560e6"
+    }
+  ],
+  "scope": "Offline release-file checks plus captured Phase 10 AWS health evidence. Browser visual checks are separate."
+}

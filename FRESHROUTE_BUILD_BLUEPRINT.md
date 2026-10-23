@@ -1,6 +1,6 @@
 # FreshRoute: phase-by-phase build blueprint
 
-Revised 23 October 2026. Phases 0-8 are implemented in account 118462784511. Phase 8 added retained audit/monitoring/budget resources and verified disposable compute, network, storage, security, queue-recovery and SQL/DMS labs. All five lab stacks were deleted and residual resources checked. All 49 local tests and 19 live main-app regression checks pass. See docs/phase-8/RELEASE_STATUS.md for evidence and limitations. Phase 9 remains separate. Study labels remain explicit for expensive, physical and restricted services.
+Revised 23 October 2026. Phases 0-9 are implemented in account 118462784511. Phase 9 added presentation mode and the submission package. Phase 10, added as the final handover audit, verifies release integrity and records current operational findings in docs/phase-10/HANDOVER.md. The dated Phase 8 evidence covers deleted labs and 19 live business regression checks; Phase 10 refreshes hosting, queue, alarm, subscription and cost observations. Study labels remain explicit for expensive, physical and restricted services.
 
 ## 1. Final direction
 
@@ -246,6 +246,12 @@ Exit: a service has real evidence or an explicit Study label. Explain each failu
 Build: complete principal screens, presentation mode, responsive/accessibility fixes, final diagrams, source/run/deploy instructions, evidence index, syllabus matrix, report, slides, short video and viva cards.
 
 Exit: rehearse a 7-minute demonstration plus deeper service questions; no fake active-service indicators, unimplemented controls or invented results. A fresh local setup works; cloud smoke checks pass; retained resources and gross spend are documented.
+
+### Phase 10 - Final release readiness and handover (added)
+
+Build: repeat application tests and hosting checks, compare deployed release bytes, inspect current stacks/alarms/queue metadata/subscription status, refresh the dated cost estimate, add repeatable release/archive gates and package current source with the evaluation artifacts.
+
+Exit: release files and package integrity checks pass, evidence is dated, and the handover states all open operational items. No production message is purged, no alarm disabled and no email delivery inferred to create a false green status. Browser visual checks and a human rehearsal remain separate outstanding checks where the existing policy blocks automation.
 
 ## 8. Budget envelope and deployment gates
 

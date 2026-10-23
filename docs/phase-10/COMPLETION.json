@@ -1,0 +1,31 @@
+{
+  "phase": "10",
+  "scope": "Final release audit and handover",
+  "implementationStatus": "COMPLETE",
+  "operationalStatus": "OPEN_ITEMS_REQUIRE_REVIEW",
+  "checkedAtUtc": "2026-10-23T01:11:29.845803+00:00",
+  "applicationTests": {
+    "passed": 49,
+    "failed": 0
+  },
+  "serverTypecheck": "PASS",
+  "releaseChecks": {
+    "passed": 24,
+    "failed": 0
+  },
+  "packageVerifierTests": {
+    "passed": 7,
+    "failed": 0
+  },
+  "alarmStates": {
+    "OK": 13,
+    "ALARM": 1
+  },
+  "activeAlarms": [
+    "FreshRoute-FreshRouteImportDLQDepth"
+  ],
+  "browserVisualVerification": "BLOCKED_BY_EXISTING_ORIGIN_POLICY",
+  "humanRehearsal": "OUTSTANDING",
+  "cloudResourceMutations": false,
+  "queueMessageMutations": false
+}

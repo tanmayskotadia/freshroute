@@ -8,6 +8,8 @@ Phases 0-9 are implemented. Phase 9 adds a guided presentation mode and an evalu
 
 Live application: https://dr4sw5bpoi.execute-api.ap-south-1.amazonaws.com
 
+Phase 10 final release audit and handover: [current findings](docs/phase-10/HANDOVER.md). The final source/evaluation archive is `output/phase-10/FreshRoute-Final-Submission.zip`. Release files and archive checks pass; three preserved import DLQ messages, pending email confirmation, CloudFront verification and browser/human checks remain open. Phase 10 changes release tooling and documentation; the deployed Phase 9 interface remains current.
+
 CloudFront requires AWS account verification. The approved API Gateway + Lambda HTTPS frontend serves the private web bucket. See [Phase 4 deployment](docs/phase-4/IMPLEMENTATION.md) and [Phase 6 implementation and demonstration](docs/phase-6/IMPLEMENTATION.md).
 
 Deployment account: `118462784511`. All 49 local tests and 19 live main-app regression checks pass. Phase 8 separately verified CloudTrail delivery, alarm transitions, EBS/EFS, peering, ASG replacement/scale-out, WAF, Config remediation, DLQ replay and exact DMS row reconciliation. All five lab stacks and residual lab resources were verified removed. Browser visual QA, prior email delivery and an existing import DLQ alarm remain explicit limitations. See [Phase 8 release status](docs/phase-8/RELEASE_STATUS.md) and [implementation](docs/phase-8/IMPLEMENTATION.md).
